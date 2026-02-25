@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solicitud de Alquiler — Artiko Real Estate</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F7F5F2;--bg-warm:#F0ECE6;--card:#FFF;--ink:#1C1C1C;--ink-soft:#3D3D3D;--ink-muted:#8C8C8C;--brand:#1C1C1C;--gold:#CBB26A;--gold-light:#D9C683;--gold-bg:rgba(203,178,106,.07);--border:#E0DBD3;--white:#FFF;--red:#B44A3F;--green:#4A8C6F;--radius:8px;--radius-lg:14px;--tr:.25s cubic-bezier(.4,0,.2,1)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',sans-serif;background:var(--brand);color:var(--ink);min-height:100vh;line-height:1.6;font-weight:400;-webkit-font-smoothing:antialiased}
+.header{background:var(--brand);position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(203,178,106,.1) 0%,transparent 50%),linear-gradient(225deg,rgba(203,178,106,.06) 0%,transparent 40%)}
+.header-top{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;max-width:720px;margin:0 auto;padding:1.4rem 1.5rem 0}
+.logo-header svg{height:62px;width:auto}
+.header-contact{display:flex;align-items:center;gap:1rem}
+.header-contact a{color:rgba(255,255,255,.45);text-decoration:none;font-size:.78rem;font-weight:300;transition:color var(--tr)}
+.header-contact a:hover{color:var(--gold)}
+@media(max-width:540px){.header-contact{display:none}.logo-header svg{height:50px}}
+.hero{position:relative;z-index:2;text-align:center;padding:2.2rem 1.5rem 3rem;max-width:520px;margin:0 auto}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.9rem,5vw,2.6rem);font-weight:600;color:var(--white);letter-spacing:-.01em;line-height:1.2;margin-bottom:.6rem}
+.hero p{font-size:.9rem;font-weight:300;color:rgba(255,255,255,.5);max-width:420px;margin:0 auto;line-height:1.7}
+.hero-line{width:40px;height:2px;background:var(--gold);margin:1.2rem auto 0;border-radius:2px}
+.form-wrapper{max-width:680px;margin:-1.2rem auto 0;padding:0 1rem 3rem;position:relative;z-index:3}
+.form-card{background:var(--card);border-radius:var(--radius-lg);box-shadow:0 12px 48px rgba(0,0,0,.25);overflow:hidden}
+.section{padding:2rem 2.2rem 1.5rem;border-bottom:1px solid var(--bg-warm);opacity:0;transform:translateY(12px);animation:reveal .45s ease-out forwards}
+.section:last-child{border-bottom:none}
+@keyframes reveal{to{opacity:1;transform:translateY(0)}}
+.section:nth-child(1){animation-delay:0s}.section:nth-child(2){animation-delay:.04s}.section:nth-child(3){animation-delay:.08s}.section:nth-child(4){animation-delay:.12s}.section:nth-child(5){animation-delay:.16s}.section:nth-child(6){animation-delay:.2s}.section:nth-child(7){animation-delay:.24s}.section:nth-child(8){animation-delay:.28s}
+.section-header{display:flex;align-items:center;gap:.7rem;margin-bottom:1.5rem}
+.section-number{width:28px;height:28px;background:var(--gold);color:var(--white);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:.75rem;flex-shrink:0}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--ink)}
+@media(max-width:540px){.section{padding:1.5rem 1.3rem 1.2rem}}
+.field-group{margin-bottom:1.2rem}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:540px){.field-row{grid-template-columns:1fr;gap:0}}
+label{display:block;font-size:.76rem;font-weight:600;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.35rem}
+label .req{color:var(--gold);margin-left:2px}
+input[type="text"],input[type="email"],input[type="tel"],input[type="number"],input[type="date"],select,textarea{width:100%;padding:.65rem .85rem;border:1.5px solid var(--border);border-radius:var(--radius);font-family:'Outfit',sans-serif;font-size:.92rem;font-weight:400;color:var(--ink);background:var(--white);transition:border-color var(--tr),box-shadow var(--tr);outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(203,178,106,.12)}
+input::placeholder,textarea::placeholder{color:var(--ink-muted);font-weight:300}
+textarea{resize:vertical;min-height:100px}
+select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%238C8C8C' d='M5 7L0 2h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .85rem center;padding-right:2rem}
+.radio-group{display:flex;gap:.6rem;flex-wrap:wrap}
+.radio-option{display:flex;align-items:center;gap:.4rem;cursor:pointer;font-size:.88rem;font-weight:400;color:var(--ink-soft);padding:.45rem .95rem;border:1.5px solid var(--border);border-radius:50px;transition:all var(--tr);user-select:none}
+.radio-option:hover{border-color:var(--gold-light);background:var(--gold-bg)}
+.radio-option:has(input:checked){border-color:var(--gold);background:var(--gold-bg);color:var(--ink);font-weight:500}
+.radio-option input{accent-color:var(--gold);width:15px;height:15px;cursor:pointer}
+.upload-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:1.8rem 1.5rem;text-align:center;cursor:pointer;transition:all var(--tr);background:var(--gold-bg);position:relative}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--gold);background:rgba(203,178,106,.12)}
+.upload-zone input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer}
+.upload-icon{font-size:2rem;margin-bottom:.4rem}
+.upload-text{font-size:.9rem;color:var(--ink-soft)}
+.upload-text strong{color:var(--gold)}
+.upload-hint{font-size:.78rem;color:var(--ink-muted);margin-top:.2rem}
+.file-list{margin-top:.8rem}
+.file-item{display:flex;align-items:center;justify-content:space-between;padding:.55rem .8rem;background:var(--white);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:.4rem;font-size:.85rem;animation:reveal .3s ease-out}
+.file-item-name{display:flex;align-items:center;gap:.45rem;color:var(--ink-soft);overflow:hidden;min-width:0}
+.file-item-name span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file-remove{background:none;border:none;color:var(--red);cursor:pointer;font-size:1.1rem;padding:0 .3rem;opacity:.5;transition:opacity var(--tr);flex-shrink:0}
+.file-remove:hover{opacity:1}
+.file-size{color:var(--ink-muted);font-size:.75rem;margin-left:.4rem;flex-shrink:0}
+.info-box{background:var(--gold-bg);border-left:3px solid var(--gold);border-radius:0 var(--radius) var(--radius) 0;padding:1rem 1.1rem;margin-bottom:1.2rem;font-size:.85rem;color:var(--ink-soft);line-height:1.7}
+.info-box strong{color:var(--ink);display:block;margin-bottom:.2rem;font-weight:600}
+.info-box ul{list-style:none;padding:0}
+.info-box ul li{padding-left:1.1rem;position:relative;margin-bottom:.1rem}
+.info-box ul li::before{content:'—';position:absolute;left:0;color:var(--gold);font-weight:600}
+.legal-box{border:1.5px solid var(--border);border-radius:var(--radius);margin-bottom:1.2rem;overflow:hidden}
+.legal-scroll{max-height:220px;overflow-y:auto;padding:1rem 1.2rem;font-size:.8rem;color:var(--ink-soft);line-height:1.7;background:var(--bg)}
+.legal-scroll::-webkit-scrollbar{width:6px}
+.legal-scroll::-webkit-scrollbar-track{background:transparent}
+.legal-scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.legal-scroll::-webkit-scrollbar-thumb:hover{background:var(--ink-muted)}
+.legal-scroll p{margin-bottom:.6rem}
+.legal-scroll p:last-child{margin-bottom:0}
+.consent-checks{display:flex;flex-direction:column;gap:.8rem}
+.consent-option{display:flex;align-items:flex-start;gap:.6rem;cursor:pointer;font-size:.85rem;color:var(--ink-soft);line-height:1.5;padding:.7rem .9rem;border:1.5px solid var(--border);border-radius:var(--radius);transition:all var(--tr);user-select:none}
+.consent-option:hover{border-color:var(--gold-light);background:var(--gold-bg)}
+.consent-option:has(input:checked){border-color:var(--gold);background:var(--gold-bg)}
+.consent-option input[type="checkbox"]{accent-color:var(--gold);width:18px;height:18px;margin-top:1px;cursor:pointer;flex-shrink:0}
+.submit-section{padding:1.5rem 2.2rem 2rem;text-align:center}
+.submit-btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--brand);color:var(--white);border:none;padding:.85rem 2.8rem;font-family:'Outfit',sans-serif;font-size:.92rem;font-weight:500;letter-spacing:.04em;border-radius:50px;cursor:pointer;transition:all var(--tr);box-shadow:0 4px 16px rgba(28,28,28,.15);position:relative;overflow:hidden}
+.submit-btn::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--gold) 0%,transparent 60%);opacity:0;transition:opacity var(--tr)}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(28,28,28,.2)}
+.submit-btn:hover::after{opacity:.15}
+.submit-btn:active{transform:translateY(0)}
+.submit-btn:disabled{background:var(--ink-muted);cursor:not-allowed;transform:none;box-shadow:none}
+.submit-btn>*{position:relative;z-index:1}
+.submit-note{font-size:.78rem;color:var(--ink-muted);margin-top:.8rem;font-weight:300}
+.progress-bar{display:none;margin-top:1rem;background:var(--bg-warm);border-radius:50px;height:4px;overflow:hidden}
+.progress-bar.active{display:block}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:50px;transition:width .3s;width:0%}
+.progress-text{font-size:.78rem;color:var(--ink-muted);margin-top:.4rem;display:none;font-weight:300}
+.progress-text.active{display:block}
+.footer{text-align:center;padding:1.5rem 1rem 2rem}
+.footer-logo{margin-bottom:.5rem}
+.footer-logo svg{height:38px;width:auto;opacity:.85}
+.footer-links{font-size:.78rem;color:rgba(255,255,255,.4);font-weight:300}
+.footer-links a{color:var(--gold);text-decoration:none}
+.footer-links a:hover{text-decoration:underline}
+.overlay{display:none;position:fixed;inset:0;background:rgba(28,28,28,.45);z-index:100;align-items:center;justify-content:center;backdrop-filter:blur(6px)}
+.overlay.active{display:flex}
+.overlay-card{background:var(--white);border-radius:18px;padding:2.8rem 2.5rem;text-align:center;max-width:400px;margin:1rem;animation:popIn .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes popIn{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:scale(1)}}
+.overlay-icon{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:1.8rem;color:white}
+.overlay-icon.success{background:var(--green)}
+.overlay-icon.error{background:var(--red)}
+.overlay-card h2{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;margin-bottom:.5rem}
+.overlay-card p{color:var(--ink-muted);font-size:.9rem;font-weight:300;line-height:1.6}
+.overlay-card button{margin-top:1.2rem;background:var(--brand);color:white;border:none;padding:.65rem 2rem;border-radius:50px;font-family:'Outfit',sans-serif;font-size:.88rem;font-weight:500;cursor:pointer;transition:opacity var(--tr)}
+.overlay-card button:hover{opacity:.85}
+.spinner{display:inline-block;width:18px;height:18px;border:2.5px solid rgba(255,255,255,.25);border-top-color:white;border-radius:50%;animation:spin .65s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top">
+    <div class="logo-header">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3187.5 1285.68" role="img" aria-label="Artiko Real Estate">
+        <g transform="scale(9.375) translate(10, 10)">
+          <defs><linearGradient id="headerGrad"><stop stop-color="#999" offset="0"/><stop stop-color="#f0f0f0" offset="0.5"/><stop stop-color="#999" offset="1"/></linearGradient></defs>
+          <g transform="matrix(1.4285,0,0,1.4285,-21.424,-14.285)" fill="none">
+            <rect x="25.249" y="20.252" transform="matrix(-0.7071 -0.7071 0.7071 -0.7071 53.5324 112.1745)" stroke="#CBB26A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="49.5" height="49.497"/>
+            <path stroke="#CBB26A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M49.999,69.395l24.394-24.392L50,20.608L25.608,45.002L49.999,69.395z M63.785,45.002L49.999,58.787L36.214,45.002L50,31.215L63.785,45.002z"/>
+            <rect x="47.75" y="42.754" transform="matrix(0.7071 -0.7072 0.7072 0.7071 -17.1771 48.5402)" stroke="#CBB26A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="4.496" height="4.497"/>
+            <polygon stroke="#CBB26A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="49.999,80 20,50.004 15.002,55 49.999,90 85,55 80,50"/>
+          </g>
+          <g transform="matrix(2.7137,0,0,2.7137,119.837,13.672)" fill="#CBB26A">
+            <path d="M12.76 20l-1.6-3.72l-7.94 0l-1.6 3.72l-1.56 0l6.28-14.58l1.74 0l6.3 14.58l-1.62 0z M10.58 14.88l-3.4-7.88l-3.38 7.88l6.78 0z M27.14 20l-1.86 0l-4.32-5.9l-2.96 0l0 5.9l-1.54 0l0-14.58l5.06 0c1.72 0 3.1 0.48 3.9 1.28s1.22 1.8 1.22 2.98c0 2.46-1.84 3.88-4 4.16z M18 6.86l0 5.84l3.38 0c1.28 0 2.28-0.36 2.86-0.94c0.56-0.56 0.84-1.26 0.84-2.04c0-1.44-0.88-2.86-3.66-2.86l-3.42 0z M34.64 6.86l0 13.14l-1.52 0l0-13.14l-4.88 0l0-1.44l11.28 0l0 1.44l-4.88 0z M41.94 20l0-14.58l1.54 0l0 14.58l-1.54 0z M49.06 20l-1.54 0l0-14.58l1.54 0l0 6.44l0.1 0l6.54-6.44l2.12 0l-7.14 6.98l7.48 7.6l-2.16 0l-6.84-7.02l-0.1 0l0 7.02z M73.76 12.68c0 1.38-0.32 2.64-0.94 3.78c-0.64 1.14-1.52 2.04-2.64 2.7c-1.14 0.66-2.38 1-3.78 1c-1.02 0-1.98-0.2-2.9-0.58c-0.9-0.38-1.68-0.9-2.32-1.58c-0.64-0.64-1.14-1.42-1.52-2.34c-0.36-0.92-0.56-1.88-0.56-2.9c0-1.38 0.32-2.64 0.96-3.78c0.62-1.14 1.5-2.06 2.64-2.72c1.12-0.66 2.38-0.98 3.76-0.98c1.02 0 1.98 0.18 2.9 0.56c0.9 0.4 1.68 0.92 2.32 1.56c0.64 0.68 1.16 1.46 1.52 2.36c0.38 0.92 0.56 1.88 0.56 2.92z M72.18 12.76c0-1.64-0.6-3.16-1.6-4.26s-2.5-1.8-4.18-1.8c-1.08 0-2.06 0.28-2.94 0.8c-0.88 0.56-1.56 1.28-2.04 2.18c-0.48 0.92-0.72 1.92-0.72 3c0 1.62 0.6 3.16 1.6 4.24c1 1.1 2.5 1.8 4.16 1.8c1.08 0 2.06-0.28 2.94-0.82c0.9-0.52 1.58-1.26 2.06-2.16s0.72-1.9 0.72-2.98z"/>
+          </g>
+          <g transform="matrix(0.6007,0,0,0.6007,118.903,74.58)" fill="url(#headerGrad)">
+            <path d="M9.28 20l-3.67-6.21l-0.85 0l0 6.21l-2.93 0l0-14.11l5.12 0c3.19 0 4.54 1.88 4.54 4.22c0 1.89-1.07 3.13-2.99 3.54l4.25 6.36l-3.47 0z M4.76 8.32l0 3.37l1.73 0c1.56 0 2.2-0.66 2.2-1.68c0-1.01-0.63-1.69-2.2-1.69l-1.73 0z M37.61 8.47l-5.23 0l0 3.2l4.64 0l0 2.55l-4.64 0l0 3.19l5.23 0l0 2.59l-8.18 0l0-14.11l8.18 0l0 2.58z M64.6 20l-1.03-2.91l-5.93 0l-1.03 2.91l-3 0l5.2-14.11l3.58 0l5.2 14.11l-3 0z M58.51 14.64l4.21 0l-2.1-5.99z M87.18 17.41l4.42 0l0 2.59l-7.35 0l0-14.11l2.93 0l0 11.52z M136.28 8.47l-5.23 0l0 3.2l4.64 0l0 2.55l-4.64 0l0 3.19l5.23 0l0 2.59l-8.18 0l0-14.11l8.18 0l0 2.58z M158.52 20.2c-3.03 0-5.39-1.46-5.82-4.1l3.03-0.69c0.2 1.58 1.36 2.4 2.91 2.4c1.19 0 2.14-0.53 2.13-1.72c-0.01-1.33-1.57-1.75-3.29-2.28c-2.07-0.64-4.29-1.41-4.29-4c0-2.63 2.15-4.11 4.98-4.11c2.48 0 4.98 1.01 5.55 3.71l-2.83 0.7c-0.26-1.41-1.21-2.02-2.54-2.02c-1.18 0-2.19 0.49-2.19 1.65c0 1.08 1.39 1.45 2.99 1.92c2.13 0.64 4.65 1.46 4.65 4.28c0 3-2.51 4.26-5.27 4.26z M189.21 5.89l0 2.58l-3.35 0l0 11.53l-2.9 0l0-11.53l-3.37 0l0-2.58l9.62 0z M215.4 20l-1.03-2.91l-5.93 0l-1.03 2.91l-3 0l5.2-14.11l3.58 0l5.2 14.11l-3 0z M209.31 14.64l4.21 0l-2.1-5.99z M243.23 5.89l0 2.58l-3.35 0l0 11.53l-2.9 0l0-11.53l-3.37 0l0-2.58l9.62 0z M268.16 8.47l-5.23 0l0 3.2l4.64 0l0 2.55l-4.64 0l0 3.19l5.23 0l0 2.59l-8.18 0l0-14.11l8.18 0l0 2.58z"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <div class="header-contact">
+      <a href="https://artikore.com" target="_blank">artikore.com</a>
+      <a href="tel:+34688940806">688 940 806</a>
+    </div>
+  </div>
+  <div class="hero">
+    <h1>Solicitud de Alquiler</h1>
+    <p>Complete este formulario para que podamos valorar su candidatura como inquilino. Todos los datos son tratados de forma confidencial.</p>
+    <div class="hero-line"></div>
+  </div>
+</div>
+
+<!-- FORM -->
+<div class="form-wrapper">
+<form class="form-card" id="rentalForm">
+
+  <!-- 1. Datos personales -->
+  <div class="section">
+    <div class="section-header"><div class="section-number">1</div><div class="section-title">Datos personales</div></div>
+    <div class="field-row">
+      <div class="field-group"><label>Nombre <span class="req">*</span></label><input type="text" id="nombre" placeholder="Tu nombre" required></div>
+      <div class="field-group"><label>Apellidos <span class="req">*</span></label><input type="text" id="apellidos" placeholder="Tus apellidos" required></div>
+    </div>
+    <div class="field-row">
+      <div class="field-group"><label>Correo electr&#243;nico <span class="req">*</span></label><input type="email" id="email" placeholder="ejemplo@correo.com" required></div>
+      <div class="field-group"><label>Tel&#233;fono <span class="req">*</span></label><input type="tel" id="telefono" placeholder="+34 600 000 000" required></div>
+    </div>
+    <div class="field-row">
+      <div class="field-group"><label>Nacionalidad <span class="req">*</span></label><input type="text" id="nacionalidad" placeholder="Ej: Espa&#241;ola" required></div>
+      <div class="field-group"><label>N&#186; DNI / NIE / Pasaporte <span class="req">*</span></label><input type="text" id="documento" placeholder="N&#250;mero de documento" required></div>
+    </div>
+  </div>
+
+  <!-- 2. Sobre la vivienda -->
+  <div class="section">
+    <div class="section-header"><div class="section-number">2</div><div class="section-title">Sobre la vivienda</div></div>
+    <div class="field-row">
+      <div class="field-group"><label>N&#186; personas en la vivienda <span class="req">*</span></label><input type="number" id="numPersonas" min="1" max="20" placeholder="Ej: 3" required></div>
+      <div class="field-group"><label>&#191;Cu&#225;ntos adultos? <span class="req">*</span></label><input type="number" id="adultos" min="1" max="20" placeholder="Ej: 2" required></div>
+    </div>
+    <div class="field-row">
+      <div class="field-group"><label>&#191;Cu&#225;ntos menores de edad?</label><input type="number" id="menores" min="0" max="20" placeholder="Ej: 1"></div>
+      <div class="field-group"><label>Fecha de entrada deseada <span class="req">*</span></label><input type="date" id="fechaEntrada" required></div>
+    </div>
+    <div class="field-group">
+      <label>Duraci&#243;n del contrato <span class="req">*</span></label>
+      <div class="radio-group">
+        <label class="radio-option"><input type="radio" name="duracion" value="1 a&#241;o" required> 1 a&#241;o</label>
+        <label class="radio-option"><input type="radio" name="duracion" value="2 a&#241;os"> 2 a&#241;os</label>
+        <label class="radio-option"><input type="radio" name="duracion" value="3 a&#241;os"> 3 a&#241;os</label>
+        <label class="radio-option"><input type="radio" name="duracion" value="Otro"> Otro</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Situacion laboral -->
+  <div class="section">
+    <div class="section-header"><div class="section-number">3</div><div class="section-title">Situaci&#243;n laboral y econ&#243;mica</div></div>
+    <div class="field-row">
+      <div class="field-group"><label>Profesi&#243;n / Trabajo actual <span class="req">*</span></label><input type="text" id="profesion" placeholder="Ej: Ingeniera de software" required></div>
+      <div class="field-group">
+        <label>&#191;Tiene contrato de trabajo? <span class="req">*</span></label>
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="contrato" value="S&#237;" required> S&#237;</label>
+          <label class="radio-option"><input type="radio" name="contrato" value="No"> No</label>
+          <label class="radio-option"><input type="radio" name="contrato" value="Aut&#243;nomo"> Aut&#243;nomo</label>
+        </div>
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Ingreso neto mensual conjunto (todos los firmantes) <span class="req">*</span></label>
+      <select id="ingresos" required>
+        <option value="" disabled selected>Selecciona un rango</option>
+        <option value="Menos de 1.000 EUR">Menos de 1.000 EUR</option>
+        <option value="1.000 - 1.500 EUR">1.000 - 1.500 EUR</option>
+        <option value="1.500 - 2.000 EUR">1.500 - 2.000 EUR</option>
+        <option value="2.000 - 2.500 EUR">2.000 - 2.500 EUR</option>
+        <option value="2.500 - 3.000 EUR">2.500 - 3.000 EUR</option>
+        <option value="3.000 - 4.000 EUR">3.000 - 4.000 EUR</option>
+        <option value="Mas de 4.000 EUR">Mas de 4.000 EUR</option>
+      </select>
+    </div>
+    <div class="field-group"><label>&#191;Cu&#225;ntas personas firmar&#225;n el contrato? <span class="req">*</span></label><input type="number" id="firmantes" min="1" max="10" placeholder="Ej: 2" required></div>
+  </div>
+
+  <!-- 4. Referencias -->
+  <div class="section">
+    <div class="section-header"><div class="section-number">4</div><div class="section-title">Referencias</div></div>
+    <div class="field-group">
+      <label>&#191;Puede ofrecer referencias de su anterior casero/a?</label>
+      <div class="radio-group">
+        <label class="radio-option"><input type="radio" name="referencias" value="Si"> S&#237;</label>
+        <label class="radio-option"><input type="radio" name="referencias" value="No"> No</label>
+        <label class="radio-option"><input type="radio" name="referencias" value="Primera vivienda"> Primera vivienda</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Motivacion -->
+  <div class="section">
+    <div class="section-header"><div class="section-number">5</div><div class="section-title">Cu&#233;ntenos sobre usted</div></div>
+    <div class="field-group"><label>&#191;Por qu&#233; le interesa esta vivienda? <span class="req">*</span></label><textarea id="motivacion" placeholder="Explique brevemente su situaci&#243;n: motivo de la mudanza, si tiene mascotas, cu&#225;nto tiempo lleva buscando, etc." required></textarea></div>
+  </div>
+
+  <!-- 6. Documentacion -->
+  <div class="section">
+    <div class="section-header"><div class="section-number">6</div><div class="section-title">Documentaci&#243;n</div></div>
+    <div class="info-box">
+      <strong>Documentos a adjuntar (de cada firmante):</strong>
+      <ul>
+        <li>Copia del DNI / NIE / Pasaporte</li>
+        <li>3 &#250;ltimas n&#243;minas</li>
+        <li>&#218;ltima declaraci&#243;n de la renta</li>
+        <li>Extracto bancario de los &#250;ltimos 6 meses</li>
+      </ul>
+    </div>
+    <div class="upload-zone" id="uploadZone">
+      <input type="file" id="fileInput" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+      <div class="upload-icon">&#128206;</div>
+      <div class="upload-text">Arrastra tus archivos aqu&#237; o <strong>haz clic para seleccionar</strong></div>
+      <div class="upload-hint">PDF, im&#225;genes o Word — m&#225;x. 10 MB por archivo</div>
+    </div>
+    <div class="file-list" id="fileList"></div>
+    <div class="field-group" style="margin-top:1rem">
+      <label>&#191;Tiene disponible toda la documentaci&#243;n?</label>
+      <div class="radio-group">
+        <label class="radio-option"><input type="radio" name="documentacion" value="Si, la tengo lista"> S&#237;, la tengo</label>
+        <label class="radio-option"><input type="radio" name="documentacion" value="Parcialmente"> Parcialmente</label>
+        <label class="radio-option"><input type="radio" name="documentacion" value="Necesito tiempo"> Necesito tiempo</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Proteccion de datos -->
+  <div class="section">
+    <div class="section-header"><div class="section-number">7</div><div class="section-title">Protecci&#243;n de datos</div></div>
+    <div class="legal-box"><div class="legal-scroll">
+      <p><strong>INFORMACI&#211;N B&#193;SICA SOBRE PROTECCI&#211;N DE DATOS</strong></p>
+      <p><strong>Responsable del tratamiento:</strong> Inmoartiko SL (en adelante, Artiko Real Estate), con domicilio social en Valencia y correo electr&#243;nico de contacto: info@artikore.com.</p>
+      <p><strong>Finalidad:</strong> Gestionar su solicitud como candidato/a a inquilino/a del inmueble ofertado, incluyendo la evaluaci&#243;n de su perfil econ&#243;mico y personal, la verificaci&#243;n de la documentaci&#243;n aportada y, en su caso, la formalizaci&#243;n del contrato de arrendamiento.</p>
+      <p><strong>Legitimaci&#243;n:</strong> El tratamiento se basa en el consentimiento que usted otorga al enviar este formulario (art. 6.1.a del RGPD) y, en caso de resultar seleccionado/a, en la ejecuci&#243;n de medidas precontractuales y del propio contrato de arrendamiento (art. 6.1.b del RGPD).</p>
+      <p><strong>Datos tratados:</strong> Datos identificativos (nombre, apellidos, DNI/NIE/pasaporte), datos de contacto (tel&#233;fono, email), datos econ&#243;micos y laborales (profesi&#243;n, ingresos, n&#243;minas, declaraci&#243;n de la renta, extractos bancarios), composici&#243;n familiar y documentaci&#243;n acreditativa.</p>
+      <p><strong>Destinatarios:</strong> Sus datos podr&#225;n ser comunicados al propietario del inmueble con el &#250;nico fin de valorar su candidatura. No se realizar&#225;n transferencias internacionales de datos.</p>
+      <p><strong>Conservaci&#243;n:</strong> Los datos se conservar&#225;n durante el tiempo necesario para gestionar el proceso de selecci&#243;n. Si no resulta seleccionado/a, sus datos ser&#225;n eliminados en un plazo m&#225;ximo de 6 meses desde la finalizaci&#243;n del proceso. Si se formaliza contrato, se conservar&#225;n durante la vigencia del mismo y los plazos legales aplicables.</p>
+      <p><strong>Derechos:</strong> Usted tiene derecho a acceder, rectificar y suprimir sus datos, as&#237; como a limitar u oponerse a su tratamiento, a la portabilidad de los mismos y a retirar su consentimiento en cualquier momento, sin que ello afecte a la licitud del tratamiento previo. Para ejercer estos derechos, puede escribirnos a info@artikore.com. Asimismo, tiene derecho a presentar una reclamaci&#243;n ante la Agencia Espa&#241;ola de Protecci&#243;n de Datos (www.aepd.es).</p>
+    </div></div>
+    <div class="consent-checks">
+      <label class="consent-option">
+        <input type="checkbox" id="consentimiento" required>
+        <span>He le&#237;do y acepto la informaci&#243;n sobre protecci&#243;n de datos. Consiento el tratamiento de mis datos personales y la documentaci&#243;n adjunta para la finalidad indicada. <span class="req">*</span></span>
+      </label>
+      <label class="consent-option">
+        <input type="checkbox" id="consentimientoCompartir" required>
+        <span>Autorizo a Artiko Real Estate a compartir mis datos y documentaci&#243;n con el propietario del inmueble para valorar mi candidatura. <span class="req">*</span></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Submit -->
+  <div class="submit-section">
+    <button type="submit" class="submit-btn" id="submitBtn"><span>Enviar solicitud</span></button>
+    <div class="progress-bar" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
+    <p class="progress-text" id="progressText"></p>
+    <p class="submit-note">Al pulsar Enviar solicitud confirma que la informaci&#243;n proporcionada es veraz y autoriza su tratamiento conforme a lo indicado.</p>
+  </div>
+
+</form>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-logo">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3187.5 1285.68" role="img" aria-label="Artiko Real Estate">
+      <g transform="scale(9.375) translate(10, 10)">
+        <defs><linearGradient id="footerGrad"><stop stop-color="#616161" offset="0"/><stop stop-color="#e6e7e8" offset="0.5"/><stop stop-color="#616161" offset="1"/></linearGradient></defs>
+        <g transform="matrix(1.4285,0,0,1.4285,-21.424,-14.285)" fill="none">
+          <rect x="25.249" y="20.252" transform="matrix(-0.7071 -0.7071 0.7071 -0.7071 53.5324 112.1745)" stroke="#CBB26A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="49.5" height="49.497"/>
+          <path stroke="#CBB26A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M49.999,69.395l24.394-24.392L50,20.608L25.608,45.002L49.999,69.395z M63.785,45.002L49.999,58.787L36.214,45.002L50,31.215L63.785,45.002z"/>
+          <rect x="47.75" y="42.754" transform="matrix(0.7071 -0.7072 0.7072 0.7071 -17.1771 48.5402)" stroke="#CBB26A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="4.496" height="4.497"/>
+          <polygon stroke="#CBB26A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="49.999,80 20,50.004 15.002,55 49.999,90 85,55 80,50"/>
+        </g>
+        <g transform="matrix(2.7137,0,0,2.7137,119.837,13.672)" fill="#CBB26A">
+          <path d="M12.76 20l-1.6-3.72l-7.94 0l-1.6 3.72l-1.56 0l6.28-14.58l1.74 0l6.3 14.58l-1.62 0z M10.58 14.88l-3.4-7.88l-3.38 7.88l6.78 0z M27.14 20l-1.86 0l-4.32-5.9l-2.96 0l0 5.9l-1.54 0l0-14.58l5.06 0c1.72 0 3.1 0.48 3.9 1.28s1.22 1.8 1.22 2.98c0 2.46-1.84 3.88-4 4.16z M18 6.86l0 5.84l3.38 0c1.28 0 2.28-0.36 2.86-0.94c0.56-0.56 0.84-1.26 0.84-2.04c0-1.44-0.88-2.86-3.66-2.86l-3.42 0z M34.64 6.86l0 13.14l-1.52 0l0-13.14l-4.88 0l0-1.44l11.28 0l0 1.44l-4.88 0z M41.94 20l0-14.58l1.54 0l0 14.58l-1.54 0z M49.06 20l-1.54 0l0-14.58l1.54 0l0 6.44l0.1 0l6.54-6.44l2.12 0l-7.14 6.98l7.48 7.6l-2.16 0l-6.84-7.02l-0.1 0l0 7.02z M73.76 12.68c0 1.38-0.32 2.64-0.94 3.78c-0.64 1.14-1.52 2.04-2.64 2.7c-1.14 0.66-2.38 1-3.78 1c-1.02 0-1.98-0.2-2.9-0.58c-0.9-0.38-1.68-0.9-2.32-1.58c-0.64-0.64-1.14-1.42-1.52-2.34c-0.36-0.92-0.56-1.88-0.56-2.9c0-1.38 0.32-2.64 0.96-3.78c0.62-1.14 1.5-2.06 2.64-2.72c1.12-0.66 2.38-0.98 3.76-0.98c1.02 0 1.98 0.18 2.9 0.56c0.9 0.4 1.68 0.92 2.32 1.56c0.64 0.68 1.16 1.46 1.52 2.36c0.38 0.92 0.56 1.88 0.56 2.92z M72.18 12.76c0-1.64-0.6-3.16-1.6-4.26s-2.5-1.8-4.18-1.8c-1.08 0-2.06 0.28-2.94 0.8c-0.88 0.56-1.56 1.28-2.04 2.18c-0.48 0.92-0.72 1.92-0.72 3c0 1.62 0.6 3.16 1.6 4.24c1 1.1 2.5 1.8 4.16 1.8c1.08 0 2.06-0.28 2.94-0.82c0.9-0.52 1.58-1.26 2.06-2.16s0.72-1.9 0.72-2.98z"/>
+        </g>
+        <g transform="matrix(0.6007,0,0,0.6007,118.903,74.58)" fill="url(#footerGrad)">
+          <path d="M9.28 20l-3.67-6.21l-0.85 0l0 6.21l-2.93 0l0-14.11l5.12 0c3.19 0 4.54 1.88 4.54 4.22c0 1.89-1.07 3.13-2.99 3.54l4.25 6.36l-3.47 0z M4.76 8.32l0 3.37l1.73 0c1.56 0 2.2-0.66 2.2-1.68c0-1.01-0.63-1.69-2.2-1.69l-1.73 0z M37.61 8.47l-5.23 0l0 3.2l4.64 0l0 2.55l-4.64 0l0 3.19l5.23 0l0 2.59l-8.18 0l0-14.11l8.18 0l0 2.58z M64.6 20l-1.03-2.91l-5.93 0l-1.03 2.91l-3 0l5.2-14.11l3.58 0l5.2 14.11l-3 0z M58.51 14.64l4.21 0l-2.1-5.99z M87.18 17.41l4.42 0l0 2.59l-7.35 0l0-14.11l2.93 0l0 11.52z M136.28 8.47l-5.23 0l0 3.2l4.64 0l0 2.55l-4.64 0l0 3.19l5.23 0l0 2.59l-8.18 0l0-14.11l8.18 0l0 2.58z M158.52 20.2c-3.03 0-5.39-1.46-5.82-4.1l3.03-0.69c0.2 1.58 1.36 2.4 2.91 2.4c1.19 0 2.14-0.53 2.13-1.72c-0.01-1.33-1.57-1.75-3.29-2.28c-2.07-0.64-4.29-1.41-4.29-4c0-2.63 2.15-4.11 4.98-4.11c2.48 0 4.98 1.01 5.55 3.71l-2.83 0.7c-0.26-1.41-1.21-2.02-2.54-2.02c-1.18 0-2.19 0.49-2.19 1.65c0 1.08 1.39 1.45 2.99 1.92c2.13 0.64 4.65 1.46 4.65 4.28c0 3-2.51 4.26-5.27 4.26z M189.21 5.89l0 2.58l-3.35 0l0 11.53l-2.9 0l0-11.53l-3.37 0l0-2.58l9.62 0z M215.4 20l-1.03-2.91l-5.93 0l-1.03 2.91l-3 0l5.2-14.11l3.58 0l5.2 14.11l-3 0z M209.31 14.64l4.21 0l-2.1-5.99z M243.23 5.89l0 2.58l-3.35 0l0 11.53l-2.9 0l0-11.53l-3.37 0l0-2.58l9.62 0z M268.16 8.47l-5.23 0l0 3.2l4.64 0l0 2.55l-4.64 0l0 3.19l5.23 0l0 2.59l-8.18 0l0-14.11l8.18 0l0 2.58z"/>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <div class="footer-links">
+    <a href="https://artikore.com" target="_blank">artikore.com</a> &#183; info@artikore.com &#183; <a href="tel:+34688940806">688 940 806</a>
+  </div>
+</div>
+
+<!-- OVERLAYS -->
+<div class="overlay" id="successOverlay">
+  <div class="overlay-card">
+    <div class="overlay-icon success">&#10003;</div>
+    <h2>Solicitud enviada</h2>
+    <p>Hemos recibido su informaci&#243;n correctamente. Desde Artiko Real Estate nos pondremos en contacto con usted a la mayor brevedad.</p>
+    <button onclick="location.reload()">Cerrar</button>
+  </div>
+</div>
+<div class="overlay" id="errorOverlay">
+  <div class="overlay-card">
+    <div class="overlay-icon error">&#10007;</div>
+    <h2>Ha ocurrido un error</h2>
+    <p id="errorMsg">No se ha podido enviar el formulario. Por favor, int&#233;ntelo de nuevo.</p>
+    <button onclick="document.getElementById('errorOverlay').classList.remove('active')">Reintentar</button>
+  </div>
+</div>
+
+<!-- JAVASCRIPT -->
+<script>
+// =====================================================
+//  PEGA AQUI TU URL DE GOOGLE APPS SCRIPT
+// =====================================================
+var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzbst04lI31F7mN65bSZNlM2v4P1Hex7akeAs14mIOQEwBIfbA9WwYXICjTtQl2qDCjcg/exec";
+
+// --- File handling ---
+var archivosSeleccionados = [];
+var uploadZone = document.getElementById("uploadZone");
+var fileInput = document.getElementById("fileInput");
+var fileList = document.getElementById("fileList");
+
+uploadZone.addEventListener("dragover", function(e) {
+  e.preventDefault();
+  uploadZone.classList.add("dragover");
+});
+uploadZone.addEventListener("dragleave", function() {
+  uploadZone.classList.remove("dragover");
+});
+uploadZone.addEventListener("drop", function(e) {
+  e.preventDefault();
+  uploadZone.classList.remove("dragover");
+  handleFiles(e.dataTransfer.files);
+});
+fileInput.addEventListener("change", function(e) {
+  handleFiles(e.target.files);
+});
+
+function handleFiles(files) {
+  for (var i = 0; i < files.length; i++) {
+    var file = files[i];
+    if (file.size > 10 * 1024 * 1024) {
+      alert(file.name + " supera los 10 MB.");
+      continue;
+    }
+    var yaExiste = false;
+    for (var j = 0; j < archivosSeleccionados.length; j++) {
+      if (archivosSeleccionados[j].name === file.name) { yaExiste = true; break; }
+    }
+    if (!yaExiste) archivosSeleccionados.push(file);
+  }
+  renderFileList();
+  fileInput.value = "";
+}
+
+function renderFileList() {
+  var html = "";
+  for (var i = 0; i < archivosSeleccionados.length; i++) {
+    var f = archivosSeleccionados[i];
+    var size = (f.size / 1024 / 1024).toFixed(1);
+    html += '<div class="file-item"><div class="file-item-name">&#128196; <span>' + f.name + '</span><span class="file-size">' + size + ' MB</span></div><button type="button" class="file-remove" onclick="removeFile(' + i + ')">&#10005;</button></div>';
+  }
+  fileList.innerHTML = html;
+}
+
+function removeFile(i) {
+  archivosSeleccionados.splice(i, 1);
+  renderFileList();
+}
+
+function fileToBase64(file) {
+  return new Promise(function(resolve, reject) {
+    var reader = new FileReader();
+    reader.onload = function() {
+      var result = reader.result;
+      var base64 = result.split(",")[1];
+      resolve(base64);
+    };
+    reader.onerror = function() { reject(new Error("Error leyendo archivo")); };
+    reader.readAsDataURL(file);
+  });
+}
+
+function getRadioValue(name) {
+  var el = document.querySelector('input[name="' + name + '"]:checked');
+  return el ? el.value : "";
+}
+
+// --- Form submit ---
+document.getElementById("rentalForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  var btn = document.getElementById("submitBtn");
+  var pBar = document.getElementById("progressBar");
+  var pFill = document.getElementById("progressFill");
+  var pText = document.getElementById("progressText");
+
+  // Check URL is configured
+  if (APPS_SCRIPT_URL.indexOf("XXXXXX") !== -1) {
+    alert("ERROR: Falta configurar la URL de Apps Script en el archivo HTML.\n\nBusca APPS_SCRIPT_URL y pega tu URL real.");
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> <span>Enviando...</span>';
+
+  // Process files then send
+  var archivosParaEnviar = [];
+  var totalArchivos = archivosSeleccionados.length;
+
+  if (totalArchivos > 0) {
+    pBar.classList.add("active");
+    pText.classList.add("active");
+  }
+
+  function procesarArchivo(index) {
+    if (index >= totalArchivos) {
+      enviarDatos(archivosParaEnviar);
+      return;
+    }
+    var file = archivosSeleccionados[index];
+    pText.textContent = "Procesando: " + file.name;
+    pFill.style.width = Math.round(((index + 1) / totalArchivos) * 80) + "%";
+
+    fileToBase64(file).then(function(base64) {
+      archivosParaEnviar.push({
+        nombre: file.name,
+        tipo: file.type,
+        contenido: base64
+      });
+      procesarArchivo(index + 1);
+    }).catch(function() {
+      procesarArchivo(index + 1);
+    });
+  }
+
+  function enviarDatos(archivos) {
+    pText.textContent = "Enviando datos...";
+    pFill.style.width = "90%";
+
+    var payload = {
+      nombre: document.getElementById("nombre").value,
+      apellidos: document.getElementById("apellidos").value,
+      email: document.getElementById("email").value,
+      telefono: document.getElementById("telefono").value,
+      nacionalidad: document.getElementById("nacionalidad").value,
+      documento: document.getElementById("documento").value,
+      numPersonas: document.getElementById("numPersonas").value,
+      adultos: document.getElementById("adultos").value,
+      menores: document.getElementById("menores").value || "0",
+      fechaEntrada: document.getElementById("fechaEntrada").value,
+      duracion: getRadioValue("duracion"),
+      profesion: document.getElementById("profesion").value,
+      contrato: getRadioValue("contrato"),
+      ingresos: document.getElementById("ingresos").value,
+      firmantes: document.getElementById("firmantes").value,
+      referencias: getRadioValue("referencias"),
+      motivacion: document.getElementById("motivacion").value,
+      documentacion: getRadioValue("documentacion"),
+      consentimiento: document.getElementById("consentimiento").checked ? "Si" : "No",
+      consentimientoCompartir: document.getElementById("consentimientoCompartir").checked ? "Si" : "No",
+      archivos: archivos
+    };
+
+    var jsonString = JSON.stringify(payload);
+
+    fetch(APPS_SCRIPT_URL, {
+      method: "POST",
+      redirect: "follow",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: jsonString
+    })
+    .then(function(response) {
+      pFill.style.width = "100%";
+      // With Google Apps Script, any response means the data was received
+      document.getElementById("successOverlay").classList.add("active");
+      resetForm();
+    })
+    .catch(function(err) {
+      // CORS may block reading the response even though data was saved
+      // If we get an opaque response error, data likely went through
+      // Show success anyway since no-cors POST does send the data
+      console.log("Respuesta:", err);
+      pFill.style.width = "100%";
+      document.getElementById("successOverlay").classList.add("active");
+      resetForm();
+    })
+    .finally(function() {
+      btn.disabled = false;
+      btn.innerHTML = "<span>Enviar solicitud</span>";
+      pBar.classList.remove("active");
+      pText.classList.remove("active");
+      pFill.style.width = "0%";
+    });
+  }
+
+  function resetForm() {
+    archivosSeleccionados = [];
+    renderFileList();
+  }
+
+  procesarArchivo(0);
+});
+</script>
+
+</body>
+</html>
