@@ -1,1 +1,12 @@
-.worktrees/
+node_modules
+.next
+out
+dist
+coverage
+.env
+.env.*
+!.env.example
+prisma/dev.db
+prisma/dev.db-journal
+playwright-report
+test-results
