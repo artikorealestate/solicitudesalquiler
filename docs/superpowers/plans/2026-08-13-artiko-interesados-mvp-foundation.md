@@ -103,6 +103,7 @@ describe("project scaffold", () => {
     expect(pkg.scripts.build).toBe("next build");
     expect(pkg.scripts.test).toBe("vitest run");
     expect(pkg.scripts["test:e2e"]).toBe("playwright test");
+    expect(pkg.scripts.lint).toBe("eslint .");
   });
 });
 ```
@@ -124,7 +125,7 @@ Expected: command fails because `package.json` or `vitest` does not exist yet.
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
@@ -438,7 +439,7 @@ Expected: FAIL because `@/lib/slug` does not exist.
 Create `src/lib/slug.ts`:
 
 ```ts
-const UNSAFE_FOLDER_CHARS = /[<>:"/\\|?*\u0000-\u001F]/g;
+const UNSAFE_FOLDER_CHARS = /[<>:"/\\|?*,\u0000-\u001F]/g;
 
 export function slugifyFolderName(value: string): string {
   const cleaned = value
@@ -472,31 +473,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum OperationType {
-  RENT
-  PURCHASE
-  BOTH
-}
-
-enum PropertyStatus {
-  ACTIVE
-  PAUSED
-  ARCHIVED
-}
-
-enum LeadStatus {
-  NEW
-  REVIEWING
-  MISSING_DOCUMENTS
-  QUALIFIED
-  REJECTED
-  VISIT_PROPOSED
-  VISITED
-  OFFER
-  RESERVED
-  CLOSED
-}
-
 model AdminUser {
   id        String   @id @default(cuid())
   email     String   @unique
@@ -508,26 +484,29 @@ model AdminUser {
 }
 
 model Property {
-  id             String         @id @default(cuid())
-  reference      String         @unique
+  id             String   @id @default(cuid())
+  reference      String   @unique
   title          String
-  operationType  OperationType
+  // RENT, PURCHASE, BOTH
+  operationType  String
   zone           String
   approximateAddress String?
   rentPrice      Int?
   purchasePrice  Int?
   idealistaUrl   String?
   mainImageUrl   String?
-  status         PropertyStatus @default(ACTIVE)
+  // ACTIVE, PAUSED, ARCHIVED
+  status         String   @default("ACTIVE")
   internalNotes  String?
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
   leads          Lead[]
 }
 
 model Lead {
   id                 String     @id @default(cuid())
-  operationType      OperationType
+  // RENT, PURCHASE
+  operationType      String
   locale             String
   firstName          String
   lastName           String
@@ -536,7 +515,8 @@ model Lead {
   nationality        String?
   identityDocument   String?
   answersJson        String
-  status             LeadStatus @default(NEW)
+  // NEW, REVIEWING, MISSING_DOCUMENTS, QUALIFIED, REJECTED, VISIT_PROPOSED, VISITED, OFFER, RESERVED, CLOSED
+  status             String     @default("NEW")
   driveFolderUrl     String?
   documentLinksJson  String     @default("[]")
   rgpdConsent        Boolean
