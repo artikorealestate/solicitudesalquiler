@@ -9,6 +9,7 @@ import { SolvencyBadge } from "@/components/admin/solvency-badge";
 import { BuyerBadge } from "@/components/admin/buyer-badge";
 import { assessBuyerReadiness } from "@/lib/applications/buyer-readiness";
 import { DocumentRequestPanel } from "@/components/admin/document-request-panel";
+import { DeleteApplication } from "@/components/admin/delete-application";
 import { assessSolvency } from "@/lib/applications/types";
 import { guessProfile } from "@/lib/applications/document-catalog";
 import {
@@ -390,6 +391,14 @@ export default async function ApplicationDetailPage({
               </ul>
             ) : null}
           </section>
+
+          {/* Al final del todo, separado del resto: lo destructivo no debe
+              quedar al lado de lo que se usa a diario. */}
+          <DeleteApplication
+            applicationId={application.id}
+            applicantName={`${application.firstName} ${application.lastName}`}
+            documentCount={application.documents.length}
+          />
         </aside>
       </div>
     </main>

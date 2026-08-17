@@ -256,6 +256,20 @@ export async function listFolderFiles(folderId: string): Promise<DriveFile[]> {
   return body.files;
 }
 
+/// Manda una carpeta a la papelera de Drive, con todo lo que contiene.
+///
+/// A la papelera y no borrado definitivo: Drive la conserva 30 dias, asi que
+/// un borrado por error tiene arreglo. Pasado ese plazo desaparece sola, que
+/// es justo lo que pide el RGPD para la documentacion de un candidato
+/// descartado.
+export async function trashFolder(folderId: string): Promise<void> {
+  await driveFetch(`${DRIVE_API}/files/${folderId}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ trashed: true })
+  });
+}
+
 /// Datos publicos de un archivo ya subido, para guardar su enlace.
 export async function getFileLink(fileId: string): Promise<string> {
   const response = await driveFetch(
