@@ -15,3 +15,6 @@ test-results
 tsconfig.tsbuildinfo
 email-preview.html
 next-env.d.ts
+
+# Contiene credenciales: se genera solo para copiarlas a Vercel y se borra
+vercel-env.txt
