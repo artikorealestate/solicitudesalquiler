@@ -10,3 +10,8 @@ prisma/dev.db
 prisma/dev.db-journal
 playwright-report
 test-results
+
+# Artefactos de compilacion y vistas previas generadas
+tsconfig.tsbuildinfo
+email-preview.html
+next-env.d.ts

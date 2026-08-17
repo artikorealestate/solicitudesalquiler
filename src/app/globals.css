@@ -12,13 +12,17 @@
 
 html {
   min-height: 100%;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   min-height: 100vh;
   margin: 0;
-  background: #1c1c1c;
-  color: #1c1c1c;
+  background: theme("colors.cream.DEFAULT");
+  color: theme("colors.ink.DEFAULT");
+  font-family: theme("fontFamily.sans");
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
 }
 
 button,
@@ -26,4 +30,87 @@ input,
 select,
 textarea {
   font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid theme("colors.gold.DEFAULT");
+  outline-offset: 2px;
+}
+
+/* El informe para el propietario se convierte en PDF imprimiendo desde el
+   navegador. Sin esto, saldria con el fondo crema y sin los colores de los
+   indicadores, que es justo lo que hace legible el documento. */
+@media print {
+  body {
+    background: #ffffff;
+  }
+
+  .print\:hidden {
+    display: none !important;
+  }
+
+  @page {
+    margin: 14mm;
+  }
+}
+
+@layer components {
+  /* Rotulo pequeno en mayusculas que artikore.com usa sobre cada seccion. */
+  .eyebrow {
+    @apply text-xs font-normal uppercase tracking-eyebrow text-gold-dark;
+  }
+
+  .heading-xl {
+    @apply font-serif text-3xl font-normal leading-tight text-ink-strong sm:text-4xl;
+  }
+
+  .heading-lg {
+    @apply font-serif text-2xl font-normal leading-tight text-ink-strong;
+  }
+
+  .surface {
+    @apply rounded-card border border-line bg-white shadow-card;
+  }
+
+  .field-label {
+    @apply mb-1.5 block text-sm font-bold text-ink-strong;
+  }
+
+  .field-input {
+    @apply w-full rounded-md border border-line bg-white px-3.5 py-2.5 text-ink
+           transition-colors placeholder:text-ink-faint
+           focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold
+           disabled:bg-cream disabled:text-ink-muted;
+  }
+
+  .field-input-invalid {
+    @apply border-danger focus:border-danger focus:ring-danger;
+  }
+
+  /* El error lleva icono ademas de color: el color por si solo no basta
+     para quien no distingue rojo y verde. */
+  .field-error {
+    @apply mt-1.5 flex items-start gap-1.5 text-sm text-danger;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-md bg-ink-strong px-6 py-3
+           font-bold tracking-wide text-white transition-colors
+           hover:bg-ink focus-visible:outline-offset-4
+           disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-gold {
+    @apply inline-flex items-center justify-center rounded-md bg-gold px-6 py-3
+           font-bold tracking-wide text-white transition-colors
+           hover:bg-gold-dark disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-md border border-line
+           bg-white px-6 py-3 font-bold tracking-wide text-ink transition-colors
+           hover:border-gold hover:text-ink-strong
+           disabled:cursor-not-allowed disabled:opacity-50;
+  }
 }

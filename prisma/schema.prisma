@@ -1,0 +1,279 @@
+// Esquema de datos de Artiko Interesados.
+//
+// Los documentos viven en Google Drive; aqui solo guardamos los datos
+// estructurados que el panel necesita para filtrar, buscar y contar,
+// junto con los identificadores de Drive para poder abrir cada carpeta.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+/// Alquiler, compra, o un inmueble ofertado en ambos regimenes.
+enum OperationType {
+  RENT
+  SALE
+  BOTH
+}
+
+/// Operacion concreta elegida por un interesado. Nunca puede ser BOTH.
+enum ApplicationOperation {
+  RENT
+  SALE
+}
+
+enum PropertyStatus {
+  ACTIVE
+  PAUSED
+  ARCHIVED
+}
+
+enum ApplicationStatus {
+  NEW
+  REVIEWING
+  PENDING_DOCS
+  VALID
+  DISCARDED
+  VISIT_PROPOSED
+  VISITED
+  OFFER
+  RESERVED
+  CLOSED
+}
+
+/// Tipos de consentimiento que guardamos con su texto exacto para poder
+/// demostrar despues que se acepto, cuando y en que idioma.
+enum ConsentType {
+  GDPR
+  OWNER_SHARING
+}
+
+model Property {
+  id            String         @id @default(cuid())
+  /// Referencia interna de Artiko. Es la que aparece en el nombre de la carpeta de Drive.
+  reference     String         @unique
+  title         String
+  operationType OperationType
+  zone          String?
+  address       String?
+  /// Precios en euros enteros. Nulo cuando el inmueble no se oferta en ese regimen.
+  rentPrice     Int?
+  salePrice     Int?
+  idealistaUrl  String?
+  /// Identificador del anuncio en Idealista (p.ej. "105799303"). Es la clave
+  /// estable entre sincronizaciones: el titulo y el precio cambian, este no.
+  idealistaId   String?        @unique
+  mainImageUrl  String?
+  description   String?
+  images        String[]       @default([])
+  status        PropertyStatus @default(ACTIVE)
+  internalNotes String?
+
+  /// Carpeta de Drive del inmueble, cacheada para no volver a buscarla en cada solicitud.
+  driveRentFolderId String?
+  driveSaleFolderId String?
+
+  applications Application[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([operationType])
+}
+
+model Application {
+  id String @id @default(cuid())
+
+  operation ApplicationOperation
+  /// Idioma en el que el interesado relleno el formulario (es, en, de, fr, ru, uk, nl, pt, it).
+  locale    String
+
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Restrict)
+
+  firstName   String
+  lastName    String
+  email       String
+  phone       String
+  nationality String?
+  /// DNI, NIE o pasaporte.
+  idDocument  String?
+  comment     String?
+
+  /// Respuestas especificas de alquiler o compra. El conjunto de preguntas
+  /// cambia con el tiempo, asi que se guardan tal cual se respondieron.
+  answers Json
+
+  status ApplicationStatus @default(NEW)
+
+  /// Huella de la direccion de internet desde la que se envio, para poder
+  /// limitar los envios automaticos.
+  ///
+  /// Se guarda cifrada en un solo sentido, nunca la direccion en claro: una
+  /// IP es un dato personal, y para contar envios basta con saber si dos
+  /// vienen del mismo sitio. Asi no acumulamos informacion que no
+  /// necesitamos.
+  ipHash String?
+
+  driveFolderId  String?
+  driveFolderUrl String?
+
+  documents        Document[]
+  consents         Consent[]
+  notes            Note[]
+  documentRequests DocumentRequest[]
+
+  submittedAt DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([status])
+  @@index([operation])
+  @@index([propertyId])
+  @@index([submittedAt])
+  @@index([email])
+  @@index([ipHash, submittedAt])
+}
+
+model Document {
+  id            String      @id @default(cuid())
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  /// Etiqueta elegida por el interesado: nomina, contrato, identidad, otros.
+  kind        String?
+  fileName    String
+  mimeType    String
+  sizeBytes   Int
+
+  driveFileId  String
+  driveViewUrl String
+
+  uploadedAt DateTime @default(now())
+
+  @@index([applicationId])
+}
+
+model Consent {
+  id            String      @id @default(cuid())
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  type ConsentType
+  /// Version del texto legal, p.ej. "2026-08-rgpd-v1".
+  textVersion String
+  /// Copia literal del texto que se le mostro, para poder demostrarlo despues.
+  textSnapshot String
+  locale       String
+  acceptedAt   DateTime @default(now())
+
+  @@index([applicationId])
+}
+
+/// Perfil del candidato, que determina que documentacion se le pide.
+enum ApplicantProfile {
+  SALARIED
+  SELF_EMPLOYED
+  PENSIONER
+  COMPANY
+  OTHER
+}
+
+/// Peticion de documentacion a un candidato concreto.
+///
+/// Existe para no pedirle todo a todo el mundo en el primer contacto: el
+/// formulario publico filtra, y solo a quien encaja se le pide el expediente.
+/// Ademas cada perfil necesita papeles distintos —el autonomo no tiene
+/// nominas— y pedir los que no corresponden hace perder tiempo a los dos.
+model DocumentRequest {
+  id            String      @id @default(cuid())
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  profile ApplicantProfile
+
+  /// Claves del catalogo de documentos (ver lib/applications/document-catalog).
+  /// Se guardan las claves y no los textos para poder traducirlos despues.
+  requestedItems String[]
+
+  /// Nota opcional que Artiko anade al correo.
+  message String?
+
+  /// Credencial del enlace que recibe el candidato. Larga y aleatoria: es lo
+  /// unico que protege el acceso a su carpeta.
+  token String @unique
+
+  /// PENDING, COMPLETED o CANCELLED.
+  status String @default("PENDING")
+
+  createdByEmail String
+  createdAt      DateTime  @default(now())
+  /// Pasada esta fecha el enlace deja de funcionar.
+  expiresAt      DateTime
+  completedAt    DateTime?
+
+  @@index([applicationId])
+  @@index([status])
+}
+
+model Note {
+  id            String      @id @default(cuid())
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  authorEmail String
+  body        String
+  createdAt   DateTime @default(now())
+
+  @@index([applicationId])
+}
+
+/// Administradores autorizados. La lista de ADMIN_EMAILS del entorno siembra
+/// esta tabla; tenerla en base de datos permite anadir o revocar accesos
+/// desde el panel sin volver a desplegar.
+model AdminUser {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  role      String   @default("admin")
+  active    Boolean  @default(true)
+  lastLogin DateTime?
+  createdAt DateTime @default(now())
+
+  /// Credencial del boton de sincronizacion que el administrador guarda en la
+  /// barra de marcadores. Solo permite depositar un lote para revisar: nunca
+  /// crea ni modifica inmuebles por si misma. Se puede regenerar para
+  /// revocar el marcador antiguo.
+  syncToken String? @unique
+
+  importBatches ImportBatch[]
+}
+
+/// Lote de anuncios traidos desde Idealista, a la espera de que un
+/// administrador lo revise.
+///
+/// Nada de lo que llega aqui toca la tabla Property hasta que alguien lo
+/// confirma en pantalla: el contenido procede de una pagina de terceros y se
+/// trata como dato no fiable.
+model ImportBatch {
+  id        String @id @default(cuid())
+  source    String @default("idealista-bookmarklet")
+  /// Anuncios tal y como se extrajeron, sin transformar.
+  payload   Json
+  itemCount Int
+  /// PENDING, APPLIED o DISCARDED.
+  status    String @default("PENDING")
+
+  createdByEmail String
+  createdBy      AdminUser @relation(fields: [createdByEmail], references: [email], onDelete: Cascade)
+
+  createdAt  DateTime  @default(now())
+  reviewedAt DateTime?
+
+  @@index([status, createdAt])
+}
