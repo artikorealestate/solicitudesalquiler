@@ -43,6 +43,20 @@ export function BookmarkletLink({ token }: { token: string }) {
           ? "Arrastra este boton a tu barra de marcadores. Pulsarlo aqui no hace nada."
           : "Preparando…"}
       </p>
+
+      {/* El marcador guarda dentro la direccion desde la que se creo. Un
+          marcador hecho en local seguiria enviando los anuncios al ordenador
+          de quien lo creo, en silencio. Mostrar la direccion evita esa
+          confusion meses despues. */}
+      {origin ? (
+        <p className="mt-3 rounded-md bg-cream px-3 py-2 text-xs leading-relaxed text-ink-muted">
+          Este boton enviara los anuncios a{" "}
+          <span className="font-mono text-ink">{origin}</span>. Si cambias de
+          direccion —al pasar a produccion o al poner un dominio propio— vuelve
+          a esta pantalla y arrastralo de nuevo, sustituyendo el anterior. La
+          credencial no cambia.
+        </p>
+      ) : null}
     </div>
   );
 }
