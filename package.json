@@ -21,7 +21,8 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev"
+    "prisma:migrate": "prisma migrate dev",
+    "audit": "tsx --env-file=.env scripts/audit-produccion.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.10.0",
@@ -53,4 +54,3 @@
     "vitest": "^3.2.4"
   }
 }
-
