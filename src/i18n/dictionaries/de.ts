@@ -8,7 +8,7 @@ export const de: Dictionary = {
     title: "In welcher Sprache möchten Sie fortfahren?",
     subtitle:
       "Wählen Sie Ihre Sprache für das Formular. Sie können sie jederzeit ändern.",
-    continueIn: "Auf Deutsch fortfahren"
+    continueIn: "Auf Deutsch fortfahren",
   },
 
   common: {
@@ -22,7 +22,7 @@ export const de: Dictionary = {
     no: "Nein",
     stepOf: "Schritt {current} von {total}",
     changeLanguage: "Sprache ändern",
-    selectPlaceholder: "Bitte auswählen"
+    selectPlaceholder: "Bitte auswählen",
   },
 
   steps: {
@@ -32,7 +32,7 @@ export const de: Dictionary = {
     questions: "Ihre Situation",
     documents: "Unterlagen",
     consent: "Datenschutz",
-    review: "Zusammenfassung"
+    review: "Zusammenfassung",
   },
 
   operation: {
@@ -40,12 +40,13 @@ export const de: Dictionary = {
     subtitle: "Die Fragen richten sich nach Ihrer Auswahl.",
     rent: {
       label: "Eine Wohnung mieten",
-      description: "Ich möchte eine der verfügbaren Immobilien mieten"
+      description: "Ich möchte eine der verfügbaren Immobilien mieten",
     },
     sale: {
       label: "Eine Wohnung kaufen",
-      description: "Ich möchte eine der zum Verkauf stehenden Immobilien kaufen"
-    }
+      description:
+        "Ich möchte eine der zum Verkauf stehenden Immobilien kaufen",
+    },
   },
 
   property: {
@@ -55,7 +56,7 @@ export const de: Dictionary = {
       "Derzeit sind für dieses Anliegen keine Immobilien verfügbar. Bitte versuchen Sie es in einigen Tagen erneut.",
     perMonth: "/Monat",
     viewOnIdealista: "Vollständiges Inserat ansehen",
-    selected: "Ausgewählt"
+    selected: "Ausgewählt",
   },
 
   personal: {
@@ -67,13 +68,13 @@ export const de: Dictionary = {
     phone: "Telefonnummer",
     nationality: "Staatsangehörigkeit",
     idDocument: "Personalausweis, NIE oder Reisepass",
-    idDocumentHint: "Das hilft uns bei der Vorbereitung der Vertragsunterlagen."
+    idDocumentHint:
+      "Das hilft uns bei der Vorbereitung der Vertragsunterlagen.",
   },
 
   rentQuestions: {
     title: "Erzählen Sie uns von Ihrer Situation",
-    subtitle:
-      "So können wir einschätzen, ob die Immobilie zu Ihnen passt.",
+    subtitle: "So können wir einschätzen, ob die Immobilie zu Ihnen passt.",
 
     householdSize: "Wie viele Personen würden in der Wohnung leben?",
     relationship: "In welchem Verhältnis stehen Sie zueinander?",
@@ -82,7 +83,7 @@ export const de: Dictionary = {
       family: "Familie",
       flatmates: "Wohngemeinschaft",
       alone: "Ich würde allein wohnen",
-      other: "Anderes"
+      other: "Anderes",
     },
 
     moveInDate: "Ab wann würden Sie einziehen wollen?",
@@ -97,19 +98,19 @@ export const de: Dictionary = {
       retired: "Im Ruhestand oder Rente",
       student: "In Ausbildung oder Studium",
       unemployed: "Derzeit ohne Beschäftigung",
-      other: "Andere Situation"
+      other: "Andere Situation",
     },
 
     provableIncome:
       "Können Sie Ihr Einkommen mit Gehaltsabrechnungen oder ähnlichen Unterlagen nachweisen?",
-    monthlyIncome: "Wie hoch ist das monatliche Nettoeinkommen des Haushalts? (€)",
+    monthlyIncome:
+      "Wie hoch ist das monatliche Nettoeinkommen des Haushalts? (€)",
 
     solvencyHelp:
       "Üblicherweise gilt, dass die Miete etwa 30 % des nachweisbaren Nettoeinkommens des Haushalts nicht übersteigen sollte.",
     solvencyForProperty:
       "Bei dieser Immobilie mit {rent} € monatlich wären das etwa {recommended} € netto im Monat für alle zusammen.",
-    solvencyMet:
-      "Nach Ihren Angaben erfüllen Sie die übliche Empfehlung.",
+    solvencyMet: "Nach Ihren Angaben erfüllen Sie die übliche Empfehlung.",
     solvencyNotMet:
       "Das liegt unter der üblichen Empfehlung. Sie können trotzdem fortfahren: Wir betrachten es zusammen mit allen anderen Angaben.",
 
@@ -120,7 +121,7 @@ export const de: Dictionary = {
       justStarted: "Wir haben gerade erst angefangen",
       lessThanMonth: "Weniger als einen Monat",
       oneToThree: "Ein bis drei Monate",
-      moreThanThree: "Mehr als drei Monate"
+      moreThanThree: "Mehr als drei Monate",
     },
 
     visitedOthers: "Haben Sie bereits andere Wohnungen besichtigt?",
@@ -128,14 +129,13 @@ export const de: Dictionary = {
     documentsReadyOptions: {
       yes: "Ja, alles ist bereit",
       partly: "Teilweise",
-      no: "Noch nicht"
-    }
+      no: "Noch nicht",
+    },
   },
 
   saleQuestions: {
     title: "Erzählen Sie uns von Ihrer Situation",
-    subtitle:
-      "So können wir Sie beim Kaufprozess besser begleiten.",
+    subtitle: "So können wir Sie beim Kaufprozess besser begleiten.",
 
     buyerProfile: "Wer würde kaufen, und wie ist Ihre Situation?",
     buyerProfileHint:
@@ -146,7 +146,7 @@ export const de: Dictionary = {
       justStarted: "Wir haben gerade erst angefangen",
       lessThanThree: "Weniger als drei Monate",
       threeToTwelve: "Drei Monate bis ein Jahr",
-      moreThanYear: "Mehr als ein Jahr"
+      moreThanYear: "Mehr als ein Jahr",
     },
 
     propertiesVisited: "Wie viele Immobilien haben Sie etwa besichtigt?",
@@ -161,10 +161,10 @@ export const de: Dictionary = {
     firstPurchase: "Ist es Ihr erster Immobilienkauf?",
     firstPurchaseOptions: {
       first: "Ja, es ist unser erster Kauf",
-      experienced: "Nein, wir kennen den Kaufprozess bereits"
+      experienced: "Nein, wir kennen den Kaufprozess bereits",
     },
 
-    occupation: "Was machen Sie beruflich?"
+    occupation: "Was machen Sie beruflich?",
   },
 
   documents: {
@@ -182,7 +182,7 @@ export const de: Dictionary = {
       "Letzte Gehaltsabrechnungen oder Einkommensnachweise",
       "Arbeitsvertrag",
       "Personalausweis, NIE oder Reisepass",
-      "Letzte Steuererklärung (bei Selbstständigkeit)"
+      "Letzte Steuererklärung (bei Selbstständigkeit)",
     ],
     skip: "Ohne Anhänge fortfahren",
     tooLarge: "„{name}“ ist größer als 10 MB und kann nicht angehängt werden.",
@@ -193,12 +193,12 @@ export const de: Dictionary = {
     uploadPartial:
       "Ihre Anfrage wurde erfolgreich gesendet, aber {count} Dokument(e) konnten nicht hochgeladen werden. Wir melden uns, um sie anzufordern.",
     uploadUnavailable:
-      "Ihre Anfrage wurde erfolgreich gesendet. Wir fordern die Unterlagen per E-Mail an."
+      "Ihre Anfrage wurde erfolgreich gesendet. Wir fordern die Unterlagen per E-Mail an.",
   },
 
   comment: {
     label: "Möchten Sie noch etwas hinzufügen?",
-    placeholder: "Alles, was wir Ihrer Meinung nach wissen sollten…"
+    placeholder: "Alles, was wir Ihrer Meinung nach wissen sollten…",
   },
 
   consent: {
@@ -214,7 +214,7 @@ export const de: Dictionary = {
       "Ich ermächtige INMOARTIKO SL, meine Daten und die eingereichten Unterlagen an die Eigentümerseite der Immobilie weiterzugeben, ausschließlich zur Prüfung meiner Bewerbung.",
 
     requiredError:
-      "Wir benötigen Ihre Einwilligung, um die Anfrage bearbeiten zu können."
+      "Wir benötigen Ihre Einwilligung, um die Anfrage bearbeiten zu können.",
   },
 
   review: {
@@ -227,14 +227,14 @@ export const de: Dictionary = {
     sectionQuestions: "Ihre Situation",
     sectionDocuments: "Unterlagen",
     noDocuments: "Keine Unterlagen beigefügt",
-    documentCount: "{count} Datei(en) beigefügt"
+    documentCount: "{count} Datei(en) beigefügt",
   },
 
   success: {
     title: "Wir haben Ihre Anfrage erhalten",
     body: "Vielen Dank für Ihr Interesse an {property}. Wir prüfen Ihre Angaben und melden uns in den kommenden Tagen bei Ihnen.",
     emailSent: "Wir haben eine Bestätigung an {email} gesendet.",
-    signature: "Artiko Real Estate"
+    signature: "Artiko Real Estate",
   },
 
   email: {
@@ -254,7 +254,11 @@ export const de: Dictionary = {
     signatureTagline: "Valencia · artikore.com",
     personalTouch: "Möchten Sie lieber persönlich sprechen?",
     whatsappCta: "Schreiben Sie uns per WhatsApp",
-    visitWebsite: "Unsere Immobilien ansehen"
+    /// Enlace personal para volver a la propia solicitud y anadir lo que falte.
+    selfServiceIntro:
+      "Fehlt noch ein Dokument? Sie können es jederzeit über diesen Link nachreichen, ohne das Formular erneut auszufüllen.",
+    selfServiceCta: "Unterlagen nachreichen",
+    visitWebsite: "Unsere Immobilien ansehen",
   },
 
   docs: {
@@ -266,9 +270,12 @@ export const de: Dictionary = {
     abroadNote:
       "Wenn Sie außerhalb Spaniens arbeiten oder gelebt haben, senden Sie uns das entsprechende Dokument aus Ihrem Land. Eine andere Sprache ist kein Problem — falls wir eine Übersetzung brauchen, melden wir uns.",
     spanishNameLabel: "in Spanien:",
+    selfServiceHere:
+      "Das ist Ihre Anfrage zu {property} vom {date}. Fehlende Unterlagen können Sie hier ergänzen – das Formular müssen Sie nicht erneut ausfüllen.",
     alreadySent: "Bereits erhalten",
     addFiles: "Dateien hinzufügen",
-    dropHint: "Ziehen Sie Ihre Unterlagen hierher oder klicken Sie zum Auswählen",
+    dropHint:
+      "Ziehen Sie Ihre Unterlagen hierher oder klicken Sie zum Auswählen",
     accepted:
       "PDF und Bilder, bis 10 MB je Datei. Ein scharfes Foto des Dokuments reicht.",
     remove: "Entfernen",
@@ -302,18 +309,21 @@ export const de: Dictionary = {
       nie: "Spanische Ausländer-Identifikationsnummer (NIE)",
       residencePermit: "Aufenthalts- oder Arbeitserlaubnis",
       incomeProof: "Einkommensnachweise der letzten drei Monate",
-      employmentContract: "Arbeitsvertrag oder Bescheinigung Ihres Arbeitgebers",
-      workHistory: "Beschäftigungsverlauf oder Nachweis der Betriebszugehörigkeit",
+      employmentContract:
+        "Arbeitsvertrag oder Bescheinigung Ihres Arbeitgebers",
+      workHistory:
+        "Beschäftigungsverlauf oder Nachweis der Betriebszugehörigkeit",
       taxReturn: "Letzte Steuererklärung",
       selfEmployedProof: "Nachweis Ihrer selbstständigen Tätigkeit",
       quarterlyTax: "Letzte Umsatz- bzw. Vorauszahlungserklärungen",
       pensionProof: "Rentenbescheid oder Rentennachweis",
       companyDocs: "Gründungsurkunde und Vertretungsvollmachten",
       representativeId: "Ausweisdokument der unterzeichnenden Person",
-      companyAccounts: "Letzter Jahresabschluss oder Körperschaftsteuererklärung",
+      companyAccounts:
+        "Letzter Jahresabschluss oder Körperschaftsteuererklärung",
       guarantorDocuments: "Unterlagen des Bürgen",
-      other: "Weitere Unterlagen"
-    }
+      other: "Weitere Unterlagen",
+    },
   },
 
   footer: {
@@ -321,7 +331,7 @@ export const de: Dictionary = {
     website: "Mehr über uns auf artikore.com",
     questionsLabel: "Noch Fragen vor dem Absenden?",
     contact: "Schreiben Sie uns an",
-    whatsapp: "Schreiben Sie uns per WhatsApp"
+    whatsapp: "Schreiben Sie uns per WhatsApp",
   },
 
   errors: {
@@ -335,6 +345,6 @@ export const de: Dictionary = {
       "Wir konnten Ihre Anfrage nicht senden. Bitte prüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
     fixFields: "Bitte prüfen Sie die markierten Felder, bevor Sie fortfahren.",
     tooManySubmissions:
-      "Sie haben in kurzer Zeit mehrere Anfragen gesendet. Warten Sie bitte einen Moment und versuchen Sie es erneut, oder schreiben Sie uns per WhatsApp."
-  }
+      "Sie haben in kurzer Zeit mehrere Anfragen gesendet. Warten Sie bitte einen Moment und versuchen Sie es erneut, oder schreiben Sie uns per WhatsApp.",
+  },
 };

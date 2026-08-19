@@ -23,7 +23,8 @@ async function main() {
     operation: "RENT",
     property: { reference: "195", title: "Piso de prueba", zone: "Sagunto" },
     price: "1.600 €/mes",
-    hadDocuments: true
+    hadDocuments: true,
+    selfServiceUrl: "https://artiko-interesados.vercel.app/solicitud/token-de-ejemplo"
   });
 
   // Transporte que no envia: solo compone el mensaje y lo devuelve.

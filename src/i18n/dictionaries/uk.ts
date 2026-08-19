@@ -6,9 +6,8 @@ export const uk: Dictionary = {
   chooser: {
     eyebrow: "Форма заявки",
     title: "Якою мовою продовжити?",
-    subtitle:
-      "Оберіть мову для заповнення форми. Її можна змінити будь-коли.",
-    continueIn: "Продовжити українською"
+    subtitle: "Оберіть мову для заповнення форми. Її можна змінити будь-коли.",
+    continueIn: "Продовжити українською",
   },
 
   common: {
@@ -22,7 +21,7 @@ export const uk: Dictionary = {
     no: "Ні",
     stepOf: "Крок {current} з {total}",
     changeLanguage: "Змінити мову",
-    selectPlaceholder: "Оберіть варіант"
+    selectPlaceholder: "Оберіть варіант",
   },
 
   steps: {
@@ -32,7 +31,7 @@ export const uk: Dictionary = {
     questions: "Ваша ситуація",
     documents: "Документи",
     consent: "Захист даних",
-    review: "Підсумок"
+    review: "Підсумок",
   },
 
   operation: {
@@ -40,12 +39,12 @@ export const uk: Dictionary = {
     subtitle: "Запитання залежать від вашого вибору.",
     rent: {
       label: "Орендувати житло",
-      description: "Хочу орендувати один із доступних об'єктів"
+      description: "Хочу орендувати один із доступних об'єктів",
     },
     sale: {
       label: "Придбати житло",
-      description: "Хочу придбати один із об'єктів, виставлених на продаж"
-    }
+      description: "Хочу придбати один із об'єктів, виставлених на продаж",
+    },
   },
 
   property: {
@@ -55,7 +54,7 @@ export const uk: Dictionary = {
       "Наразі немає доступних об'єктів для цього типу заявки. Спробуйте за кілька днів.",
     perMonth: "/місяць",
     viewOnIdealista: "Переглянути повне оголошення",
-    selected: "Обрано"
+    selected: "Обрано",
   },
 
   personal: {
@@ -67,7 +66,7 @@ export const uk: Dictionary = {
     phone: "Телефон",
     nationality: "Громадянство",
     idDocument: "Посвідчення особи, NIE або паспорт",
-    idDocumentHint: "Це допоможе нам підготувати документи для договору."
+    idDocumentHint: "Це допоможе нам підготувати документи для договору.",
   },
 
   rentQuestions: {
@@ -82,7 +81,7 @@ export const uk: Dictionary = {
       family: "Родина",
       flatmates: "Сусіди по квартирі",
       alone: "Житиму сам або сама",
-      other: "Інше"
+      other: "Інше",
     },
 
     moveInDate: "З якої дати вам потрібно заселитися?",
@@ -97,7 +96,7 @@ export const uk: Dictionary = {
       retired: "На пенсії",
       student: "Студент",
       unemployed: "Зараз без роботи",
-      other: "Інша ситуація"
+      other: "Інша ситуація",
     },
 
     provableIncome:
@@ -108,8 +107,7 @@ export const uk: Dictionary = {
       "Звичайний критерій: оренда не має перевищувати приблизно 30% підтвердженого чистого доходу всіх мешканців.",
     solvencyForProperty:
       "Для цього об'єкта за {rent} € на місяць це становило б близько {recommended} € чистими на місяць на всіх.",
-    solvencyMet:
-      "За вказаними даними ви відповідаєте звичайному критерію.",
+    solvencyMet: "За вказаними даними ви відповідаєте звичайному критерію.",
     solvencyNotMet:
       "Це нижче за звичайний критерій. Ви все одно можете продовжити: ми розглянемо заявку разом з рештою інформації.",
 
@@ -120,7 +118,7 @@ export const uk: Dictionary = {
       justStarted: "Щойно почали",
       lessThanMonth: "Менше місяця",
       oneToThree: "Від одного до трьох місяців",
-      moreThanThree: "Більше трьох місяців"
+      moreThanThree: "Більше трьох місяців",
     },
 
     visitedOthers: "Ви вже переглядали інші варіанти?",
@@ -128,8 +126,8 @@ export const uk: Dictionary = {
     documentsReadyOptions: {
       yes: "Так, усе готово",
       partly: "Частково",
-      no: "Ще ні"
-    }
+      no: "Ще ні",
+    },
   },
 
   saleQuestions: {
@@ -146,7 +144,7 @@ export const uk: Dictionary = {
       justStarted: "Щойно почали",
       lessThanThree: "Менше трьох місяців",
       threeToTwelve: "Від трьох місяців до року",
-      moreThanYear: "Більше року"
+      moreThanYear: "Більше року",
     },
 
     propertiesVisited: "Скільки об'єктів ви приблизно переглянули?",
@@ -160,10 +158,10 @@ export const uk: Dictionary = {
     firstPurchase: "Це ваша перша купівля?",
     firstPurchaseOptions: {
       first: "Так, це наша перша купівля",
-      experienced: "Ні, ми вже знайомі з процесом угоди"
+      experienced: "Ні, ми вже знайомі з процесом угоди",
     },
 
-    occupation: "Чим ви зараз займаєтеся?"
+    occupation: "Чим ви зараз займаєтеся?",
   },
 
   documents: {
@@ -181,7 +179,7 @@ export const uk: Dictionary = {
       "Останні розрахункові листки або підтвердження доходу",
       "Трудовий договір",
       "Посвідчення особи, NIE або паспорт",
-      "Остання податкова декларація (для самозайнятих)"
+      "Остання податкова декларація (для самозайнятих)",
     ],
     skip: "Продовжити без вкладень",
     tooLarge: "«{name}» більший за 10 МБ, додати не вдасться.",
@@ -192,12 +190,12 @@ export const uk: Dictionary = {
     uploadPartial:
       "Заявку успішно надіслано, але {count} документ(ів) завантажити не вдалося. Ми зв'яжемося з вами, щоб їх запросити.",
     uploadUnavailable:
-      "Заявку успішно надіслано. Документи ми запросимо електронною поштою."
+      "Заявку успішно надіслано. Документи ми запросимо електронною поштою.",
   },
 
   comment: {
     label: "Хочете щось додати?",
-    placeholder: "Усе, що, на вашу думку, нам варто знати…"
+    placeholder: "Усе, що, на вашу думку, нам варто знати…",
   },
 
   consent: {
@@ -212,8 +210,7 @@ export const uk: Dictionary = {
     ownerText:
       "Я дозволяю INMOARTIKO SL передати мої дані та надані документи власнику об'єкта виключно для оцінки моєї кандидатури.",
 
-    requiredError:
-      "Нам потрібна ваша згода, щоб опрацювати заявку."
+    requiredError: "Нам потрібна ваша згода, щоб опрацювати заявку.",
   },
 
   review: {
@@ -226,14 +223,14 @@ export const uk: Dictionary = {
     sectionQuestions: "Ваша ситуація",
     sectionDocuments: "Документи",
     noDocuments: "Документи не додані",
-    documentCount: "Додано файлів: {count}"
+    documentCount: "Додано файлів: {count}",
   },
 
   success: {
     title: "Ми отримали вашу заявку",
     body: "Дякуємо за інтерес до об'єкта {property}. Ми вивчимо інформацію та зв'яжемося з вами найближчими днями.",
     emailSent: "Ми надіслали підтвердження на {email}.",
-    signature: "Artiko Real Estate"
+    signature: "Artiko Real Estate",
   },
 
   email: {
@@ -253,7 +250,11 @@ export const uk: Dictionary = {
     signatureTagline: "Валенсія · artikore.com",
     personalTouch: "Бажаєте обговорити це з людиною?",
     whatsappCta: "Напишіть нам у WhatsApp",
-    visitWebsite: "Переглянути наші об'єкти"
+    /// Enlace personal para volver a la propia solicitud y anadir lo que falte.
+    selfServiceIntro:
+      "Бракує якогось документа? Ви можете додати його будь-коли за цим посиланням, не заповнюючи форму знову.",
+    selfServiceCta: "Додати документи",
+    visitWebsite: "Переглянути наші об'єкти",
   },
 
   docs: {
@@ -265,6 +266,8 @@ export const uk: Dictionary = {
     abroadNote:
       "Якщо ви працюєте або жили за межами Іспанії, надішліть нам аналогічний документ вашої країни. Нічого страшного, якщо він іншою мовою: якщо знадобиться переклад, ми повідомимо.",
     spanishNameLabel: "в Іспанії:",
+    selfServiceHere:
+      "Це ваша заявка на {property}, надіслана {date}. Тут ви можете додати документи, яких бракує, — заповнювати форму заново не потрібно.",
     alreadySent: "Ви вже надіслали",
     addFiles: "Додати файли",
     dropHint: "Перетягніть документи сюди або натисніть, щоб обрати",
@@ -311,8 +314,8 @@ export const uk: Dictionary = {
       representativeId: "Документ особи, яка підписуватиме",
       companyAccounts: "Остання річна звітність або податок на прибуток",
       guarantorDocuments: "Документи поручителя",
-      other: "Інші документи"
-    }
+      other: "Інші документи",
+    },
   },
 
   footer: {
@@ -320,7 +323,7 @@ export const uk: Dictionary = {
     website: "Дізнайтеся про нас на artikore.com",
     questionsLabel: "Залишилися питання перед надсиланням?",
     contact: "Напишіть нам на",
-    whatsapp: "Напишіть нам у WhatsApp"
+    whatsapp: "Напишіть нам у WhatsApp",
   },
 
   errors: {
@@ -334,6 +337,6 @@ export const uk: Dictionary = {
       "Не вдалося надіслати заявку. Перевірте з'єднання та спробуйте ще раз.",
     fixFields: "Перевірте позначені поля, перш ніж продовжити.",
     tooManySubmissions:
-      "Ви надіслали кілька заявок за короткий час. Зачекайте трохи і спробуйте знову або напишіть нам у WhatsApp."
-  }
+      "Ви надіслали кілька заявок за короткий час. Зачекайте трохи і спробуйте знову або напишіть нам у WhatsApp.",
+  },
 };

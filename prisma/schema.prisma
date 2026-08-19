@@ -121,6 +121,14 @@ model Application {
   /// necesitamos.
   ipHash String?
 
+  /// Credencial del enlace personal que el interesado recibe en su correo de
+  /// confirmacion.
+  ///
+  /// Le permite volver a su propia solicitud para anadir la documentacion
+  /// que le falte, sin rellenar el formulario otra vez ni generar un
+  /// duplicado. Solo da acceso a SU solicitud: ni lee ni toca nada mas.
+  accessToken String? @unique
+
   driveFolderId  String?
   driveFolderUrl String?
 

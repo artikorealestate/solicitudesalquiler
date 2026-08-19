@@ -32,6 +32,9 @@ export async function sendApplicationEmails(input: {
   answers: Record<string, string>;
   documentCount: number;
   driveUrl: string | null;
+  /// Credencial del enlace personal del interesado, para que pueda volver a
+  /// su solicitud y anadir lo que le falte.
+  accessToken: string | null;
 }): Promise<{ applicantSent: boolean; internalSent: boolean }> {
   const result = { applicantSent: false, internalSent: false };
 
@@ -55,7 +58,10 @@ export async function sendApplicationEmails(input: {
       operation: input.operation,
       property: input.property,
       price: input.price,
-      hadDocuments: input.documentCount > 0
+      hadDocuments: input.documentCount > 0,
+      selfServiceUrl: input.accessToken
+        ? `${appUrl}/solicitud/${input.accessToken}`
+        : null
     });
 
     await mailer.sendMail({

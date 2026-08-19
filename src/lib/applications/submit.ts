@@ -1,5 +1,6 @@
 "use server";
 
+import { randomBytes } from "node:crypto";
 import { headers } from "next/headers";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
@@ -186,6 +187,10 @@ export async function submitApplication(input: unknown): Promise<SubmitResult> {
       comment: data.comment || null,
       answers: data.answers,
       ipHash,
+      // Enlace personal que viaja en el correo de confirmacion. Le permite
+      // volver a SU solicitud para anadir lo que le falte, en lugar de
+      // rellenar el formulario otra vez y generarnos un duplicado.
+      accessToken: randomBytes(32).toString("base64url"),
       consents: {
         create: [
           {
@@ -203,7 +208,7 @@ export async function submitApplication(input: unknown): Promise<SubmitResult> {
         ]
       }
     },
-    select: { id: true, submittedAt: true }
+    select: { id: true, submittedAt: true, accessToken: true }
   });
 
   // --- Drive -------------------------------------------------------------
@@ -328,7 +333,8 @@ export async function submitApplication(input: unknown): Promise<SubmitResult> {
     price,
     answers: data.answers,
     documentCount: data.declaredDocumentCount ?? 0,
-    driveUrl: driveFolderUrl
+    driveUrl: driveFolderUrl,
+    accessToken: application.accessToken
   });
 
   return {

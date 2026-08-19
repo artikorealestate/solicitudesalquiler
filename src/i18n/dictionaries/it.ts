@@ -8,7 +8,7 @@ export const it: Dictionary = {
     title: "In quale lingua preferisci continuare?",
     subtitle:
       "Scegli la lingua per compilare il modulo. Potrai cambiarla in qualsiasi momento.",
-    continueIn: "Continua in italiano"
+    continueIn: "Continua in italiano",
   },
 
   common: {
@@ -22,7 +22,7 @@ export const it: Dictionary = {
     no: "No",
     stepOf: "Passo {current} di {total}",
     changeLanguage: "Cambia lingua",
-    selectPlaceholder: "Seleziona un'opzione"
+    selectPlaceholder: "Seleziona un'opzione",
   },
 
   steps: {
@@ -32,7 +32,7 @@ export const it: Dictionary = {
     questions: "La tua situazione",
     documents: "Documenti",
     consent: "Protezione dei dati",
-    review: "Riepilogo"
+    review: "Riepilogo",
   },
 
   operation: {
@@ -40,12 +40,12 @@ export const it: Dictionary = {
     subtitle: "Le domande cambiano in base alla tua scelta.",
     rent: {
       label: "Affittare una casa",
-      description: "Vorrei affittare uno degli immobili disponibili"
+      description: "Vorrei affittare uno degli immobili disponibili",
     },
     sale: {
       label: "Comprare una casa",
-      description: "Vorrei comprare uno degli immobili in vendita"
-    }
+      description: "Vorrei comprare uno degli immobili in vendita",
+    },
   },
 
   property: {
@@ -55,7 +55,7 @@ export const it: Dictionary = {
       "Al momento non ci sono immobili disponibili per questo tipo di richiesta. Riprova tra qualche giorno.",
     perMonth: "/mese",
     viewOnIdealista: "Vedi l'annuncio completo",
-    selected: "Selezionato"
+    selected: "Selezionato",
   },
 
   personal: {
@@ -67,7 +67,7 @@ export const it: Dictionary = {
     phone: "Telefono",
     nationality: "Nazionalità",
     idDocument: "Carta d'identità, NIE o passaporto",
-    idDocumentHint: "Ci aiuta a preparare la documentazione del contratto."
+    idDocumentHint: "Ci aiuta a preparare la documentazione del contratto.",
   },
 
   rentQuestions: {
@@ -82,7 +82,7 @@ export const it: Dictionary = {
       family: "Famiglia",
       flatmates: "Coinquilini",
       alone: "Vivrei da solo o sola",
-      other: "Altro"
+      other: "Altro",
     },
 
     moveInDate: "Da quando avreste bisogno di entrare?",
@@ -97,7 +97,7 @@ export const it: Dictionary = {
       retired: "In pensione",
       student: "Studente",
       unemployed: "Attualmente senza lavoro",
-      other: "Altra situazione"
+      other: "Altra situazione",
     },
 
     provableIncome:
@@ -120,7 +120,7 @@ export const it: Dictionary = {
       justStarted: "Abbiamo appena iniziato",
       lessThanMonth: "Meno di un mese",
       oneToThree: "Tra uno e tre mesi",
-      moreThanThree: "Più di tre mesi"
+      moreThanThree: "Più di tre mesi",
     },
 
     visitedOthers: "Avete già visitato altre case?",
@@ -128,8 +128,8 @@ export const it: Dictionary = {
     documentsReadyOptions: {
       yes: "Sì, è tutto pronto",
       partly: "In parte",
-      no: "Non ancora"
-    }
+      no: "Non ancora",
+    },
   },
 
   saleQuestions: {
@@ -146,7 +146,7 @@ export const it: Dictionary = {
       justStarted: "Abbiamo appena iniziato",
       lessThanThree: "Meno di tre mesi",
       threeToTwelve: "Tra tre mesi e un anno",
-      moreThanYear: "Più di un anno"
+      moreThanYear: "Più di un anno",
     },
 
     propertiesVisited: "Quante case avete visitato all'incirca?",
@@ -160,18 +160,17 @@ export const it: Dictionary = {
     firstPurchase: "È il vostro primo acquisto?",
     firstPurchaseOptions: {
       first: "Sì, è il nostro primo acquisto",
-      experienced: "No, conosciamo già il processo di compravendita"
+      experienced: "No, conosciamo già il processo di compravendita",
     },
 
-    occupation: "Di cosa ti occupi attualmente?"
+    occupation: "Di cosa ti occupi attualmente?",
   },
 
   documents: {
     title: "Documenti",
     subtitleRent:
       "Allegare la documentazione velocizza molto la risposta. Puoi inviarla ora o più avanti.",
-    subtitleSale:
-      "Se hai documenti utili puoi allegarli. Non è obbligatorio.",
+    subtitleSale: "Se hai documenti utili puoi allegarli. Non è obbligatorio.",
     addFiles: "Aggiungi file",
     dropHint: "Trascina qui i file, oppure clicca per selezionarli",
     accepted: "Si accettano PDF e immagini, fino a 10 MB per file.",
@@ -181,7 +180,7 @@ export const it: Dictionary = {
       "Ultime buste paga o giustificativi di reddito",
       "Contratto di lavoro",
       "Carta d'identità, NIE o passaporto",
-      "Ultima dichiarazione dei redditi (se lavoratore autonomo)"
+      "Ultima dichiarazione dei redditi (se lavoratore autonomo)",
     ],
     skip: "Continua senza allegare nulla",
     tooLarge: "«{name}» supera i 10 MB e non può essere allegato.",
@@ -192,12 +191,12 @@ export const it: Dictionary = {
     uploadPartial:
       "La tua richiesta è stata inviata correttamente, ma {count} documento/i non è stato possibile caricarlo. Ti contatteremo per richiederlo.",
     uploadUnavailable:
-      "La tua richiesta è stata inviata correttamente. Ti chiederemo la documentazione via email."
+      "La tua richiesta è stata inviata correttamente. Ti chiederemo la documentazione via email.",
   },
 
   comment: {
     label: "Vuoi aggiungere altro?",
-    placeholder: "Qualsiasi cosa che ritieni utile farci sapere…"
+    placeholder: "Qualsiasi cosa che ritieni utile farci sapere…",
   },
 
   consent: {
@@ -212,8 +211,7 @@ export const it: Dictionary = {
     ownerText:
       "Autorizzo INMOARTIKO SL a condividere i miei dati e la documentazione fornita con la proprietà dell'immobile, al solo fine di valutare la mia candidatura.",
 
-    requiredError:
-      "Ci serve il tuo consenso per poter gestire la richiesta."
+    requiredError: "Ci serve il tuo consenso per poter gestire la richiesta.",
   },
 
   review: {
@@ -226,14 +224,14 @@ export const it: Dictionary = {
     sectionQuestions: "La tua situazione",
     sectionDocuments: "Documenti",
     noDocuments: "Nessun documento allegato",
-    documentCount: "{count} file allegato/i"
+    documentCount: "{count} file allegato/i",
   },
 
   success: {
     title: "Abbiamo ricevuto la tua richiesta",
     body: "Grazie per il tuo interesse per {property}. Esamineremo le informazioni e ti contatteremo nei prossimi giorni.",
     emailSent: "Ti abbiamo inviato una conferma a {email}.",
-    signature: "Artiko Real Estate"
+    signature: "Artiko Real Estate",
   },
 
   email: {
@@ -253,7 +251,11 @@ export const it: Dictionary = {
     signatureTagline: "Valencia · artikore.com",
     personalTouch: "Preferisci parlarne con una persona?",
     whatsappCta: "Scrivici su WhatsApp",
-    visitWebsite: "Vedi i nostri immobili"
+    /// Enlace personal para volver a la propia solicitud y anadir lo que falte.
+    selfServiceIntro:
+      "Ti manca qualche documento? Puoi aggiungerlo quando vuoi da questo link, senza compilare di nuovo il modulo.",
+    selfServiceCta: "Aggiungi documenti",
+    visitWebsite: "Vedi i nostri immobili",
   },
 
   docs: {
@@ -265,6 +267,8 @@ export const it: Dictionary = {
     abroadNote:
       "Se lavori o hai vissuto fuori dalla Spagna, inviaci il documento equivalente del tuo paese. Non è un problema se è in un'altra lingua: se ci serve una traduzione, te la chiederemo.",
     spanishNameLabel: "in Spagna:",
+    selfServiceHere:
+      "Questa è la tua richiesta per {property}, inviata il {date}. Puoi aggiungere qui i documenti mancanti: non serve compilare di nuovo il modulo.",
     alreadySent: "Ci hai già inviato",
     addFiles: "Aggiungi file",
     dropHint: "Trascina qui i tuoi documenti, oppure clicca per selezionarli",
@@ -311,8 +315,8 @@ export const it: Dictionary = {
       representativeId: "Documento d'identità di chi firmerà",
       companyAccounts: "Ultimo bilancio o imposta sulle società",
       guarantorDocuments: "Documentazione del garante",
-      other: "Altra documentazione"
-    }
+      other: "Altra documentazione",
+    },
   },
 
   footer: {
@@ -320,7 +324,7 @@ export const it: Dictionary = {
     website: "Scopri di più su artikore.com",
     questionsLabel: "Hai dubbi prima di inviare?",
     contact: "Scrivici a",
-    whatsapp: "Scrivici su WhatsApp"
+    whatsapp: "Scrivici su WhatsApp",
   },
 
   errors: {
@@ -334,6 +338,6 @@ export const it: Dictionary = {
       "Non siamo riusciti a inviare la richiesta. Controlla la connessione e riprova.",
     fixFields: "Controlla i campi segnalati prima di continuare.",
     tooManySubmissions:
-      "Hai inviato diverse richieste in poco tempo. Attendi un momento e riprova, oppure scrivici su WhatsApp."
-  }
+      "Hai inviato diverse richieste in poco tempo. Attendi un momento e riprova, oppure scrivici su WhatsApp.",
+  },
 };

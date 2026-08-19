@@ -9,7 +9,7 @@
 /// solicitud el texto exacto que la persona acepto.
 export const es = {
   meta: {
-    languageName: "Español"
+    languageName: "Español",
   },
 
   chooser: {
@@ -17,7 +17,7 @@ export const es = {
     title: "¿En qué idioma prefieres continuar?",
     subtitle:
       "Elige tu idioma para rellenar la solicitud. Podrás cambiarlo en cualquier momento.",
-    continueIn: "Continuar en español"
+    continueIn: "Continuar en español",
   },
 
   common: {
@@ -31,7 +31,7 @@ export const es = {
     no: "No",
     stepOf: "Paso {current} de {total}",
     changeLanguage: "Cambiar idioma",
-    selectPlaceholder: "Selecciona una opción"
+    selectPlaceholder: "Selecciona una opción",
   },
 
   steps: {
@@ -41,7 +41,7 @@ export const es = {
     questions: "Tu situación",
     documents: "Documentación",
     consent: "Protección de datos",
-    review: "Resumen"
+    review: "Resumen",
   },
 
   operation: {
@@ -49,12 +49,12 @@ export const es = {
     subtitle: "Las preguntas se adaptan según lo que elijas.",
     rent: {
       label: "Alquilar una vivienda",
-      description: "Quiero alquilar uno de los inmuebles disponibles"
+      description: "Quiero alquilar uno de los inmuebles disponibles",
     },
     sale: {
       label: "Comprar una vivienda",
-      description: "Quiero comprar uno de los inmuebles en venta"
-    }
+      description: "Quiero comprar uno de los inmuebles en venta",
+    },
   },
 
   property: {
@@ -64,7 +64,7 @@ export const es = {
       "En este momento no hay inmuebles disponibles para esta operación. Vuelve a intentarlo en unos días.",
     perMonth: "/mes",
     viewOnIdealista: "Ver el anuncio completo",
-    selected: "Seleccionado"
+    selected: "Seleccionado",
   },
 
   personal: {
@@ -76,7 +76,7 @@ export const es = {
     phone: "Teléfono",
     nationality: "Nacionalidad",
     idDocument: "DNI, NIE o pasaporte",
-    idDocumentHint: "Nos ayuda a preparar la documentación del contrato."
+    idDocumentHint: "Nos ayuda a preparar la documentación del contrato.",
   },
 
   rentQuestions: {
@@ -91,7 +91,7 @@ export const es = {
       family: "Familia",
       flatmates: "Compañeros de piso",
       alone: "Viviría solo o sola",
-      other: "Otra"
+      other: "Otra",
     },
 
     moveInDate: "¿Para qué fecha necesitaríais entrar?",
@@ -106,10 +106,11 @@ export const es = {
       retired: "Jubilado o pensionista",
       student: "Estudiante",
       unemployed: "Sin empleo actualmente",
-      other: "Otra situación"
+      other: "Otra situación",
     },
 
-    provableIncome: "¿Los ingresos son demostrables con nóminas o documentación equivalente?",
+    provableIncome:
+      "¿Los ingresos son demostrables con nóminas o documentación equivalente?",
     monthlyIncome: "¿Cuál es el ingreso neto mensual del grupo? (€)",
 
     solvencyHelp:
@@ -128,7 +129,7 @@ export const es = {
       justStarted: "Acabamos de empezar",
       lessThanMonth: "Menos de un mes",
       oneToThree: "Entre uno y tres meses",
-      moreThanThree: "Más de tres meses"
+      moreThanThree: "Más de tres meses",
     },
 
     visitedOthers: "¿Habéis visitado ya otras viviendas?",
@@ -136,8 +137,8 @@ export const es = {
     documentsReadyOptions: {
       yes: "Sí, la tenemos lista",
       partly: "En parte",
-      no: "Todavía no"
-    }
+      no: "Todavía no",
+    },
   },
 
   saleQuestions: {
@@ -154,7 +155,7 @@ export const es = {
       justStarted: "Acabamos de empezar",
       lessThanThree: "Menos de tres meses",
       threeToTwelve: "Entre tres meses y un año",
-      moreThanYear: "Más de un año"
+      moreThanYear: "Más de un año",
     },
 
     propertiesVisited: "¿Cuántas viviendas habéis visitado aproximadamente?",
@@ -168,10 +169,10 @@ export const es = {
     firstPurchase: "¿Es vuestra primera compra?",
     firstPurchaseOptions: {
       first: "Sí, es nuestra primera compra",
-      experienced: "No, ya conocemos el proceso de compraventa"
+      experienced: "No, ya conocemos el proceso de compraventa",
     },
 
-    occupation: "¿A qué os dedicáis actualmente?"
+    occupation: "¿A qué os dedicáis actualmente?",
   },
 
   documents: {
@@ -189,7 +190,7 @@ export const es = {
       "Últimas nóminas o justificantes de ingresos",
       "Contrato de trabajo",
       "DNI, NIE o pasaporte",
-      "Última declaración de la renta (si eres autónomo)"
+      "Última declaración de la renta (si eres autónomo)",
     ],
     skip: "Continuar sin adjuntar nada",
     tooLarge: "«{name}» ocupa más de 10 MB y no se puede adjuntar.",
@@ -202,12 +203,12 @@ export const es = {
     uploadPartial:
       "Tu solicitud se ha enviado correctamente, pero {count} documento(s) no se han podido subir. Nos pondremos en contacto contigo para pedírtelos.",
     uploadUnavailable:
-      "Tu solicitud se ha enviado correctamente. Te pediremos la documentación por correo."
+      "Tu solicitud se ha enviado correctamente. Te pediremos la documentación por correo.",
   },
 
   comment: {
     label: "¿Quieres añadir algo más?",
-    placeholder: "Cualquier cosa que creas que deberíamos saber…"
+    placeholder: "Cualquier cosa que creas que deberíamos saber…",
   },
 
   consent: {
@@ -222,7 +223,8 @@ export const es = {
     ownerText:
       "Autorizo a INMOARTIKO SL a compartir mis datos y la documentación aportada con la propiedad del inmueble, con el único fin de que valore mi candidatura.",
 
-    requiredError: "Necesitamos tu consentimiento para poder tramitar la solicitud."
+    requiredError:
+      "Necesitamos tu consentimiento para poder tramitar la solicitud.",
   },
 
   review: {
@@ -235,14 +237,14 @@ export const es = {
     sectionQuestions: "Tu situación",
     sectionDocuments: "Documentación",
     noDocuments: "Sin documentos adjuntos",
-    documentCount: "{count} archivo(s) adjunto(s)"
+    documentCount: "{count} archivo(s) adjunto(s)",
   },
 
   success: {
     title: "Hemos recibido tu solicitud",
     body: "Gracias por tu interés en {property}. Revisaremos la información y nos pondremos en contacto contigo en los próximos días.",
     emailSent: "Te hemos enviado una confirmación a {email}.",
-    signature: "Artiko Real Estate"
+    signature: "Artiko Real Estate",
   },
 
   /// Correo de confirmación al interesado. Va en SU idioma.
@@ -265,7 +267,11 @@ export const es = {
     /// el trato directo ocurra por WhatsApp y no en la bandeja de trabajo.
     personalTouch: "¿Prefieres hablarlo con una persona?",
     whatsappCta: "Escríbenos por WhatsApp",
-    visitWebsite: "Ver nuestras viviendas"
+    /// Enlace personal para volver a la propia solicitud y anadir lo que falte.
+    selfServiceIntro:
+      "¿Te falta algún documento por enviarnos? Puedes añadirlo cuando quieras desde este enlace, sin volver a rellenar el formulario.",
+    selfServiceCta: "Añadir documentación",
+    visitWebsite: "Ver nuestras viviendas",
   },
 
   /// Petición de documentación a un candidato ya preseleccionado.
@@ -286,6 +292,9 @@ export const es = {
       "Si trabajas o has vivido fuera de España, envíanos el documento equivalente de tu país. No pasa nada si está en otro idioma: si necesitamos una traducción, te la pediremos.",
     spanishNameLabel: "en España:",
 
+    /// Cabecera de la página a la que se vuelve desde el enlace del correo.
+    selfServiceHere:
+      "Esta es tu solicitud para {property}, que nos enviaste el {date}. Puedes añadir aquí la documentación que te falte: no hace falta que rellenes el formulario otra vez.",
     alreadySent: "Ya nos has enviado",
     addFiles: "Añadir archivos",
     dropHint: "Arrastra aquí tus documentos o pulsa para seleccionarlos",
@@ -337,8 +346,8 @@ export const es = {
       representativeId: "Documento de identidad de quien firmará",
       companyAccounts: "Últimas cuentas anuales o impuesto de sociedades",
       guarantorDocuments: "Documentación del avalista",
-      other: "Otra documentación"
-    }
+      other: "Otra documentación",
+    },
   },
 
   /// Pie del formulario público. Quien entrega su DNI y sus nóminas tiene
@@ -349,7 +358,7 @@ export const es = {
     website: "Conócenos en artikore.com",
     questionsLabel: "¿Tienes dudas antes de enviar?",
     contact: "Escríbenos a",
-    whatsapp: "Escríbenos por WhatsApp"
+    whatsapp: "Escríbenos por WhatsApp",
   },
 
   errors: {
@@ -363,8 +372,8 @@ export const es = {
       "No hemos podido enviar la solicitud. Comprueba tu conexión y vuelve a intentarlo.",
     fixFields: "Revisa los campos marcados antes de continuar.",
     tooManySubmissions:
-      "Has enviado varias solicitudes en poco tiempo. Espera un rato y vuelve a intentarlo, o escríbenos por WhatsApp."
-  }
+      "Has enviado varias solicitudes en poco tiempo. Espera un rato y vuelve a intentarlo, o escríbenos por WhatsApp.",
+  },
 };
 
 /// El tipo sale del diccionario espanol, que es la referencia. Si a una

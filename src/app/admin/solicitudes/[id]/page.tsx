@@ -3,12 +3,13 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import {
   addApplicationNote,
-  changeApplicationStatus
+  changeApplicationStatus,
 } from "@/lib/applications/actions";
 import { SolvencyBadge } from "@/components/admin/solvency-badge";
 import { BuyerBadge } from "@/components/admin/buyer-badge";
 import { assessBuyerReadiness } from "@/lib/applications/buyer-readiness";
 import { DocumentRequestPanel } from "@/components/admin/document-request-panel";
+import { SelfServiceLink } from "@/components/admin/self-service-link";
 import { DeleteApplication } from "@/components/admin/delete-application";
 import { assessSolvency } from "@/lib/applications/types";
 import { guessProfile } from "@/lib/applications/document-catalog";
@@ -20,7 +21,7 @@ import {
   readableAnswer,
   statusLabels,
   statusStyles,
-  type ApplicationStatus
+  type ApplicationStatus,
 } from "@/lib/applications/labels";
 
 export const dynamic = "force-dynamic";
@@ -28,7 +29,7 @@ export const dynamic = "force-dynamic";
 function Section({
   title,
   children,
-  action
+  action,
 }: {
   title: string;
   children: React.ReactNode;
@@ -47,7 +48,7 @@ function Section({
 
 function DataRow({
   label,
-  children
+  children,
 }: {
   label: string;
   children: React.ReactNode;
@@ -61,7 +62,7 @@ function DataRow({
 }
 
 export default async function ApplicationDetailPage({
-  params
+  params,
 }: {
   params: Promise<{ id: string }>;
 }) {
@@ -77,9 +78,9 @@ export default async function ApplicationDetailPage({
       documentRequests: {
         where: { status: "PENDING" },
         orderBy: { createdAt: "desc" },
-        take: 1
-      }
-    }
+        take: 1,
+      },
+    },
   });
 
   if (!application) notFound();
@@ -108,7 +109,8 @@ export default async function ApplicationDetailPage({
           </h1>
           <p className="mt-1 text-sm text-ink-muted">
             Recibida el {application.submittedAt.toLocaleString("es-ES")} ·
-            formulario en {localeLabels[application.locale] ?? application.locale}
+            formulario en{" "}
+            {localeLabels[application.locale] ?? application.locale}
           </p>
         </div>
 
@@ -151,7 +153,9 @@ export default async function ApplicationDetailPage({
                 </a>
               </DataRow>
               {application.nationality ? (
-                <DataRow label="Nacionalidad">{application.nationality}</DataRow>
+                <DataRow label="Nacionalidad">
+                  {application.nationality}
+                </DataRow>
               ) : null}
               {application.idDocument ? (
                 <DataRow label="Documento de identidad">
@@ -300,7 +304,7 @@ export default async function ApplicationDetailPage({
               <SolvencyBadge
                 assessment={assessSolvency(
                   application.property.rentPrice,
-                  answers.monthlyIncome
+                  answers.monthlyIncome,
                 )}
               />
             </section>
@@ -318,6 +322,14 @@ export default async function ApplicationDetailPage({
             suggestedProfile={guessProfile(answers)}
             active={application.documentRequests[0] ?? null}
             appUrl={process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"}
+          />
+
+          <SelfServiceLink
+            url={
+              application.accessToken
+                ? `${process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"}/solicitud/${application.accessToken}`
+                : null
+            }
           />
 
           <section className="surface p-5">
@@ -341,14 +353,19 @@ export default async function ApplicationDetailPage({
                   </option>
                 ))}
               </select>
-              <button type="submit" className="btn-primary w-full py-2.5 text-sm">
+              <button
+                type="submit"
+                className="btn-primary w-full py-2.5 text-sm"
+              >
                 Guardar estado
               </button>
             </form>
           </section>
 
           <section className="surface p-5">
-            <h2 className="font-serif text-lg text-ink-strong">Notas internas</h2>
+            <h2 className="font-serif text-lg text-ink-strong">
+              Notas internas
+            </h2>
             <p className="mt-1 text-xs text-ink-muted">
               No se muestran al interesado.
             </p>

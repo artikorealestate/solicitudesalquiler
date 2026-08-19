@@ -59,7 +59,8 @@ async function main() {
     operation: "RENT",
     property,
     price: "1.600 €/mes",
-    hadDocuments: true
+    hadDocuments: true,
+    selfServiceUrl: "https://artiko-interesados.vercel.app/solicitud/token-de-ejemplo"
   });
 
   const internalEmail = buildInternalEmail({

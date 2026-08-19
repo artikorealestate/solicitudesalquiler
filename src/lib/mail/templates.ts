@@ -172,6 +172,9 @@ export function buildApplicantEmail(input: {
   property: { reference: string; title: string; zone: string | null };
   price: string;
   hadDocuments: boolean;
+  /// Enlace personal para volver a esta misma solicitud y anadir lo que
+  /// falte, sin rellenar el formulario otra vez.
+  selfServiceUrl: string | null;
 }): { subject: string; html: string; text: string } {
   const t = input.dictionary.email;
   const operationWord =
@@ -196,6 +199,22 @@ export function buildApplicantEmail(input: {
         ? ""
         : `<p style="margin:0 0 14px;">${escapeHtml(t.documentsPending)}</p>`
     }
+    ${
+      input.selfServiceUrl
+        ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+             style="margin:20px 0 0;background:${CREAM};border-radius:8px;">
+             <tr><td style="padding:16px 18px;">
+               <p style="margin:0 0 10px;font:400 14px/1.6 Arial,sans-serif;color:${BODY};">
+                 ${escapeHtml(t.selfServiceIntro)}
+               </p>
+               <a href="${escapeHtml(input.selfServiceUrl)}"
+                  style="display:inline-block;background:${INK};color:#ffffff;
+                         text-decoration:none;padding:11px 20px;border-radius:6px;
+                         font:700 14px Arial,sans-serif;">${escapeHtml(t.selfServiceCta)}</a>
+             </td></tr>
+           </table>`
+        : ""
+    }
     <p style="margin:22px 0 0;font:400 17px Georgia,serif;color:${INK};">
       ${escapeHtml(t.signature)}
     </p>
@@ -210,6 +229,9 @@ export function buildApplicantEmail(input: {
     `${input.property.reference} — ${input.property.title}`,
     "",
     t.nextSteps,
+    "",
+    input.selfServiceUrl ? t.selfServiceIntro : "",
+    input.selfServiceUrl ?? "",
     "",
     t.personalTouch,
     wa ? `${t.whatsappCta}: ${wa}` : "",

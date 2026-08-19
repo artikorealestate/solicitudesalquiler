@@ -8,7 +8,7 @@ export const nl: Dictionary = {
     title: "In welke taal wilt u verdergaan?",
     subtitle:
       "Kies uw taal om het formulier in te vullen. U kunt dit altijd wijzigen.",
-    continueIn: "Verder in het Nederlands"
+    continueIn: "Verder in het Nederlands",
   },
 
   common: {
@@ -22,7 +22,7 @@ export const nl: Dictionary = {
     no: "Nee",
     stepOf: "Stap {current} van {total}",
     changeLanguage: "Taal wijzigen",
-    selectPlaceholder: "Kies een optie"
+    selectPlaceholder: "Kies een optie",
   },
 
   steps: {
@@ -32,7 +32,7 @@ export const nl: Dictionary = {
     questions: "Uw situatie",
     documents: "Documenten",
     consent: "Gegevensbescherming",
-    review: "Overzicht"
+    review: "Overzicht",
   },
 
   operation: {
@@ -40,12 +40,12 @@ export const nl: Dictionary = {
     subtitle: "De vragen passen zich aan uw keuze aan.",
     rent: {
       label: "Een woning huren",
-      description: "Ik wil een van de beschikbare woningen huren"
+      description: "Ik wil een van de beschikbare woningen huren",
     },
     sale: {
       label: "Een woning kopen",
-      description: "Ik wil een van de woningen te koop kopen"
-    }
+      description: "Ik wil een van de woningen te koop kopen",
+    },
   },
 
   property: {
@@ -55,7 +55,7 @@ export const nl: Dictionary = {
       "Er zijn momenteel geen woningen beschikbaar voor dit type aanvraag. Probeer het over een paar dagen opnieuw.",
     perMonth: "/maand",
     viewOnIdealista: "Bekijk de volledige advertentie",
-    selected: "Geselecteerd"
+    selected: "Geselecteerd",
   },
 
   personal: {
@@ -67,7 +67,7 @@ export const nl: Dictionary = {
     phone: "Telefoonnummer",
     nationality: "Nationaliteit",
     idDocument: "Identiteitskaart, NIE of paspoort",
-    idDocumentHint: "Dit helpt ons de contractdocumenten voor te bereiden."
+    idDocumentHint: "Dit helpt ons de contractdocumenten voor te bereiden.",
   },
 
   rentQuestions: {
@@ -82,7 +82,7 @@ export const nl: Dictionary = {
       family: "Gezin",
       flatmates: "Huisgenoten",
       alone: "Ik zou alleen wonen",
-      other: "Anders"
+      other: "Anders",
     },
 
     moveInDate: "Vanaf wanneer zou u willen intrekken?",
@@ -97,7 +97,7 @@ export const nl: Dictionary = {
       retired: "Gepensioneerd",
       student: "Student",
       unemployed: "Op dit moment zonder werk",
-      other: "Andere situatie"
+      other: "Andere situatie",
     },
 
     provableIncome:
@@ -120,7 +120,7 @@ export const nl: Dictionary = {
       justStarted: "We zijn net begonnen",
       lessThanMonth: "Minder dan een maand",
       oneToThree: "Eén tot drie maanden",
-      moreThanThree: "Meer dan drie maanden"
+      moreThanThree: "Meer dan drie maanden",
     },
 
     visitedOthers: "Heeft u al andere woningen bezichtigd?",
@@ -128,8 +128,8 @@ export const nl: Dictionary = {
     documentsReadyOptions: {
       yes: "Ja, alles is klaar",
       partly: "Gedeeltelijk",
-      no: "Nog niet"
-    }
+      no: "Nog niet",
+    },
   },
 
   saleQuestions: {
@@ -146,7 +146,7 @@ export const nl: Dictionary = {
       justStarted: "We zijn net begonnen",
       lessThanThree: "Minder dan drie maanden",
       threeToTwelve: "Tussen drie maanden en een jaar",
-      moreThanYear: "Meer dan een jaar"
+      moreThanYear: "Meer dan een jaar",
     },
 
     propertiesVisited: "Hoeveel woningen heeft u ongeveer bezichtigd?",
@@ -160,10 +160,10 @@ export const nl: Dictionary = {
     firstPurchase: "Is dit uw eerste aankoop?",
     firstPurchaseOptions: {
       first: "Ja, dit is onze eerste aankoop",
-      experienced: "Nee, we kennen het aankoopproces al"
+      experienced: "Nee, we kennen het aankoopproces al",
     },
 
-    occupation: "Wat doet u op dit moment voor werk?"
+    occupation: "Wat doet u op dit moment voor werk?",
   },
 
   documents: {
@@ -181,7 +181,7 @@ export const nl: Dictionary = {
       "Recente loonstroken of inkomensbewijzen",
       "Arbeidsovereenkomst",
       "Identiteitskaart, NIE of paspoort",
-      "Laatste belastingaangifte (bij zelfstandigen)"
+      "Laatste belastingaangifte (bij zelfstandigen)",
     ],
     skip: "Verdergaan zonder bijlagen",
     tooLarge: "„{name}” is groter dan 10 MB en kan niet worden bijgevoegd.",
@@ -192,12 +192,12 @@ export const nl: Dictionary = {
     uploadPartial:
       "Uw aanvraag is verstuurd, maar {count} document(en) konden niet worden geüpload. We nemen contact op om ze alsnog op te vragen.",
     uploadUnavailable:
-      "Uw aanvraag is verstuurd. We vragen de documenten per e-mail op."
+      "Uw aanvraag is verstuurd. We vragen de documenten per e-mail op.",
   },
 
   comment: {
     label: "Wilt u nog iets toevoegen?",
-    placeholder: "Alles wat wij volgens u zouden moeten weten…"
+    placeholder: "Alles wat wij volgens u zouden moeten weten…",
   },
 
   consent: {
@@ -213,7 +213,7 @@ export const nl: Dictionary = {
       "Ik geef INMOARTIKO SL toestemming om mijn gegevens en de aangeleverde documenten te delen met de eigenaar van de woning, uitsluitend om mijn kandidatuur te beoordelen.",
 
     requiredError:
-      "We hebben uw toestemming nodig om de aanvraag te kunnen behandelen."
+      "We hebben uw toestemming nodig om de aanvraag te kunnen behandelen.",
   },
 
   review: {
@@ -226,14 +226,14 @@ export const nl: Dictionary = {
     sectionQuestions: "Uw situatie",
     sectionDocuments: "Documenten",
     noDocuments: "Geen documenten bijgevoegd",
-    documentCount: "{count} bestand(en) bijgevoegd"
+    documentCount: "{count} bestand(en) bijgevoegd",
   },
 
   success: {
     title: "We hebben uw aanvraag ontvangen",
     body: "Bedankt voor uw interesse in {property}. We bekijken uw gegevens en nemen de komende dagen contact met u op.",
     emailSent: "We hebben een bevestiging gestuurd naar {email}.",
-    signature: "Artiko Real Estate"
+    signature: "Artiko Real Estate",
   },
 
   email: {
@@ -253,7 +253,11 @@ export const nl: Dictionary = {
     signatureTagline: "Valencia · artikore.com",
     personalTouch: "Liever persoonlijk contact?",
     whatsappCta: "Stuur ons een WhatsApp",
-    visitWebsite: "Bekijk onze woningen"
+    /// Enlace personal para volver a la propia solicitud y anadir lo que falte.
+    selfServiceIntro:
+      "Mist u nog een document? U kunt het altijd via deze link toevoegen, zonder het formulier opnieuw in te vullen.",
+    selfServiceCta: "Documenten toevoegen",
+    visitWebsite: "Bekijk onze woningen",
   },
 
   docs: {
@@ -265,6 +269,8 @@ export const nl: Dictionary = {
     abroadNote:
       "Als u buiten Spanje werkt of hebt gewoond, stuur ons dan het gelijkwaardige document uit uw land. Een andere taal is geen probleem — als we een vertaling nodig hebben, laten we het weten.",
     spanishNameLabel: "in Spanje:",
+    selfServiceHere:
+      "Dit is uw aanvraag voor {property}, verstuurd op {date}. U kunt hier ontbrekende documenten toevoegen — het formulier hoeft u niet opnieuw in te vullen.",
     alreadySent: "U heeft ons al gestuurd",
     addFiles: "Bestanden toevoegen",
     dropHint: "Sleep uw documenten hierheen, of klik om ze te kiezen",
@@ -311,8 +317,8 @@ export const nl: Dictionary = {
       representativeId: "Identiteitsbewijs van de ondertekenaar",
       companyAccounts: "Laatste jaarrekening of vennootschapsbelasting",
       guarantorDocuments: "Documenten van de borg",
-      other: "Overige documenten"
-    }
+      other: "Overige documenten",
+    },
   },
 
   footer: {
@@ -320,7 +326,7 @@ export const nl: Dictionary = {
     website: "Leer ons kennen op artikore.com",
     questionsLabel: "Vragen voordat u verstuurt?",
     contact: "Schrijf ons op",
-    whatsapp: "Stuur ons een WhatsApp"
+    whatsapp: "Stuur ons een WhatsApp",
   },
 
   errors: {
@@ -334,6 +340,6 @@ export const nl: Dictionary = {
       "We konden uw aanvraag niet versturen. Controleer uw verbinding en probeer het opnieuw.",
     fixFields: "Controleer de gemarkeerde velden voordat u verdergaat.",
     tooManySubmissions:
-      "U heeft in korte tijd meerdere aanvragen verstuurd. Wacht even en probeer het opnieuw, of stuur ons een WhatsApp."
-  }
+      "U heeft in korte tijd meerdere aanvragen verstuurd. Wacht even en probeer het opnieuw, of stuur ons een WhatsApp.",
+  },
 };

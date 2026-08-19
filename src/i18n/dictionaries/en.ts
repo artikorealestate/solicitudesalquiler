@@ -8,7 +8,7 @@ export const en: Dictionary = {
     title: "Which language would you prefer?",
     subtitle:
       "Choose your language to fill in the form. You can change it at any time.",
-    continueIn: "Continue in English"
+    continueIn: "Continue in English",
   },
 
   common: {
@@ -22,7 +22,7 @@ export const en: Dictionary = {
     no: "No",
     stepOf: "Step {current} of {total}",
     changeLanguage: "Change language",
-    selectPlaceholder: "Select an option"
+    selectPlaceholder: "Select an option",
   },
 
   steps: {
@@ -32,7 +32,7 @@ export const en: Dictionary = {
     questions: "Your situation",
     documents: "Documents",
     consent: "Data protection",
-    review: "Summary"
+    review: "Summary",
   },
 
   operation: {
@@ -40,12 +40,12 @@ export const en: Dictionary = {
     subtitle: "The questions change depending on your answer.",
     rent: {
       label: "Rent a home",
-      description: "I would like to rent one of the available properties"
+      description: "I would like to rent one of the available properties",
     },
     sale: {
       label: "Buy a home",
-      description: "I would like to buy one of the properties for sale"
-    }
+      description: "I would like to buy one of the properties for sale",
+    },
   },
 
   property: {
@@ -55,7 +55,7 @@ export const en: Dictionary = {
       "There are no properties available for this type of enquiry right now. Please try again in a few days.",
     perMonth: "/month",
     viewOnIdealista: "View the full listing",
-    selected: "Selected"
+    selected: "Selected",
   },
 
   personal: {
@@ -67,7 +67,7 @@ export const en: Dictionary = {
     phone: "Phone number",
     nationality: "Nationality",
     idDocument: "ID card, NIE or passport",
-    idDocumentHint: "This helps us prepare the contract paperwork."
+    idDocumentHint: "This helps us prepare the contract paperwork.",
   },
 
   rentQuestions: {
@@ -82,13 +82,14 @@ export const en: Dictionary = {
       family: "Family",
       flatmates: "Flatmates",
       alone: "I would live alone",
-      other: "Other"
+      other: "Other",
     },
 
     moveInDate: "When would you need to move in?",
     occupation: "What do you do for a living?",
 
-    employmentType: "What kind of contract or employment situation do you have?",
+    employmentType:
+      "What kind of contract or employment situation do you have?",
     employmentOptions: {
       permanent: "Permanent contract",
       temporary: "Fixed-term contract",
@@ -97,7 +98,7 @@ export const en: Dictionary = {
       retired: "Retired or on a pension",
       student: "Student",
       unemployed: "Currently not working",
-      other: "Other situation"
+      other: "Other situation",
     },
 
     provableIncome:
@@ -108,7 +109,8 @@ export const en: Dictionary = {
       "The usual affordability guideline is that rent should not exceed roughly 30% of the household's evidenced net income.",
     solvencyForProperty:
       "For this property, at €{rent} per month, that would mean around €{recommended} net per month between you.",
-    solvencyMet: "Based on what you have entered, you meet the usual guideline.",
+    solvencyMet:
+      "Based on what you have entered, you meet the usual guideline.",
     solvencyNotMet:
       "This falls below the usual guideline. You can still continue: we will consider it alongside everything else.",
 
@@ -119,7 +121,7 @@ export const en: Dictionary = {
       justStarted: "We have just started",
       lessThanMonth: "Less than a month",
       oneToThree: "One to three months",
-      moreThanThree: "More than three months"
+      moreThanThree: "More than three months",
     },
 
     visitedOthers: "Have you already viewed other properties?",
@@ -127,8 +129,8 @@ export const en: Dictionary = {
     documentsReadyOptions: {
       yes: "Yes, everything is ready",
       partly: "Partly",
-      no: "Not yet"
-    }
+      no: "Not yet",
+    },
   },
 
   saleQuestions: {
@@ -144,7 +146,7 @@ export const en: Dictionary = {
       justStarted: "We have just started",
       lessThanThree: "Less than three months",
       threeToTwelve: "Three months to a year",
-      moreThanYear: "More than a year"
+      moreThanYear: "More than a year",
     },
 
     propertiesVisited: "Roughly how many properties have you viewed?",
@@ -158,10 +160,10 @@ export const en: Dictionary = {
     firstPurchase: "Is this your first purchase?",
     firstPurchaseOptions: {
       first: "Yes, this is our first purchase",
-      experienced: "No, we know the buying process"
+      experienced: "No, we know the buying process",
     },
 
-    occupation: "What do you do for a living?"
+    occupation: "What do you do for a living?",
   },
 
   documents: {
@@ -179,7 +181,7 @@ export const en: Dictionary = {
       "Recent payslips or proof of income",
       "Employment contract",
       "ID card, NIE or passport",
-      "Latest tax return (if self-employed)"
+      "Latest tax return (if self-employed)",
     ],
     skip: "Continue without attaching anything",
     tooLarge: "“{name}” is larger than 10 MB and cannot be attached.",
@@ -190,12 +192,12 @@ export const en: Dictionary = {
     uploadPartial:
       "Your enquiry was sent successfully, but {count} document(s) could not be uploaded. We will get in touch to ask for them.",
     uploadUnavailable:
-      "Your enquiry was sent successfully. We will ask you for the documents by email."
+      "Your enquiry was sent successfully. We will ask you for the documents by email.",
   },
 
   comment: {
     label: "Anything else you would like to add?",
-    placeholder: "Anything you think we should know…"
+    placeholder: "Anything you think we should know…",
   },
 
   consent: {
@@ -210,7 +212,7 @@ export const en: Dictionary = {
     ownerText:
       "I authorise INMOARTIKO SL to share my data and the documents I provide with the owner of the property, for the sole purpose of assessing my application.",
 
-    requiredError: "We need your consent in order to process this enquiry."
+    requiredError: "We need your consent in order to process this enquiry.",
   },
 
   review: {
@@ -223,14 +225,14 @@ export const en: Dictionary = {
     sectionQuestions: "Your situation",
     sectionDocuments: "Documents",
     noDocuments: "No documents attached",
-    documentCount: "{count} file(s) attached"
+    documentCount: "{count} file(s) attached",
   },
 
   success: {
     title: "We have received your enquiry",
     body: "Thank you for your interest in {property}. We will review your information and get in touch over the coming days.",
     emailSent: "We have sent a confirmation to {email}.",
-    signature: "Artiko Real Estate"
+    signature: "Artiko Real Estate",
   },
 
   email: {
@@ -250,7 +252,11 @@ export const en: Dictionary = {
     signatureTagline: "Valencia · artikore.com",
     personalTouch: "Would you rather talk to a person?",
     whatsappCta: "Message us on WhatsApp",
-    visitWebsite: "See our properties"
+    /// Enlace personal para volver a la propia solicitud y anadir lo que falte.
+    selfServiceIntro:
+      "Still need to send us a document? You can add it whenever you like from this link, without filling in the form again.",
+    selfServiceCta: "Add documents",
+    visitWebsite: "See our properties",
   },
 
   docs: {
@@ -262,6 +268,8 @@ export const en: Dictionary = {
     abroadNote:
       "If you work or have lived outside Spain, send us the equivalent document from your country. It's fine if it's in another language — if we need a translation, we'll ask.",
     spanishNameLabel: "in Spain:",
+    selfServiceHere:
+      "This is your enquiry about {property}, sent on {date}. You can add any missing documents here — there is no need to fill in the form again.",
     alreadySent: "You have already sent us",
     addFiles: "Add files",
     dropHint: "Drag your documents here, or click to choose them",
@@ -308,8 +316,8 @@ export const en: Dictionary = {
       representativeId: "Identity document of the person signing",
       companyAccounts: "Latest annual accounts or corporate tax return",
       guarantorDocuments: "Guarantor's documents",
-      other: "Other documents"
-    }
+      other: "Other documents",
+    },
   },
 
   footer: {
@@ -317,7 +325,7 @@ export const en: Dictionary = {
     website: "Find out more at artikore.com",
     questionsLabel: "Any questions before you send?",
     contact: "Write to us at",
-    whatsapp: "Message us on WhatsApp"
+    whatsapp: "Message us on WhatsApp",
   },
 
   errors: {
@@ -331,6 +339,6 @@ export const en: Dictionary = {
       "We could not send your enquiry. Please check your connection and try again.",
     fixFields: "Please check the highlighted fields before continuing.",
     tooManySubmissions:
-      "You have sent several enquiries in a short time. Please wait a while and try again, or message us on WhatsApp."
-  }
+      "You have sent several enquiries in a short time. Please wait a while and try again, or message us on WhatsApp.",
+  },
 };

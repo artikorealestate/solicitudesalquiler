@@ -12,7 +12,7 @@ const ACCEPTED = [
   "image/jpeg",
   "image/png",
   "image/heic",
-  "image/webp"
+  "image/webp",
 ];
 
 function formatSize(bytes: number): string {
@@ -25,7 +25,7 @@ export function DocumentRequestForm({
   uploadTicket,
   items,
   alreadyUploaded,
-  dictionary
+  dictionary,
 }: {
   applicationId: string;
   uploadTicket: string;
@@ -40,7 +40,7 @@ export function DocumentRequestForm({
   const [rejected, setRejected] = useState<string[]>([]);
   const [percent, setPercent] = useState<number | null>(null);
   const [done, setDone] = useState<{ uploaded: number; failed: number } | null>(
-    null
+    null,
   );
   const [expired, setExpired] = useState(false);
 
@@ -53,11 +53,11 @@ export function DocumentRequestForm({
     for (const file of Array.from(incoming)) {
       if (file.size > MAX_FILE_BYTES) {
         problems.push(
-          interpolate(dictionary.documents.tooLarge, { name: file.name })
+          interpolate(dictionary.documents.tooLarge, { name: file.name }),
         );
       } else if (file.type && !ACCEPTED.includes(file.type)) {
         problems.push(
-          interpolate(dictionary.documents.wrongType, { name: file.name })
+          interpolate(dictionary.documents.wrongType, { name: file.name }),
         );
       } else {
         accepted.push(file);
@@ -78,7 +78,7 @@ export function DocumentRequestForm({
       files,
       applicationId,
       uploadTicket,
-      (progress) => setPercent(progress.percent)
+      (progress) => setPercent(progress.percent),
     );
 
     setPercent(null);
@@ -122,52 +122,63 @@ export function DocumentRequestForm({
     );
   }
 
+  const hayResumen = items.length > 0 || alreadyUploaded.length > 0;
+
   return (
     <div className="space-y-6">
-      <section className="surface p-5 sm:p-6">
-        <h2 className="font-serif text-xl text-ink-strong">{t.weNeed}</h2>
+      {hayResumen ? (
+        <section className="surface p-5 sm:p-6">
+          {items.length > 0 ? (
+            <>
+              <h2 className="font-serif text-xl text-ink-strong">{t.weNeed}</h2>
 
-        <ul className="mt-4 space-y-2.5">
-          {items.map((item) => (
-            <li key={item.key} className="flex gap-3">
-              <span aria-hidden="true" className="mt-0.5 text-gold-dark">
-                ·
-              </span>
-              <p className="text-sm text-ink-strong">
-                {item.label}
-                {item.spanishName ? (
-                  <span className="text-ink-muted">
-                    {" "}
-                    ({t.spanishNameLabel} {item.spanishName})
-                  </span>
-                ) : null}
+              <ul className="mt-4 space-y-2.5">
+                {items.map((item) => (
+                  <li key={item.key} className="flex gap-3">
+                    <span aria-hidden="true" className="mt-0.5 text-gold-dark">
+                      ·
+                    </span>
+                    <p className="text-sm text-ink-strong">
+                      {item.label}
+                      {item.spanishName ? (
+                        <span className="text-ink-muted">
+                          {" "}
+                          ({t.spanishNameLabel} {item.spanishName})
+                        </span>
+                      ) : null}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+
+              {/* Buena parte de los interesados de Artiko viene de fuera de
+                Espana y no tiene los documentos con estos nombres. Decirselo
+                aqui evita que abandonen pensando que no pueden aportar lo que
+                se les pide. */}
+              <p className="mt-5 rounded-md bg-gold-wash px-4 py-3 text-sm leading-relaxed text-ink">
+                {t.abroadNote}
               </p>
-            </li>
-          ))}
-        </ul>
+            </>
+          ) : null}
 
-        {/* Buena parte de los interesados de Artiko viene de fuera de Espana y
-            no tiene los documentos con estos nombres. Decirselo aqui evita que
-            abandonen pensando que no pueden aportar lo que se les pide. */}
-        <p className="mt-5 rounded-md bg-gold-wash px-4 py-3 text-sm leading-relaxed text-ink">
-          {t.abroadNote}
-        </p>
-
-        {alreadyUploaded.length > 0 ? (
-          <div className="mt-4 rounded-md bg-cream p-4">
-            <p className="text-xs uppercase tracking-wide text-ink-muted">
-              {t.alreadySent}
-            </p>
-            <ul className="mt-1.5 space-y-0.5">
-              {alreadyUploaded.map((name) => (
-                <li key={name} className="text-sm text-ink-strong">
-                  {name}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ) : null}
-      </section>
+          {alreadyUploaded.length > 0 ? (
+            <div
+              className={`rounded-md bg-cream p-4 ${items.length > 0 ? "mt-4" : ""}`}
+            >
+              <p className="text-xs uppercase tracking-wide text-ink-muted">
+                {t.alreadySent}
+              </p>
+              <ul className="mt-1.5 space-y-0.5">
+                {alreadyUploaded.map((name) => (
+                  <li key={name} className="text-sm text-ink-strong">
+                    {name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+        </section>
+      ) : null}
 
       <section className="surface p-5 sm:p-6">
         <div
@@ -182,7 +193,9 @@ export function DocumentRequestForm({
             onClick={() => inputRef.current?.click()}
             className="w-full rounded-card border-2 border-dashed border-line bg-white px-4 py-8 text-center transition-colors hover:border-gold"
           >
-            <span className="block font-bold text-ink-strong">{t.addFiles}</span>
+            <span className="block font-bold text-ink-strong">
+              {t.addFiles}
+            </span>
             <span className="mt-1 block text-sm text-ink-muted">
               {t.dropHint}
             </span>
