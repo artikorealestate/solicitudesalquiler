@@ -38,7 +38,7 @@ export function TextField({
   inputMode,
   autoComplete,
   required = false,
-  optionalLabel
+  optionalLabel,
 }: BaseProps & {
   value: string;
   onChange: (value: string) => void;
@@ -94,7 +94,7 @@ export function TextAreaField({
   placeholder,
   rows = 3,
   required = false,
-  optionalLabel
+  optionalLabel,
 }: BaseProps & {
   value: string;
   onChange: (value: string) => void;
@@ -139,7 +139,7 @@ export function SelectField({
   error,
   hint,
   required = false,
-  optionalLabel
+  optionalLabel,
 }: BaseProps & {
   value: string;
   onChange: (value: string) => void;
@@ -191,7 +191,7 @@ export function YesNoField({
   yesLabel,
   noLabel,
   error,
-  hint
+  hint,
 }: BaseProps & {
   value: string;
   onChange: (value: string) => void;
@@ -206,7 +206,7 @@ export function YesNoField({
       <div className="flex gap-2.5">
         {[
           { key: "yes", text: yesLabel },
-          { key: "no", text: noLabel }
+          { key: "no", text: noLabel },
         ].map((option) => (
           <label
             key={option.key}
@@ -238,7 +238,7 @@ export function CheckboxField({
   checked,
   onChange,
   children,
-  error
+  error,
 }: {
   checked: boolean;
   onChange: (checked: boolean) => void;
@@ -253,7 +253,9 @@ export function CheckboxField({
       <label
         htmlFor={id}
         className={`flex cursor-pointer gap-3 rounded-md border p-4 transition-colors ${
-          error ? "border-danger bg-danger/5" : "border-line bg-white hover:border-gold"
+          error
+            ? "border-danger bg-danger/5"
+            : "border-line bg-white hover:border-gold"
         }`}
       >
         <input

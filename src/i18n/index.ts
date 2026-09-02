@@ -15,7 +15,7 @@ const dictionaries: Partial<Record<Locale, () => Promise<Dictionary>>> = {
   pt: async () => (await import("./dictionaries/pt")).pt,
   nl: async () => (await import("./dictionaries/nl")).nl,
   ru: async () => (await import("./dictionaries/ru")).ru,
-  uk: async () => (await import("./dictionaries/uk")).uk
+  uk: async () => (await import("./dictionaries/uk")).uk,
 };
 
 export async function getDictionary(locale: Locale): Promise<Dictionary> {
@@ -33,10 +33,10 @@ export function isTranslated(locale: Locale): boolean {
 /// "Paso {current} de {total}" + { current: 2, total: 7 } -> "Paso 2 de 7"
 export function interpolate(
   template: string,
-  values: Record<string, string | number>
+  values: Record<string, string | number>,
 ): string {
   return template.replace(/\{(\w+)\}/g, (match, key: string) =>
-    key in values ? String(values[key]) : match
+    key in values ? String(values[key]) : match,
   );
 }
 

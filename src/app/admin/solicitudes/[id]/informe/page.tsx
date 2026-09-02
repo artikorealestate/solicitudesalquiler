@@ -4,7 +4,7 @@ import { ArtikoLogo } from "@/components/brand/logo";
 import { PrintButton } from "@/components/admin/print-button";
 import { prisma } from "@/lib/db";
 import { assessSolvency } from "@/lib/applications/types";
-import { describeStay } from "@/lib/applications/stay";
+import { describeStay, isSeasonalStay } from "@/lib/applications/stay";
 import {
   operationLabels,
   questionLabelsFor,
@@ -33,6 +33,7 @@ const RENT_KEYS_FOR_OWNER = [
   "occupation",
   "employmentType",
   "provableIncome",
+  "stayPurpose",
   "pets",
   "searchDuration",
 ];
@@ -72,8 +73,12 @@ export default async function OwnerReportPage({
 
   const estancia = describeStay(answers);
 
+  // A una estancia de temporada no se le hace el estudio: ni se le pidieron
+  // los ingresos, ni el criterio del 30% le corresponde.
+  const temporada = application.operation === "RENT" && isSeasonalStay(answers);
+
   const solvency =
-    application.operation === "RENT"
+    application.operation === "RENT" && !temporada
       ? assessSolvency(application.property.rentPrice, answers.monthlyIncome)
       : null;
 

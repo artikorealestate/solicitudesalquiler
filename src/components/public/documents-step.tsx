@@ -15,7 +15,7 @@ const ACCEPTED = [
   "image/jpeg",
   "image/png",
   "image/heic",
-  "image/webp"
+  "image/webp",
 ];
 
 function formatSize(bytes: number): string {
@@ -26,11 +26,14 @@ function formatSize(bytes: number): string {
 export function DocumentsStep({
   dictionary,
   operation,
+  seasonal,
   files,
-  onChange
+  onChange,
 }: {
   dictionary: Dictionary;
   operation: Operation;
+  /// Estancia de temporada: no se le piden nominas ni vida laboral.
+  seasonal: boolean;
   files: File[];
   onChange: (files: File[]) => void;
 }) {
@@ -46,11 +49,11 @@ export function DocumentsStep({
     for (const file of Array.from(incoming)) {
       if (file.size > MAX_FILE_BYTES) {
         problems.push(
-          interpolate(dictionary.documents.tooLarge, { name: file.name })
+          interpolate(dictionary.documents.tooLarge, { name: file.name }),
         );
       } else if (file.type && !ACCEPTED.includes(file.type)) {
         problems.push(
-          interpolate(dictionary.documents.wrongType, { name: file.name })
+          interpolate(dictionary.documents.wrongType, { name: file.name }),
         );
       } else {
         accepted.push(file);
@@ -69,7 +72,10 @@ export function DocumentsStep({
             {dictionary.documents.suggestionsRent}
           </p>
           <ul className="mt-2 space-y-1 text-sm text-ink">
-            {dictionary.documents.suggestionsRentList.map((item) => (
+            {(seasonal
+              ? dictionary.documents.suggestionsSeasonList
+              : dictionary.documents.suggestionsRentList
+            ).map((item) => (
               <li key={item} className="flex gap-2">
                 <span aria-hidden="true" className="text-gold-dark">
                   ·

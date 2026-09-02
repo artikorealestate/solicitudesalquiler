@@ -5,7 +5,7 @@ import {
   readableAnswer,
   saleQuestionLabels,
   statusLabels,
-  type ApplicationStatus
+  type ApplicationStatus,
 } from "@/lib/applications/labels";
 
 /// Genera el CSV de solicitudes que se abre en Excel.
@@ -51,7 +51,7 @@ const BASE_COLUMNS = [
   "Documento identidad",
   "Idioma",
   "Documentos adjuntos",
-  "Carpeta Drive"
+  "Carpeta Drive",
 ];
 
 /// Las preguntas de alquiler y de compra van en columnas distintas. Mezclarlas
@@ -63,7 +63,7 @@ const ALL_COLUMNS = [
   ...BASE_COLUMNS,
   ...RENT_KEYS.map((key) => `Alquiler: ${rentQuestionLabels[key]}`),
   ...SALE_KEYS.map((key) => `Compra: ${saleQuestionLabels[key]}`),
-  "Comentario adicional"
+  "Comentario adicional",
 ];
 
 /// Escapa un valor para CSV.
@@ -97,7 +97,7 @@ function formatDate(date: Date): string {
 }
 
 export function buildApplicationsCsv(
-  applications: ExportableApplication[]
+  applications: ExportableApplication[],
 ): string {
   const rows: string[] = [ALL_COLUMNS.map(csvCell).join(";")];
 
@@ -106,7 +106,8 @@ export function buildApplicationsCsv(
 
     const cells: Array<string | number | null> = [
       formatDate(application.submittedAt),
-      statusLabels[application.status as ApplicationStatus] ?? application.status,
+      statusLabels[application.status as ApplicationStatus] ??
+        application.status,
       operationLabels[application.operation] ?? application.operation,
       application.property.reference,
       application.property.title,
@@ -119,7 +120,7 @@ export function buildApplicationsCsv(
       application.idDocument,
       localeLabels[application.locale] ?? application.locale,
       application.documentCount,
-      application.driveFolderUrl
+      application.driveFolderUrl,
     ];
 
     for (const key of RENT_KEYS) {
@@ -145,6 +146,6 @@ export function exportFileName(): string {
   const now = new Date();
   const pad = (n: number) => String(n).padStart(2, "0");
   return `solicitudes-artiko-${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(
-    now.getDate()
+    now.getDate(),
   )}.csv`;
 }

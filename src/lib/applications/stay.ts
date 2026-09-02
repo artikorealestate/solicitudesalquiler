@@ -66,3 +66,40 @@ export function describeStay(answers: Record<string, string>): string | null {
 
   return duracion;
 }
+
+/// Frontera entre alquiler de temporada y vivienda habitual.
+///
+/// La ley espanola distingue el arrendamiento de vivienda del de temporada
+/// por el uso, no por una cifra, pero en la practica todo lo que baja de once
+/// meses se firma como temporada. Es el corte que usa Artiko.
+const DIAS_DE_TEMPORADA = 335;
+
+/// Si la estancia es de temporada.
+///
+/// Importa porque el estudio de solvencia al 30% no se le aplica a quien
+/// viene dos meses de verano: se le pediria nomina, contrato y vida laboral
+/// para una estancia que suele pagarse por adelantado, y lo unico que se
+/// consigue es que abandone el formulario.
+///
+/// Ante la duda devuelve false: las solicitudes anteriores a estas preguntas
+/// siguen tratandose como vivienda habitual, que es como se recibieron.
+export function isSeasonalStay(answers: Record<string, string>): boolean {
+  if (answers.stayLength === "season") return true;
+
+  // Quien pide un ano o mas no es temporada aunque haya quedado guardada una
+  // fecha de salida de antes de cambiar de opinion.
+  if (
+    answers.stayLength === "oneYear" ||
+    answers.stayLength === "twoOrThree" ||
+    answers.stayLength === "longTerm"
+  ) {
+    return false;
+  }
+
+  const entrada = fecha(answers.moveInDate);
+  const salida = fecha(answers.moveOutDate);
+  if (!entrada || !salida) return false;
+
+  const dias = (salida.getTime() - entrada.getTime()) / 86_400_000;
+  return dias > 0 && dias < DIAS_DE_TEMPORADA;
+}

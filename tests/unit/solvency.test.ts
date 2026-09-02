@@ -3,7 +3,7 @@ import {
   assessSolvency,
   meetsSolvency,
   parseDeclaredIncome,
-  recommendedIncomeFor
+  recommendedIncomeFor,
 } from "../../src/lib/applications/types";
 
 describe("lectura de los ingresos declarados", () => {

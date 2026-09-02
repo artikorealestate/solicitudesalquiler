@@ -20,7 +20,7 @@ function paths(value: unknown, prefix = ""): string[] {
   if (typeof value !== "object" || value === null) return [prefix];
 
   return Object.entries(value).flatMap(([key, child]) =>
-    paths(child, prefix ? `${prefix}.${key}` : key)
+    paths(child, prefix ? `${prefix}.${key}` : key),
   );
 }
 
@@ -29,7 +29,7 @@ function valueAt(dictionary: unknown, path: string): unknown {
     .split(".")
     .reduce<unknown>(
       (current, key) => (current as Record<string, unknown>)?.[key],
-      dictionary
+      dictionary,
     );
 }
 
@@ -38,7 +38,10 @@ const referencePaths = paths(es);
 describe("diccionarios de idiomas", () => {
   it("hay un diccionario para cada idioma ofrecido en el selector", () => {
     for (const locale of locales) {
-      expect(dictionaries[locale], `falta el diccionario de ${locale}`).toBeDefined();
+      expect(
+        dictionaries[locale],
+        `falta el diccionario de ${locale}`,
+      ).toBeDefined();
     }
   });
 
@@ -81,7 +84,7 @@ describe("diccionarios de idiomas", () => {
 
     it("mantiene el numero de sugerencias de documentacion", () => {
       expect(dictionary.documents.suggestionsRentList).toHaveLength(
-        es.documents.suggestionsRentList.length
+        es.documents.suggestionsRentList.length,
       );
     });
 
@@ -96,17 +99,17 @@ describe("diccionarios de idiomas", () => {
 
   it("las versiones de consentimiento no se repiten entre idiomas", () => {
     const versions = Object.values(dictionaries).map(
-      (dictionary) => dictionary.consent.gdprVersion
+      (dictionary) => dictionary.consent.gdprVersion,
     );
     expect(new Set(versions).size).toBe(versions.length);
   });
 
   it("interpolate rellena los marcadores de cualquier idioma", () => {
+    expect(interpolate(ru.common.stepOf, { current: 3, total: 7 })).toBe(
+      "Шаг 3 из 7",
+    );
     expect(
-      interpolate(ru.common.stepOf, { current: 3, total: 7 })
-    ).toBe("Шаг 3 из 7");
-    expect(
-      interpolate(de.success.emailSent, { email: "ana@example.com" })
+      interpolate(de.success.emailSent, { email: "ana@example.com" }),
     ).toContain("ana@example.com");
   });
 });

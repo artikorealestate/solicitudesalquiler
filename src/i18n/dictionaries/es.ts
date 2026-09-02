@@ -122,6 +122,17 @@ export const es = {
       other: "Otra situación",
     },
 
+    /// Lo unico que se le pregunta a quien viene de temporada en lugar de
+    /// los ingresos: al propietario le dice lo que necesita saber y no
+    /// obliga a nadie a ensenar su nomina por dos meses de verano.
+    stayPurpose: "¿Cuál es el motivo de la estancia?",
+    stayPurposeOptions: {
+      work: "Trabajo o traslado laboral",
+      studies: "Estudios",
+      holiday: "Vacaciones",
+      betweenHomes: "Mientras encontramos vivienda o acaban unas obras",
+      other: "Otro motivo",
+    },
     provableIncome:
       "¿Los ingresos son demostrables con nóminas o documentación equivalente?",
     monthlyIncome: "¿Cuál es el ingreso neto mensual del grupo? (€)",
@@ -204,6 +215,10 @@ export const es = {
       "Contrato de trabajo",
       "DNI, NIE o pasaporte",
       "Última declaración de la renta (si eres autónomo)",
+    ],
+    suggestionsSeasonList: [
+      "Documento de identidad (DNI, pasaporte o equivalente)",
+      "Si vienes por trabajo o estudios, algo que lo acredite",
     ],
     skip: "Continuar sin adjuntar nada",
     tooLarge: "«{name}» ocupa más de 10 MB y no se puede adjuntar.",

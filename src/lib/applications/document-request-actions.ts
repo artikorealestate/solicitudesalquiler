@@ -8,11 +8,11 @@ import { prisma } from "@/lib/db";
 import {
   availableItemsByProfile,
   resolveDocumentItems,
-  type ApplicantProfile
+  type ApplicantProfile,
 } from "@/lib/applications/document-catalog";
 import {
   LOGO_ATTACHMENT,
-  buildDocumentRequestEmail
+  buildDocumentRequestEmail,
 } from "@/lib/mail/templates";
 import { getFromAddress, getMailer } from "@/lib/mail/transport";
 import { getDictionary } from "@/i18n";
@@ -31,7 +31,7 @@ async function requireAdminEmail(): Promise<string> {
 
 export async function createDocumentRequest(
   applicationId: string,
-  formData: FormData
+  formData: FormData,
 ) {
   const adminEmail = await requireAdminEmail();
 
@@ -62,8 +62,8 @@ export async function createDocumentRequest(
       lastName: true,
       email: true,
       locale: true,
-      property: { select: { reference: true, title: true } }
-    }
+      property: { select: { reference: true, title: true } },
+    },
   });
 
   if (!application) throw new Error("Solicitud inexistente");
@@ -72,7 +72,7 @@ export async function createDocumentRequest(
   // de que pidio lo que no era, el enlace viejo no puede seguir vivo.
   await prisma.documentRequest.updateMany({
     where: { applicationId, status: "PENDING" },
-    data: { status: "CANCELLED" }
+    data: { status: "CANCELLED" },
   });
 
   const expiresAt = new Date(Date.now() + EXPIRY_DAYS * 24 * 60 * 60 * 1000);
@@ -85,9 +85,9 @@ export async function createDocumentRequest(
       message,
       token: randomBytes(32).toString("base64url"),
       createdByEmail: adminEmail,
-      expiresAt
+      expiresAt,
     },
-    select: { id: true, token: true }
+    select: { id: true, token: true },
   });
 
   // El correo se manda despues de guardar. Si falla, la peticion existe y
@@ -109,7 +109,7 @@ export async function createDocumentRequest(
       message,
       link: `${appUrl}/documentos/${request.token}`,
       expiresAt,
-      locale
+      locale,
     });
 
     await getMailer().sendMail({
@@ -118,12 +118,12 @@ export async function createDocumentRequest(
       subject: email.subject,
       html: email.html,
       text: email.text,
-      attachments: [LOGO_ATTACHMENT]
+      attachments: [LOGO_ATTACHMENT],
     });
   } catch (error) {
     console.error(
       `[documentos] No se ha podido avisar a ${application.email}:`,
-      error
+      error,
     );
   }
 
@@ -132,13 +132,13 @@ export async function createDocumentRequest(
 
 export async function cancelDocumentRequest(
   requestId: string,
-  applicationId: string
+  applicationId: string,
 ) {
   await requireAdminEmail();
 
   await prisma.documentRequest.update({
     where: { id: requestId },
-    data: { status: "CANCELLED" }
+    data: { status: "CANCELLED" },
   });
 
   revalidatePath(`/admin/solicitudes/${applicationId}`);

@@ -6,10 +6,7 @@ import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
-import {
-  buildBatchRows,
-  type RawListing
-} from "@/lib/idealista/batch";
+import { buildBatchRows, type RawListing } from "@/lib/idealista/batch";
 
 async function requireAdminEmail(): Promise<string> {
   const session = await getServerSession(authOptions);
@@ -27,7 +24,7 @@ export async function regenerateSyncToken() {
 
   await prisma.adminUser.update({
     where: { email },
-    data: { syncToken: token }
+    data: { syncToken: token },
   });
 
   revalidatePath("/admin/inmuebles/sincronizar");
@@ -38,7 +35,7 @@ export async function discardBatch(batchId: string) {
 
   await prisma.importBatch.update({
     where: { id: batchId },
-    data: { status: "DISCARDED", reviewedAt: new Date() }
+    data: { status: "DISCARDED", reviewedAt: new Date() },
   });
 
   revalidatePath("/admin/inmuebles");
@@ -58,7 +55,7 @@ export async function applyBatch(batchId: string, formData: FormData) {
 
   const batch = await prisma.importBatch.findUnique({
     where: { id: batchId },
-    select: { payload: true, status: true }
+    select: { payload: true, status: true },
   });
 
   if (!batch || batch.status !== "PENDING") {
@@ -77,12 +74,12 @@ export async function applyBatch(batchId: string, formData: FormData) {
       rentPrice: true,
       salePrice: true,
       zone: true,
-      mainImageUrl: true
-    }
+      mainImageUrl: true,
+    },
   });
 
   const rows = buildBatchRows(listings, existing).filter((row) =>
-    selected.has(row.listing.idealistaId)
+    selected.has(row.listing.idealistaId),
   );
 
   const usedReferences = new Set(existing.map((item) => item.reference));
@@ -120,8 +117,8 @@ export async function applyBatch(batchId: string, formData: FormData) {
           // Entran pausados a proposito: que un anuncio aparezca en Idealista
           // no significa que Artiko quiera recibir solicitudes por el
           // formulario todavia.
-          status: "PAUSED"
-        }
+          status: "PAUSED",
+        },
       });
     } else if (row.existingId) {
       await prisma.property.update({
@@ -134,19 +131,19 @@ export async function applyBatch(batchId: string, formData: FormData) {
           salePrice: listing.salePrice,
           idealistaUrl: listing.idealistaUrl,
           mainImageUrl: listing.mainImageUrl,
-          description: listing.description
-        }
+          description: listing.description,
+        },
       });
     }
   }
 
   await prisma.importBatch.update({
     where: { id: batchId },
-    data: { status: "APPLIED", reviewedAt: new Date() }
+    data: { status: "APPLIED", reviewedAt: new Date() },
   });
 
   console.info(
-    `[idealista] ${email} aplico ${rows.length} anuncios del lote ${batchId}`
+    `[idealista] ${email} aplico ${rows.length} anuncios del lote ${batchId}`,
   );
 
   revalidatePath("/admin/inmuebles");

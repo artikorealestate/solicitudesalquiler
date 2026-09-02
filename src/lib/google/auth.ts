@@ -33,20 +33,20 @@ function readCredentials() {
   const missing = [
     !clientId && "GOOGLE_CLIENT_ID",
     !clientSecret && "GOOGLE_CLIENT_SECRET",
-    !refreshToken && "GOOGLE_DRIVE_REFRESH_TOKEN"
+    !refreshToken && "GOOGLE_DRIVE_REFRESH_TOKEN",
   ].filter(Boolean);
 
   if (missing.length > 0) {
     throw new Error(
       `Faltan variables de entorno para Google Drive: ${missing.join(", ")}. ` +
-        "Ejecuta 'npm run google:authorize' para obtener el token."
+        "Ejecuta 'npm run google:authorize' para obtener el token.",
     );
   }
 
   return {
     clientId: clientId!,
     clientSecret: clientSecret!,
-    refreshToken: refreshToken!
+    refreshToken: refreshToken!,
   };
 }
 
@@ -76,15 +76,15 @@ export async function getAccessToken(): Promise<string> {
       client_id: clientId,
       client_secret: clientSecret,
       refresh_token: refreshToken,
-      grant_type: "refresh_token"
-    })
+      grant_type: "refresh_token",
+    }),
   });
 
   if (!response.ok) {
     const detail = await response.text();
     throw new Error(
       `Google ha rechazado la renovacion del token (${response.status}). ` +
-        `Puede que se haya revocado el acceso: vuelve a ejecutar 'npm run google:authorize'. ${detail}`
+        `Puede que se haya revocado el acceso: vuelve a ejecutar 'npm run google:authorize'. ${detail}`,
     );
   }
 
@@ -95,7 +95,7 @@ export async function getAccessToken(): Promise<string> {
 
   cached = {
     accessToken: body.access_token,
-    expiresAt: Date.now() + body.expires_in * 1000
+    expiresAt: Date.now() + body.expires_in * 1000,
   };
 
   return cached.accessToken;

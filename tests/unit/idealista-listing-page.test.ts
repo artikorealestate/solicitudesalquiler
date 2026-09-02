@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   compareWithExisting,
-  parseIdealistaListingPage
+  parseIdealistaListingPage,
 } from "../../src/lib/idealista/parse-listing-page";
 
 /// Extracto literal de la pagina de anuncios de alquiler de Artiko en
@@ -85,7 +85,7 @@ describe("parseIdealistaListingPage", () => {
 
   it("reconoce los chalets adosados, no solo los pisos", () => {
     const chalet = listings.find((item) =>
-      item.title?.startsWith("Chalet adosado")
+      item.title?.startsWith("Chalet adosado"),
     );
     expect(chalet).toBeDefined();
     expect(chalet?.rentPrice).toBe(4500);
@@ -102,13 +102,13 @@ describe("parseIdealistaListingPage", () => {
     // Este anuncio menciona 6.000 €/mes de temporada alta en el texto,
     // pero su precio publicado son 2.200 €/mes.
     const conTemporadaAlta = listings.find((item) =>
-      item.title?.includes("Calle Flor de Taronger,")
+      item.title?.includes("Calle Flor de Taronger,"),
     );
     expect(conTemporadaAlta?.rentPrice).toBe(2200);
 
     // Y este menciona 2.200 €/mes para junio, pero se publica a 1.600.
     const conJunio = listings.find((item) =>
-      item.title?.includes("Flor Del Taronger De La")
+      item.title?.includes("Flor Del Taronger De La"),
     );
     expect(conJunio?.rentPrice).toBe(1600);
   });
@@ -116,7 +116,7 @@ describe("parseIdealistaListingPage", () => {
   it("separa direccion y zona en titulos con varias comas", () => {
     const valencia = listings.find((item) => item.zone === "València");
     expect(valencia?.address).toBe(
-      "Calle del Marquès de Dos Aigües, Sant Francesc"
+      "Calle del Marquès de Dos Aigües, Sant Francesc",
     );
   });
 
@@ -128,9 +128,9 @@ describe("parseIdealistaListingPage", () => {
   it("descarta el ruido de la interfaz de Idealista", () => {
     // "Ubicación aproximada.", "Contactar", "1/", "43"... nada de eso
     // puede colarse como si fuera un inmueble.
-    expect(
-      listings.every((item) => item.title && item.title.length > 15)
-    ).toBe(true);
+    expect(listings.every((item) => item.title && item.title.length > 15)).toBe(
+      true,
+    );
   });
 });
 
@@ -145,7 +145,7 @@ describe("compareWithExisting", () => {
 
   it("detecta una bajada de precio y la describe", () => {
     const chalet = parsed.find((item) =>
-      item.title?.startsWith("Chalet adosado")
+      item.title?.startsWith("Chalet adosado"),
     )!;
 
     const result = compareWithExisting(
@@ -157,9 +157,9 @@ describe("compareWithExisting", () => {
           title: chalet.title!,
           rentPrice: 5000,
           salePrice: null,
-          zone: "Sagunto/Sagunt"
-        }
-      ]
+          zone: "Sagunto/Sagunt",
+        },
+      ],
     );
 
     expect(result[0].state).toBe("cambiado");
@@ -179,9 +179,9 @@ describe("compareWithExisting", () => {
           title: estudio.title!,
           rentPrice: 900,
           salePrice: null,
-          zone: "Puerto de Sagunto"
-        }
-      ]
+          zone: "Puerto de Sagunto",
+        },
+      ],
     );
 
     expect(result[0].state).toBe("igual");

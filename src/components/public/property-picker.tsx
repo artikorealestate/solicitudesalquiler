@@ -14,7 +14,7 @@ export function PropertyPicker({
   operation,
   selectedId,
   onSelect,
-  error
+  error,
 }: {
   dictionary: Dictionary;
   properties: PublicProperty[];
@@ -25,7 +25,7 @@ export function PropertyPicker({
 }) {
   const available = properties.filter(
     (property) =>
-      property.operationType === operation || property.operationType === "BOTH"
+      property.operationType === operation || property.operationType === "BOTH",
   );
 
   if (available.length === 0) {

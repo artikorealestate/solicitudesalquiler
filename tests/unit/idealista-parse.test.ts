@@ -71,7 +71,7 @@ describe("texto copiado de la ficha del anuncio", () => {
   it("reconstruye el titulo con el formato del listado", () => {
     // Asi el mismo inmueble se llama igual venga del listado o de la ficha.
     expect(parsed.title).toBe(
-      "Piso en Calle de la Flor del Taronger, Canet d'En Berenguer"
+      "Piso en Calle de la Flor del Taronger, Canet d'En Berenguer",
     );
   });
 
@@ -93,13 +93,13 @@ describe("texto copiado de la ficha del anuncio", () => {
     expect(venta.address).toBe("Almardà");
     expect(venta.reference).toBe("ART-88");
     expect(venta.title).toBe(
-      "Casa o chalet independiente en Almardà, Sagunto/Sagunt"
+      "Casa o chalet independiente en Almardà, Sagunto/Sagunt",
     );
   });
 
   it("no confunde la zona con el precio si falta la linea de zona", () => {
     const sinZona = parseIdealistaText(
-      "Alquiler de piso en Calle Nueva\n1.200 €/mes"
+      "Alquiler de piso en Calle Nueva\n1.200 €/mes",
     );
     expect(sinZona.zone).toBeUndefined();
     expect(sinZona.rentPrice).toBe(1200);
@@ -117,7 +117,7 @@ describe("parseIdealistaText", () => {
 
     it("saca el titulo completo", () => {
       expect(parsed.title).toBe(
-        "Piso en Calle de la Flor del Taronger, Canet d'En Berenguer"
+        "Piso en Calle de la Flor del Taronger, Canet d'En Berenguer",
       );
     });
 
@@ -138,7 +138,7 @@ describe("parseIdealistaText", () => {
 
     it("recoge enlace y referencia del anuncio", () => {
       expect(parsed.idealistaUrl).toBe(
-        "https://www.idealista.com/pro/artiko-real-estate/inmueble/105799303/"
+        "https://www.idealista.com/pro/artiko-real-estate/inmueble/105799303/",
       );
       expect(parsed.reference).toBe("105799303");
     });
@@ -149,7 +149,9 @@ describe("parseIdealistaText", () => {
     });
 
     it("coge la descripcion larga, no las etiquetas sueltas", () => {
-      expect(parsed.description).toContain("Alquiler de temporada en Gran Canet");
+      expect(parsed.description).toContain(
+        "Alquiler de temporada en Gran Canet",
+      );
       expect(parsed.description).not.toBe("Contactar");
     });
   });
@@ -175,14 +177,14 @@ describe("parseIdealistaText", () => {
   describe("casos que no deben confundirlo", () => {
     it("no confunde la cuota de comunidad con un precio de venta", () => {
       const parsed = parseIdealistaText(
-        "Piso en Calle Nueva, Valencia\nGastos de comunidad: 60€\n2 hab."
+        "Piso en Calle Nueva, Valencia\nGastos de comunidad: 60€\n2 hab.",
       );
       expect(parsed.salePrice).toBeUndefined();
     });
 
     it("acepta el formato 'EUR al mes'", () => {
       const parsed = parseIdealistaText(
-        "Piso en Calle Nueva, Valencia\nSe alquila por 950 EUR al mes."
+        "Piso en Calle Nueva, Valencia\nSe alquila por 950 EUR al mes.",
       );
       expect(parsed.rentPrice).toBe(950);
     });

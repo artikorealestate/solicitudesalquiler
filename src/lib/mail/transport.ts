@@ -13,12 +13,12 @@ function readConfig() {
   const missing = [
     !host && "SMTP_HOST",
     !user && "SMTP_USER",
-    !password && "SMTP_PASSWORD"
+    !password && "SMTP_PASSWORD",
   ].filter(Boolean);
 
   if (missing.length > 0) {
     throw new Error(
-      `Faltan variables de entorno para el envio de correo: ${missing.join(", ")}`
+      `Faltan variables de entorno para el envio de correo: ${missing.join(", ")}`,
     );
   }
 
@@ -37,7 +37,7 @@ export function getMailer() {
     port: config.port,
     // El 465 es SSL directo; el 587 negocia TLS despues de conectar.
     secure: config.port === 465,
-    auth: { user: config.user, pass: config.password }
+    auth: { user: config.user, pass: config.password },
   });
 
   return cached;

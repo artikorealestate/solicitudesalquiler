@@ -31,26 +31,26 @@ const emptyFields: PropertyFields = {
   idealistaUrl: "",
   mainImageUrl: "",
   status: "ACTIVE",
-  internalNotes: ""
+  internalNotes: "",
 };
 
 export function PropertyForm({
   propertyId = null,
-  initial
+  initial,
 }: {
   propertyId?: string | null;
   initial?: Partial<PropertyFields>;
 }) {
   const [fields, setFields] = useState<PropertyFields>({
     ...emptyFields,
-    ...initial
+    ...initial,
   });
   const [pasted, setPasted] = useState("");
   const [filledNotice, setFilledNotice] = useState<string | null>(null);
 
   const [state, formAction, pending] = useActionState<FormState, FormData>(
     saveProperty.bind(null, propertyId),
-    {}
+    {},
   );
 
   const set = (key: keyof PropertyFields) => (value: string) =>
@@ -101,8 +101,8 @@ export function PropertyForm({
       filled.length > 0
         ? `Rellenado: ${filled.join(", ")}. Revisa que sea correcto antes de guardar.`
         : "No he reconocido ningun dato. Asegurate de haber copiado el texto de la " +
-          "pagina del anuncio, incluyendo el titulo y el precio de arriba. " +
-          "Tambien puedes rellenar los campos a mano."
+            "pagina del anuncio, incluyendo el titulo y el precio de arriba. " +
+            "Tambien puedes rellenar los campos a mano.",
     );
   }
 
@@ -154,7 +154,9 @@ export function PropertyForm({
 
       {/* --- Datos del inmueble --- */}
       <section className="surface space-y-5 p-5 sm:p-6">
-        <h2 className="font-serif text-xl text-ink-strong">Datos del inmueble</h2>
+        <h2 className="font-serif text-xl text-ink-strong">
+          Datos del inmueble
+        </h2>
 
         <div className="grid gap-5 sm:grid-cols-2">
           <Field
@@ -294,7 +296,7 @@ function Field({
   hint,
   required = false,
   type = "text",
-  inputMode
+  inputMode,
 }: {
   name: string;
   label: string;
@@ -352,7 +354,7 @@ function Select({
   onChange,
   options,
   error,
-  hint
+  hint,
 }: {
   name: string;
   label: string;

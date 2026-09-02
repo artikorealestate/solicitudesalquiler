@@ -17,7 +17,7 @@ const schema = z.object({
   fileName: z.string().min(1).max(200),
   mimeType: z.string().min(1).max(120),
   sizeBytes: z.number().int().positive(),
-  kind: z.string().max(60).optional()
+  kind: z.string().max(60).optional(),
 });
 
 export async function POST(request: NextRequest) {
@@ -35,11 +35,14 @@ export async function POST(request: NextRequest) {
 
   const application = await prisma.application.findUnique({
     where: { id: data.applicationId },
-    select: { id: true }
+    select: { id: true },
   });
 
   if (!application) {
-    return NextResponse.json({ error: "solicitud-inexistente" }, { status: 404 });
+    return NextResponse.json(
+      { error: "solicitud-inexistente" },
+      { status: 404 },
+    );
   }
 
   let driveViewUrl: string;
@@ -47,7 +50,10 @@ export async function POST(request: NextRequest) {
     driveViewUrl = await getFileLink(data.driveFileId);
   } catch (error) {
     console.error("[drive] El archivo declarado no existe:", error);
-    return NextResponse.json({ error: "archivo-no-encontrado" }, { status: 400 });
+    return NextResponse.json(
+      { error: "archivo-no-encontrado" },
+      { status: 400 },
+    );
   }
 
   await prisma.document.create({
@@ -58,8 +64,8 @@ export async function POST(request: NextRequest) {
       mimeType: data.mimeType,
       sizeBytes: data.sizeBytes,
       driveFileId: data.driveFileId,
-      driveViewUrl
-    }
+      driveViewUrl,
+    },
   });
 
   return NextResponse.json({ ok: true }, { status: 201 });

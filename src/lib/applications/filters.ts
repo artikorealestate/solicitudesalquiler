@@ -14,7 +14,7 @@ export type ApplicationSearch = {
 /// cada uno tuviera su copia, el Excel acabaria conteniendo filas distintas
 /// de las que el usuario ve en pantalla.
 export function buildApplicationWhere(
-  search: ApplicationSearch
+  search: ApplicationSearch,
 ): Prisma.ApplicationWhereInput {
   const where: Prisma.ApplicationWhereInput = {};
 
@@ -41,7 +41,7 @@ export function buildApplicationWhere(
       { firstName: { contains: query, mode: "insensitive" } },
       { lastName: { contains: query, mode: "insensitive" } },
       { email: { contains: query, mode: "insensitive" } },
-      { phone: { contains: query } }
+      { phone: { contains: query } },
     ];
   }
 

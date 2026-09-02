@@ -9,12 +9,12 @@ describe("perfil de comprador", () => {
       needsFinancing: "no",
       needToSell: "no",
       searchDuration: "threeToTwelve",
-      propertiesVisited: "8"
+      propertiesVisited: "8",
     });
 
     expect(result.band).toBe("listo");
     expect(result.signals.map((s) => s.text)).toContain(
-      "No necesita financiacion"
+      "No necesita financiacion",
     );
   });
 
@@ -23,7 +23,7 @@ describe("perfil de comprador", () => {
       needsFinancing: "yes",
       financingApproved: "yes",
       needToSell: "no",
-      madeOffer: "yes"
+      madeOffer: "yes",
     });
 
     expect(result.band).toBe("listo");
@@ -35,7 +35,7 @@ describe("perfil de comprador", () => {
       financingApproved: "no",
       needToSell: "no",
       searchDuration: "moreThanYear",
-      propertiesVisited: "10"
+      propertiesVisited: "10",
     });
 
     // Va en serio: lleva un ano buscando y ha visto diez casas. Solo le falta
@@ -49,7 +49,7 @@ describe("perfil de comprador", () => {
       financingApproved: "no",
       needToSell: "yes",
       searchDuration: "justStarted",
-      propertiesVisited: "1"
+      propertiesVisited: "1",
     });
 
     expect(result.band).toBe("explorando");
@@ -58,11 +58,11 @@ describe("perfil de comprador", () => {
   it("avisa de que necesita vender otro inmueble", () => {
     const result = assessBuyerReadiness({
       needsFinancing: "no",
-      needToSell: "yes"
+      needToSell: "yes",
     });
 
     expect(result.signals.map((s) => s.text)).toContain(
-      "Necesita vender otro inmueble antes de comprar"
+      "Necesita vender otro inmueble antes de comprar",
     );
   });
 

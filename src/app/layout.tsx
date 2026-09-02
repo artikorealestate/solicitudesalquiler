@@ -11,7 +11,7 @@ const serif = Playfair_Display({
   subsets: ["latin", "cyrillic"],
   weight: ["400", "500", "600"],
   variable: "--font-serif",
-  display: "swap"
+  display: "swap",
 });
 
 // Lato no tiene cirilico. En ruso y ucraniano el texto corriente usara la
@@ -21,16 +21,20 @@ const sans = Lato({
   subsets: ["latin", "latin-ext"],
   weight: ["300", "400", "700"],
   variable: "--font-sans",
-  display: "swap"
+  display: "swap",
 });
 
 export const metadata: Metadata = {
   title: "Artiko Real Estate",
   description: "Solicitudes de alquiler y compra de Artiko Real Estate",
-  robots: { index: false, follow: false }
+  robots: { index: false, follow: false },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="es" className={`${serif.variable} ${sans.variable}`}>
       <body>{children}</body>

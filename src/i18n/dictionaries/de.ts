@@ -111,6 +111,14 @@ export const de: Dictionary = {
       other: "Andere Situation",
     },
 
+    stayPurpose: "Was führt Sie her?",
+    stayPurposeOptions: {
+      work: "Arbeit oder beruflicher Umzug",
+      studies: "Studium",
+      holiday: "Urlaub",
+      betweenHomes: "Bis wir eine Wohnung finden oder Bauarbeiten enden",
+      other: "Ein anderer Grund",
+    },
     provableIncome:
       "Können Sie Ihr Einkommen mit Gehaltsabrechnungen oder ähnlichen Unterlagen nachweisen?",
     monthlyIncome:
@@ -193,6 +201,10 @@ export const de: Dictionary = {
       "Arbeitsvertrag",
       "Personalausweis, NIE oder Reisepass",
       "Letzte Steuererklärung (bei Selbstständigkeit)",
+    ],
+    suggestionsSeasonList: [
+      "Ausweisdokument (Reisepass, Personalausweis oder gleichwertig)",
+      "Bei Arbeit oder Studium: ein entsprechender Nachweis",
     ],
     skip: "Ohne Anhänge fortfahren",
     tooLarge: "„{name}“ ist größer als 10 MB und kann nicht angehängt werden.",

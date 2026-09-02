@@ -6,7 +6,7 @@ import {
   checkRate,
   checkSubmissionShape,
   clientIpFrom,
-  hashIp
+  hashIp,
 } from "../../src/lib/security/spam-guard";
 
 beforeAll(() => {
@@ -19,14 +19,17 @@ function headers(values: Record<string, string>) {
 
 describe("campo trampa", () => {
   it("deja pasar cuando está vacío", () => {
-    const verdict = checkSubmissionShape({ honeypot: "", startedAt: undefined });
+    const verdict = checkSubmissionShape({
+      honeypot: "",
+      startedAt: undefined,
+    });
     expect(verdict.allow).toBe(true);
   });
 
   it("deja pasar cuando ni siquiera viene", () => {
     const verdict = checkSubmissionShape({
       honeypot: undefined,
-      startedAt: undefined
+      startedAt: undefined,
     });
     expect(verdict.allow).toBe(true);
   });
@@ -35,7 +38,7 @@ describe("campo trampa", () => {
     // Una persona no ve ese campo, así que solo lo rellena un programa.
     const verdict = checkSubmissionShape({
       honeypot: "https://spam.example",
-      startedAt: undefined
+      startedAt: undefined,
     });
 
     expect(verdict.allow).toBe(false);
@@ -55,7 +58,7 @@ describe("tiempo de relleno", () => {
     const verdict = checkSubmissionShape({
       honeypot: "",
       startedAt: now - 500,
-      now
+      now,
     });
 
     expect(verdict.allow).toBe(false);
@@ -66,7 +69,7 @@ describe("tiempo de relleno", () => {
     const verdict = checkSubmissionShape({
       honeypot: "",
       startedAt: now - (MIN_FILL_SECONDS + 5) * 1000,
-      now
+      now,
     });
 
     expect(verdict.allow).toBe(true);
@@ -76,7 +79,7 @@ describe("tiempo de relleno", () => {
     const verdict = checkSubmissionShape({
       honeypot: "",
       startedAt: now - 45 * 60 * 1000,
-      now
+      now,
     });
 
     expect(verdict.allow).toBe(true);
@@ -86,7 +89,7 @@ describe("tiempo de relleno", () => {
     const verdict = checkSubmissionShape({
       honeypot: "",
       startedAt: now + 60_000,
-      now
+      now,
     });
 
     expect(verdict.allow).toBe(false);
@@ -96,7 +99,7 @@ describe("tiempo de relleno", () => {
     // Puede ser un navegador con el reloj mal puesto. No es motivo para
     // perder una solicitud real.
     expect(
-      checkSubmissionShape({ honeypot: "", startedAt: undefined, now }).allow
+      checkSubmissionShape({ honeypot: "", startedAt: undefined, now }).allow,
     ).toBe(true);
   });
 });
@@ -114,7 +117,7 @@ describe("límite de envíos", () => {
   it("corta el envío masivo por hora", () => {
     const verdict = checkRate({
       lastHour: MAX_PER_IP_PER_HOUR,
-      lastDay: MAX_PER_IP_PER_HOUR
+      lastDay: MAX_PER_IP_PER_HOUR,
     });
 
     expect(verdict.allow).toBe(false);
@@ -137,13 +140,13 @@ describe("límite de envíos", () => {
 describe("dirección de internet", () => {
   it("coge la primera de x-forwarded-for", () => {
     expect(
-      clientIpFrom(headers({ "x-forwarded-for": "203.0.113.5, 70.41.3.18" }))
+      clientIpFrom(headers({ "x-forwarded-for": "203.0.113.5, 70.41.3.18" })),
     ).toBe("203.0.113.5");
   });
 
   it("cae a x-real-ip", () => {
     expect(clientIpFrom(headers({ "x-real-ip": "203.0.113.9" }))).toBe(
-      "203.0.113.9"
+      "203.0.113.9",
     );
   });
 

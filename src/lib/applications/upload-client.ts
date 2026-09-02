@@ -38,14 +38,14 @@ const CONCURRENCY = 3;
 function putWithProgress(
   url: string,
   file: File,
-  onBytes: (bytes: number) => void
+  onBytes: (bytes: number) => void,
 ): Promise<{ id: string }> {
   return new Promise((resolve, reject) => {
     const request = new XMLHttpRequest();
     request.open("PUT", url, true);
     request.setRequestHeader(
       "Content-Type",
-      file.type || "application/octet-stream"
+      file.type || "application/octet-stream",
     );
 
     request.upload.onprogress = (event) => {
@@ -75,7 +75,7 @@ async function uploadOne(
   file: File,
   applicationId: string,
   ticket: string,
-  onBytes: (bytes: number) => void
+  onBytes: (bytes: number) => void,
 ): Promise<void> {
   const sessionResponse = await fetch("/api/upload/session", {
     method: "POST",
@@ -85,8 +85,8 @@ async function uploadOne(
       ticket,
       fileName: file.name,
       mimeType: file.type || "application/octet-stream",
-      sizeBytes: file.size
-    })
+      sizeBytes: file.size,
+    }),
   });
 
   if (!sessionResponse.ok) {
@@ -109,8 +109,8 @@ async function uploadOne(
       driveFileId: uploaded.id,
       fileName: file.name,
       mimeType: file.type || "application/octet-stream",
-      sizeBytes: file.size
-    })
+      sizeBytes: file.size,
+    }),
   });
 
   if (!completeResponse.ok) {
@@ -126,7 +126,7 @@ export async function uploadDocuments(
   files: File[],
   applicationId: string,
   ticket: string,
-  onProgress?: (progress: UploadProgress) => void
+  onProgress?: (progress: UploadProgress) => void,
 ): Promise<UploadOutcome> {
   const failed: UploadOutcome["failed"] = [];
   let uploaded = 0;
@@ -140,7 +140,7 @@ export async function uploadDocuments(
     onProgress?.({
       percent: Math.min(99, Math.round((done / totalBytes) * 100)),
       filesDone,
-      totalFiles: files.length
+      totalFiles: files.length,
     });
   }
 
@@ -170,7 +170,7 @@ export async function uploadDocuments(
         bytesPerFile[index] = file.size;
         failed.push({
           fileName: file.name,
-          reason: error instanceof Error ? error.message : "desconocido"
+          reason: error instanceof Error ? error.message : "desconocido",
         });
       } finally {
         filesDone += 1;
@@ -181,7 +181,7 @@ export async function uploadDocuments(
 
   report();
   await Promise.all(
-    Array.from({ length: Math.min(CONCURRENCY, files.length) }, worker)
+    Array.from({ length: Math.min(CONCURRENCY, files.length) }, worker),
   );
 
   // Red de seguridad: el servidor mira la carpeta de Drive y da de alta lo
@@ -195,7 +195,7 @@ export async function uploadDocuments(
     const response = await fetch("/api/upload/reconcile", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ applicationId, ticket })
+      body: JSON.stringify({ applicationId, ticket }),
     });
 
     if (response.ok) {
@@ -211,7 +211,11 @@ export async function uploadDocuments(
     // Si tambien falla la comprobacion, nos quedamos con lo que sabiamos.
   }
 
-  onProgress?.({ percent: 100, filesDone: files.length, totalFiles: files.length });
+  onProgress?.({
+    percent: 100,
+    filesDone: files.length,
+    totalFiles: files.length,
+  });
 
   return { uploaded, failed };
 }

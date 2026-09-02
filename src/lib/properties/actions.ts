@@ -24,7 +24,7 @@ async function requireAdmin() {
 
 function toObject(formData: FormData) {
   return Object.fromEntries(
-    Array.from(formData.entries()).map(([key, value]) => [key, String(value)])
+    Array.from(formData.entries()).map(([key, value]) => [key, String(value)]),
   );
 }
 
@@ -40,7 +40,7 @@ function collectErrors(issues: { path: PropertyKey[]; message: string }[]) {
 export async function saveProperty(
   propertyId: string | null,
   _prevState: FormState,
-  formData: FormData
+  formData: FormData,
 ): Promise<FormState> {
   await requireAdmin();
 
@@ -57,12 +57,12 @@ export async function saveProperty(
   // distintos.
   const duplicate = await prisma.property.findUnique({
     where: { reference: data.reference },
-    select: { id: true }
+    select: { id: true },
   });
 
   if (duplicate && duplicate.id !== propertyId) {
     return {
-      errors: { reference: "Ya existe un inmueble con esa referencia" }
+      errors: { reference: "Ya existe un inmueble con esa referencia" },
     };
   }
 
@@ -79,13 +79,13 @@ export async function saveProperty(
 
 export async function setPropertyStatus(
   propertyId: string,
-  status: "ACTIVE" | "PAUSED" | "ARCHIVED"
+  status: "ACTIVE" | "PAUSED" | "ARCHIVED",
 ) {
   await requireAdmin();
 
   await prisma.property.update({
     where: { id: propertyId },
-    data: { status }
+    data: { status },
   });
 
   revalidatePath("/admin/inmuebles");
@@ -100,17 +100,17 @@ export async function setPropertyStatus(
 /// consciente: hay que pulsarlo.
 export async function setStatusForAll(
   fromStatus: "ACTIVE" | "PAUSED" | "ARCHIVED",
-  toStatus: "ACTIVE" | "PAUSED" | "ARCHIVED"
+  toStatus: "ACTIVE" | "PAUSED" | "ARCHIVED",
 ) {
   const email = await requireAdmin();
 
   const { count } = await prisma.property.updateMany({
     where: { status: fromStatus },
-    data: { status: toStatus }
+    data: { status: toStatus },
   });
 
   console.info(
-    `[inmuebles] ${email} paso ${count} inmuebles de ${fromStatus} a ${toStatus}`
+    `[inmuebles] ${email} paso ${count} inmuebles de ${fromStatus} a ${toStatus}`,
   );
 
   revalidatePath("/admin/inmuebles");

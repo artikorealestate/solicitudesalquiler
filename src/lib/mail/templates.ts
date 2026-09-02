@@ -1,3 +1,4 @@
+import { isSeasonalStay } from "@/lib/applications/stay";
 import type { Dictionary } from "@/i18n";
 import { interpolate } from "@/i18n";
 import { ARTIKO_LOGO_BASE64 } from "@/lib/mail/logo";
@@ -379,16 +380,19 @@ export function buildInternalEmail(input: {
 
   // Solo las respuestas que de verdad ayudan a decidir; el resto esta en la
   // ficha. Un correo interno de treinta lineas no lo lee nadie.
+  // A una estancia de temporada no se le preguntaron los ingresos: enseñar
+  // esas filas vacias en el aviso interno solo despista.
+  const seasonal = input.operation === "RENT" && isSeasonalStay(input.answers);
+
   const highlightKeys =
     input.operation === "RENT"
       ? [
           "householdSize",
-          "monthlyIncome",
-          "employmentType",
-          "provableIncome",
           "moveInDate",
-          "stayLength",
           "moveOutDate",
+          "stayLength",
+          ...(seasonal ? ["stayPurpose"] : ["monthlyIncome", "provableIncome"]),
+          "employmentType",
         ]
       : ["buyerProfile", "needsFinancing", "financingApproved", "needToSell"];
 

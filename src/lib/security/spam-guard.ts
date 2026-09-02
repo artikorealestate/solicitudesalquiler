@@ -43,7 +43,10 @@ export function hashIp(ip: string | null): string | null {
   const secret = process.env.NEXTAUTH_SECRET;
   if (!secret) return null;
 
-  return createHmac("sha256", secret).update(ip.trim()).digest("hex").slice(0, 32);
+  return createHmac("sha256", secret)
+    .update(ip.trim())
+    .digest("hex")
+    .slice(0, 32);
 }
 
 /// Saca la direccion del cliente de las cabeceras del proxy.
@@ -76,7 +79,10 @@ export function checkSubmissionShape(input: {
     return { allow: false, reason: "honeypot", pretendSuccess: true };
   }
 
-  if (typeof input.startedAt !== "number" || !Number.isFinite(input.startedAt)) {
+  if (
+    typeof input.startedAt !== "number" ||
+    !Number.isFinite(input.startedAt)
+  ) {
     // Sin marca de tiempo no podemos medir, pero tampoco es motivo para
     // rechazar: puede ser un navegador con el reloj mal o JavaScript raro.
     return { allow: true };

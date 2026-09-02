@@ -7,7 +7,7 @@ import {
   profileLabels,
   spanishOfficialName,
   type ApplicantProfile,
-  type DocumentKey
+  type DocumentKey,
 } from "@/lib/applications/document-catalog";
 // El panel va en espanol: los nombres salen del diccionario castellano.
 import { es } from "@/i18n/dictionaries/es";
@@ -21,7 +21,7 @@ function labelFor(key: string): string {
 }
 import {
   cancelDocumentRequest,
-  createDocumentRequest
+  createDocumentRequest,
 } from "@/lib/applications/document-request-actions";
 
 export type ActiveRequest = {
@@ -37,7 +37,7 @@ export function DocumentRequestPanel({
   applicationId,
   suggestedProfile,
   active,
-  appUrl
+  appUrl,
 }: {
   applicationId: string;
   suggestedProfile: ApplicantProfile;
@@ -47,7 +47,7 @@ export function DocumentRequestPanel({
   const [open, setOpen] = useState(false);
   const [profile, setProfile] = useState<ApplicantProfile>(suggestedProfile);
   const [selected, setSelected] = useState<string[]>([
-    ...defaultItemsByProfile[suggestedProfile]
+    ...defaultItemsByProfile[suggestedProfile],
   ]);
   const [copied, setCopied] = useState(false);
 
@@ -62,7 +62,7 @@ export function DocumentRequestPanel({
     setSelected((current) =>
       current.includes(key)
         ? current.filter((item) => item !== key)
-        : [...current, key]
+        : [...current, key],
     );
   }
 
@@ -75,8 +75,8 @@ export function DocumentRequestPanel({
           Documentación pedida
         </h2>
         <p className="mt-1 text-xs text-ink-muted">
-          Perfil: {profileLabels[active.profile as ApplicantProfile]} ·
-          enviada el {active.createdAt.toLocaleDateString("es-ES")} · caduca el{" "}
+          Perfil: {profileLabels[active.profile as ApplicantProfile]} · enviada
+          el {active.createdAt.toLocaleDateString("es-ES")} · caduca el{" "}
           {active.expiresAt.toLocaleDateString("es-ES")}
         </p>
 
@@ -136,7 +136,9 @@ export function DocumentRequestPanel({
 
   return (
     <section className="surface p-5">
-      <h2 className="font-serif text-lg text-ink-strong">Pedir documentación</h2>
+      <h2 className="font-serif text-lg text-ink-strong">
+        Pedir documentación
+      </h2>
 
       <form
         action={createDocumentRequest.bind(null, applicationId)}

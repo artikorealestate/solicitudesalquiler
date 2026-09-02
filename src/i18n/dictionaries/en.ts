@@ -111,6 +111,14 @@ export const en: Dictionary = {
       other: "Other situation",
     },
 
+    stayPurpose: "What brings you here?",
+    stayPurposeOptions: {
+      work: "Work or a job relocation",
+      studies: "Studies",
+      holiday: "Holiday",
+      betweenHomes: "While we find a home or building work finishes",
+      other: "Another reason",
+    },
     provableIncome:
       "Can your income be evidenced with payslips or equivalent documents?",
     monthlyIncome: "What is the household's net monthly income? (€)",
@@ -192,6 +200,10 @@ export const en: Dictionary = {
       "Employment contract",
       "ID card, NIE or passport",
       "Latest tax return (if self-employed)",
+    ],
+    suggestionsSeasonList: [
+      "Identity document (passport, national ID or equivalent)",
+      "If you are coming for work or study, something confirming it",
     ],
     skip: "Continue without attaching anything",
     tooLarge: "“{name}” is larger than 10 MB and cannot be attached.",

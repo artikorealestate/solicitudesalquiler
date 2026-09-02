@@ -31,6 +31,7 @@ const RENT_LABELS: Record<string, string> = {
   moveInDate: "Fecha deseada de entrada",
   stayLength: "Duracion que necesita",
   moveOutDate: "Fecha de salida",
+  stayPurpose: "Motivo de la estancia",
   occupation: "Ocupacion actual",
   employmentType: "Situacion laboral",
   provableIncome: "Ingresos demostrables",

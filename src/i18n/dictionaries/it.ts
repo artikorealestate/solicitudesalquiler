@@ -110,6 +110,14 @@ export const it: Dictionary = {
       other: "Altra situazione",
     },
 
+    stayPurpose: "Qual è il motivo del soggiorno?",
+    stayPurposeOptions: {
+      work: "Lavoro o trasferimento lavorativo",
+      studies: "Studio",
+      holiday: "Vacanza",
+      betweenHomes: "In attesa di trovare casa o di finire dei lavori",
+      other: "Un altro motivo",
+    },
     provableIncome:
       "I redditi sono dimostrabili con buste paga o documenti equivalenti?",
     monthlyIncome: "Qual è il reddito netto mensile del nucleo? (€)",
@@ -191,6 +199,10 @@ export const it: Dictionary = {
       "Contratto di lavoro",
       "Carta d'identità, NIE o passaporto",
       "Ultima dichiarazione dei redditi (se lavoratore autonomo)",
+    ],
+    suggestionsSeasonList: [
+      "Documento d'identità (passaporto, carta d'identità o equivalente)",
+      "Se vieni per lavoro o studio, qualcosa che lo attesti",
     ],
     skip: "Continua senza allegare nulla",
     tooLarge: "«{name}» supera i 10 MB e non può essere allegato.",

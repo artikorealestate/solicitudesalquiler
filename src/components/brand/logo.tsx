@@ -5,7 +5,7 @@
 /// necesita optimizacion y asi evitamos el parpadeo de carga.
 export function ArtikoLogo({
   height = 40,
-  className = ""
+  className = "",
 }: {
   height?: number;
   className?: string;

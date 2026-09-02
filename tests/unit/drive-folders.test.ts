@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   applicantFolderName,
-  sanitizeFolderName
+  sanitizeFolderName,
 } from "../../src/lib/google/drive";
 
 describe("nombres de carpeta en Drive", () => {
@@ -13,7 +13,7 @@ describe("nombres de carpeta en Drive", () => {
 
     it("quita las comillas, que romperian las busquedas de Drive", () => {
       expect(sanitizeFolderName(`Canet d'En Berenguer`)).toBe(
-        "Canet dEn Berenguer"
+        "Canet dEn Berenguer",
       );
     });
 
@@ -22,7 +22,9 @@ describe("nombres de carpeta en Drive", () => {
     });
 
     it("conserva tildes y ñ", () => {
-      expect(sanitizeFolderName("Ático en Peñíscola")).toBe("Ático en Peñíscola");
+      expect(sanitizeFolderName("Ático en Peñíscola")).toBe(
+        "Ático en Peñíscola",
+      );
     });
 
     it("recorta los nombres desmesurados", () => {
@@ -35,14 +37,22 @@ describe("nombres de carpeta en Drive", () => {
       const name = applicantFolderName(
         new Date("2026-08-14T10:30:00Z"),
         "Ana",
-        "García López"
+        "García López",
       );
       expect(name).toBe("2026-08-14 - Ana García López");
     });
 
     it("las carpetas de distintos dias se ordenan solas", () => {
-      const enero = applicantFolderName(new Date("2026-01-05T00:00:00Z"), "B", "B");
-      const marzo = applicantFolderName(new Date("2026-03-05T00:00:00Z"), "A", "A");
+      const enero = applicantFolderName(
+        new Date("2026-01-05T00:00:00Z"),
+        "B",
+        "B",
+      );
+      const marzo = applicantFolderName(
+        new Date("2026-03-05T00:00:00Z"),
+        "A",
+        "A",
+      );
 
       // Orden alfabetico == orden cronologico, que es el objetivo.
       expect([marzo, enero].sort()).toEqual([enero, marzo]);
@@ -52,7 +62,7 @@ describe("nombres de carpeta en Drive", () => {
       const name = applicantFolderName(
         new Date("2026-08-14T00:00:00Z"),
         "Jean-Luc",
-        "O'Connor"
+        "O'Connor",
       );
       expect(name).toBe("2026-08-14 - Jean-Luc OConnor");
     });

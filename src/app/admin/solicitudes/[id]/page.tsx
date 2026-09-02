@@ -6,9 +6,10 @@ import {
   changeApplicationStatus,
 } from "@/lib/applications/actions";
 import { SolvencyBadge } from "@/components/admin/solvency-badge";
+import { SeasonalNote } from "@/components/admin/seasonal-note";
 import { BuyerBadge } from "@/components/admin/buyer-badge";
 import { assessBuyerReadiness } from "@/lib/applications/buyer-readiness";
-import { describeStay } from "@/lib/applications/stay";
+import { describeStay, isSeasonalStay } from "@/lib/applications/stay";
 import { DocumentRequestPanel } from "@/components/admin/document-request-panel";
 import { SelfServiceLink } from "@/components/admin/self-service-link";
 import { DeleteApplication } from "@/components/admin/delete-application";
@@ -87,6 +88,9 @@ export default async function ApplicationDetailPage({
   if (!application) notFound();
 
   const status = application.status as ApplicationStatus;
+  const temporada =
+    application.operation === "RENT" &&
+    isSeasonalStay((application.answers ?? {}) as Record<string, string>);
   const estancia = describeStay(
     (application.answers ?? {}) as Record<string, string>,
   );
@@ -312,14 +316,18 @@ export default async function ApplicationDetailPage({
           {application.operation === "RENT" ? (
             <section>
               <h2 className="mb-2 font-serif text-lg text-ink-strong">
-                Solvencia
+                {temporada ? "Estancia" : "Solvencia"}
               </h2>
-              <SolvencyBadge
-                assessment={assessSolvency(
-                  application.property.rentPrice,
-                  answers.monthlyIncome,
-                )}
-              />
+              {temporada ? (
+                <SeasonalNote stay={estancia} purpose={answers.stayPurpose} />
+              ) : (
+                <SolvencyBadge
+                  assessment={assessSolvency(
+                    application.property.rentPrice,
+                    answers.monthlyIncome,
+                  )}
+                />
+              )}
             </section>
           ) : (
             <section>

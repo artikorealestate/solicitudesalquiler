@@ -10,7 +10,7 @@ const errorMessages: Record<string, string> = {
     "Esa cuenta de Google no tiene acceso al panel. Si crees que deberia tenerlo, pide que te añadan como administrador.",
   Configuration:
     "El acceso con Google no esta bien configurado. Avisa al responsable tecnico.",
-  Default: "No hemos podido completar el acceso. Vuelve a intentarlo."
+  Default: "No hemos podido completar el acceso. Vuelve a intentarlo.",
 };
 
 function LoginCard() {

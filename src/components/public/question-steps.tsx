@@ -1,6 +1,7 @@
 "use client";
 
 import type { Dictionary } from "@/i18n";
+import { isSeasonalStay } from "@/lib/applications/stay";
 import { interpolate } from "@/i18n";
 import {
   SelectField,
@@ -30,6 +31,11 @@ export function RentQuestions({
   const t = dictionary.rentQuestions;
   const rentPrice = property?.rentPrice ?? null;
   const income = Number(answers.monthlyIncome?.replace(/[.\s]/g, "") ?? "");
+
+  // A quien viene de temporada no se le hace el estudio de solvencia, asi que
+  // tampoco se le piden los ingresos: se le pregunta el motivo, que es lo que
+  // el propietario necesita saber de una estancia corta.
+  const seasonal = isSeasonalStay(answers);
 
   return (
     <div className="space-y-6">
@@ -64,7 +70,12 @@ export function RentQuestions({
       <SelectField
         label={t.stayLength}
         value={answers.stayLength ?? ""}
-        onChange={(value) => setAnswer("stayLength", value)}
+        onChange={(value) => {
+          setAnswer("stayLength", value);
+          // Si deja de tener fecha de salida, no puede quedarse la anterior
+          // guardada: decidiria por su cuenta que la estancia es de temporada.
+          if (value !== "withEndDate") setAnswer("moveOutDate", "");
+        }}
         options={t.stayOptions}
         placeholder={dictionary.common.selectPlaceholder}
         error={errors.stayLength}
@@ -103,48 +114,62 @@ export function RentQuestions({
         required
       />
 
-      <YesNoField
-        label={t.provableIncome}
-        value={answers.provableIncome ?? ""}
-        onChange={(value) => setAnswer("provableIncome", value)}
-        yesLabel={dictionary.common.yes}
-        noLabel={dictionary.common.no}
-        error={errors.provableIncome}
-      />
-
-      <div>
-        <TextField
-          label={t.monthlyIncome}
-          value={answers.monthlyIncome ?? ""}
-          onChange={(value) => setAnswer("monthlyIncome", value)}
-          inputMode="numeric"
-          error={errors.monthlyIncome}
-          hint={
-            rentPrice
-              ? interpolate(t.solvencyForProperty, {
-                  rent: rentPrice.toLocaleString("es-ES"),
-                  recommended:
-                    recommendedIncomeFor(rentPrice).toLocaleString("es-ES"),
-                })
-              : t.solvencyHelp
-          }
+      {seasonal ? (
+        <SelectField
+          label={t.stayPurpose}
+          value={answers.stayPurpose ?? ""}
+          onChange={(value) => setAnswer("stayPurpose", value)}
+          options={t.stayPurposeOptions}
+          placeholder={dictionary.common.selectPlaceholder}
+          error={errors.stayPurpose}
           required
         />
+      ) : (
+        <>
+          <YesNoField
+            label={t.provableIncome}
+            value={answers.provableIncome ?? ""}
+            onChange={(value) => setAnswer("provableIncome", value)}
+            yesLabel={dictionary.common.yes}
+            noLabel={dictionary.common.no}
+            error={errors.provableIncome}
+          />
 
-        {/*
-          Aqui habia un veredicto en vivo ("cumplis" / "no llegais"). Se ha
-          quitado a proposito:
+          <div>
+            <TextField
+              label={t.monthlyIncome}
+              value={answers.monthlyIncome ?? ""}
+              onChange={(value) => setAnswer("monthlyIncome", value)}
+              inputMode="numeric"
+              error={errors.monthlyIncome}
+              hint={
+                rentPrice
+                  ? interpolate(t.solvencyForProperty, {
+                      rent: rentPrice.toLocaleString("es-ES"),
+                      recommended:
+                        recommendedIncomeFor(rentPrice).toLocaleString("es-ES"),
+                    })
+                  : t.solvencyHelp
+              }
+              required
+            />
 
-          - A quien no llega, le dice que no antes de que Artiko haya visto
-            nada. Muchos abandonan ahi, y algunos habrian encajado igualmente
-            con aval, ahorros o un segundo titular.
-          - El criterio no es una linea nitida: la referencia del sector esta
-            entre el 30% y el 45% segun quien la aplique.
+            {/*
+              Aqui habia un veredicto en vivo ("cumplis" / "no llegais"). Se ha
+              quitado a proposito:
 
-          Se conserva el dato objetivo (el importe de referencia) en la ayuda
-          del campo, que es lo util: orienta sin juzgar.
-        */}
-      </div>
+              - A quien no llega, le dice que no antes de que Artiko haya visto
+                nada. Muchos abandonan ahi, y algunos habrian encajado igualmente
+                con aval, ahorros o un segundo titular.
+              - El criterio no es una linea nitida: la referencia del sector esta
+                entre el 30% y el 45% segun quien la aplique.
+
+              Se conserva el dato objetivo (el importe de referencia) en la ayuda
+              del campo, que es lo util: orienta sin juzgar.
+            */}
+          </div>
+        </>
+      )}
 
       <YesNoField
         label={t.pets}

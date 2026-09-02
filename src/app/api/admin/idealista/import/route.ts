@@ -9,10 +9,7 @@ import { prisma } from "@/lib/db";
 /// se guarda como lote pendiente y NUNCA toca la tabla de inmuebles hasta que
 /// una persona lo confirma en pantalla.
 
-const ALLOWED_ORIGINS = [
-  "https://www.idealista.com",
-  "https://idealista.com"
-];
+const ALLOWED_ORIGINS = ["https://www.idealista.com", "https://idealista.com"];
 
 /// Topes generosos frente a un catalogo real (19 anuncios) pero que impiden
 /// que un envio manipulado llene la base de datos.
@@ -27,14 +24,14 @@ const listingSchema = z.object({
   url: z.string().max(500).nullable().optional(),
   imageUrl: z.string().max(1000).nullable().optional(),
   description: z.string().max(4000).nullable().optional(),
-  details: z.array(z.string().max(120)).max(20).default([])
+  details: z.array(z.string().max(120)).max(20).default([]),
 });
 
 const payloadSchema = z.object({
   token: z.string().min(20).max(200),
   sourceUrl: z.string().max(500).optional(),
   hasMorePages: z.boolean().optional(),
-  listings: z.array(listingSchema).min(1).max(MAX_LISTINGS)
+  listings: z.array(listingSchema).min(1).max(MAX_LISTINGS),
 });
 
 function corsHeaders(origin: string | null) {
@@ -45,14 +42,14 @@ function corsHeaders(origin: string | null) {
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",
     "Access-Control-Max-Age": "86400",
-    Vary: "Origin"
+    Vary: "Origin",
   };
 }
 
 export async function OPTIONS(request: NextRequest) {
   return new NextResponse(null, {
     status: 204,
-    headers: corsHeaders(request.headers.get("origin"))
+    headers: corsHeaders(request.headers.get("origin")),
   });
 }
 
@@ -65,7 +62,7 @@ export async function POST(request: NextRequest) {
   } catch {
     return NextResponse.json(
       { error: "El envio no es JSON valido." },
-      { status: 400, headers }
+      { status: 400, headers },
     );
   }
 
@@ -73,7 +70,7 @@ export async function POST(request: NextRequest) {
   if (!parsed.success) {
     return NextResponse.json(
       { error: "El envio no tiene el formato esperado." },
-      { status: 400, headers }
+      { status: 400, headers },
     );
   }
 
@@ -81,7 +78,7 @@ export async function POST(request: NextRequest) {
 
   const admin = await prisma.adminUser.findUnique({
     where: { syncToken: token },
-    select: { email: true, active: true }
+    select: { email: true, active: true },
   });
 
   // Mismo mensaje para token inexistente y administrador desactivado: no hay
@@ -90,9 +87,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         error:
-          "La credencial del boton no es valida. Vuelve a crearlo desde el panel de Artiko."
+          "La credencial del boton no es valida. Vuelve a crearlo desde el panel de Artiko.",
       },
-      { status: 401, headers }
+      { status: 401, headers },
     );
   }
 
@@ -100,20 +97,20 @@ export async function POST(request: NextRequest) {
   // de revisar, sustituimos el anterior en lugar de acumular borradores.
   await prisma.importBatch.updateMany({
     where: { createdByEmail: admin.email, status: "PENDING" },
-    data: { status: "DISCARDED", reviewedAt: new Date() }
+    data: { status: "DISCARDED", reviewedAt: new Date() },
   });
 
   const batch = await prisma.importBatch.create({
     data: {
       createdByEmail: admin.email,
       itemCount: listings.length,
-      payload: { listings, sourceUrl, hasMorePages: hasMorePages ?? false }
+      payload: { listings, sourceUrl, hasMorePages: hasMorePages ?? false },
     },
-    select: { id: true }
+    select: { id: true },
   });
 
   return NextResponse.json(
     { batchId: batch.id, received: listings.length },
-    { status: 201, headers }
+    { status: 201, headers },
   );
 }

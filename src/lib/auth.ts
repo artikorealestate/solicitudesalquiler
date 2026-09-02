@@ -21,7 +21,7 @@ export async function isAuthorizedAdmin(email: string): Promise<boolean> {
 
   const admin = await prisma.adminUser.findUnique({
     where: { email: normalized },
-    select: { active: true }
+    select: { active: true },
   });
 
   return admin?.active === true;
@@ -31,8 +31,8 @@ export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID ?? "",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? ""
-    })
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+    }),
   ],
 
   // Sin adaptador de base de datos: la sesion viaja en una cookie firmada.
@@ -47,7 +47,7 @@ export const authOptions: NextAuthOptions = {
 
   pages: {
     signIn: "/admin/login",
-    error: "/admin/login"
+    error: "/admin/login",
   },
 
   callbacks: {
@@ -65,7 +65,7 @@ export const authOptions: NextAuthOptions = {
       await prisma.adminUser.upsert({
         where: { email },
         create: { email, name: user.name ?? null, lastLogin: new Date() },
-        update: { name: user.name ?? undefined, lastLogin: new Date() }
+        update: { name: user.name ?? undefined, lastLogin: new Date() },
       });
 
       return true;
@@ -73,6 +73,6 @@ export const authOptions: NextAuthOptions = {
 
     async session({ session }) {
       return session;
-    }
-  }
+    },
+  },
 };

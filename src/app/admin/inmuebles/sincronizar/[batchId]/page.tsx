@@ -5,7 +5,7 @@ import { applyBatch, discardBatch } from "@/lib/idealista/actions";
 import {
   buildBatchRows,
   summarizeBatch,
-  type RawListing
+  type RawListing,
 } from "@/lib/idealista/batch";
 
 export const dynamic = "force-dynamic";
@@ -13,7 +13,7 @@ export const dynamic = "force-dynamic";
 const stateStyles: Record<string, string> = {
   nuevo: "bg-success/10 text-success",
   cambiado: "bg-gold-wash text-gold-dark",
-  igual: "bg-cream-deep text-ink-muted"
+  igual: "bg-cream-deep text-ink-muted",
 };
 
 function formatPrice(listing: { rentPrice?: number; salePrice?: number }) {
@@ -27,7 +27,7 @@ function formatPrice(listing: { rentPrice?: number; salePrice?: number }) {
 }
 
 export default async function ReviewBatchPage({
-  params
+  params,
 }: {
   params: Promise<{ batchId: string }>;
 }) {
@@ -40,8 +40,8 @@ export default async function ReviewBatchPage({
       status: true,
       createdAt: true,
       itemCount: true,
-      payload: true
-    }
+      payload: true,
+    },
   });
 
   if (!batch) notFound();
@@ -60,8 +60,8 @@ export default async function ReviewBatchPage({
       rentPrice: true,
       salePrice: true,
       zone: true,
-      mainImageUrl: true
-    }
+      mainImageUrl: true,
+    },
   });
 
   const rows = buildBatchRows(payload?.listings ?? [], existing);
@@ -73,9 +73,9 @@ export default async function ReviewBatchPage({
       <main className="mx-auto max-w-3xl px-5 py-10">
         <h1 className="heading-xl">Este lote ya se reviso</h1>
         <p className="mt-3 text-sm text-ink">
-          Se marco como{" "}
-          {batch.status === "APPLIED" ? "aplicado" : "descartado"}. Vuelve a
-          pulsar el marcador en Idealista si quieres sincronizar de nuevo.
+          Se marco como {batch.status === "APPLIED" ? "aplicado" : "descartado"}
+          . Vuelve a pulsar el marcador en Idealista si quieres sincronizar de
+          nuevo.
         </p>
         <Link href="/admin/inmuebles" className="btn-primary mt-6">
           Volver a inmuebles

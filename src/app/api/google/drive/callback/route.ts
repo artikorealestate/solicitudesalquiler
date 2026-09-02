@@ -26,7 +26,7 @@ function htmlPage(title: string, body: string, tone: "ok" | "error") {
        code{background:#F0ECE6;padding:2px 6px;border-radius:4px;font-size:13px}
      </style></head>
      <body><div class="card"><h1>${title}</h1>${body}</div></body></html>`,
-    { headers: { "Content-Type": "text/html; charset=utf-8" } }
+    { headers: { "Content-Type": "text/html; charset=utf-8" } },
   );
 }
 
@@ -61,7 +61,7 @@ export async function GET(request: Request) {
       "No se ha completado la autorizacion",
       `<p>Google ha devuelto: <code>${error ?? "sin codigo"}</code></p>
        <p><a href="/admin/inmuebles">Volver al panel</a></p>`,
-      "error"
+      "error",
     );
   }
 
@@ -72,9 +72,12 @@ export async function GET(request: Request) {
       code,
       client_id: process.env.GOOGLE_CLIENT_ID ?? "",
       client_secret: process.env.GOOGLE_CLIENT_SECRET ?? "",
-      redirect_uri: new URL("/api/google/drive/callback", request.url).toString(),
-      grant_type: "authorization_code"
-    })
+      redirect_uri: new URL(
+        "/api/google/drive/callback",
+        request.url,
+      ).toString(),
+      grant_type: "authorization_code",
+    }),
   });
 
   if (!response.ok) {
@@ -82,7 +85,7 @@ export async function GET(request: Request) {
     return htmlPage(
       "Google ha rechazado el canje",
       `<p>Respuesta: <code>${response.status}</code></p><p>${detail}</p>`,
-      "error"
+      "error",
     );
   }
 
@@ -95,7 +98,7 @@ export async function GET(request: Request) {
           Entra en <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener">
           los permisos de tu cuenta de Google</a>, retira el acceso de
           "Artiko Interesados" y vuelve a intentarlo.</p>`,
-      "error"
+      "error",
     );
   }
 
@@ -109,6 +112,6 @@ export async function GET(request: Request) {
         "Clientes interesados" y guardar la documentacion.</p>
      <p>Reinicia el servidor de desarrollo para que lea el nuevo valor.</p>
      <p><a href="/admin/inmuebles">Volver al panel</a></p>`,
-    "ok"
+    "ok",
   );
 }

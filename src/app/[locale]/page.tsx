@@ -8,7 +8,7 @@ import type { PublicProperty } from "@/lib/applications/types";
 export const dynamic = "force-dynamic";
 
 export default async function ApplicationPage({
-  params
+  params,
 }: {
   params: Promise<{ locale: string }>;
 }) {
@@ -31,8 +31,8 @@ export default async function ApplicationPage({
       rentPrice: true,
       salePrice: true,
       mainImageUrl: true,
-      idealistaUrl: true
-    }
+      idealistaUrl: true,
+    },
   });
 
   return (

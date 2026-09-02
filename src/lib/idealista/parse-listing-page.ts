@@ -1,7 +1,7 @@
 import {
   PROPERTY_TITLE_PATTERN,
   parseIdealistaText,
-  type ParsedListing
+  type ParsedListing,
 } from "./parse";
 
 /// Interpreta la pagina completa de anuncios de Idealista (la que lista los
@@ -70,15 +70,17 @@ export type ParsedPageListing = ParsedListing & {
 export function parseIdealistaListingPage(input: string): ParsedPageListing[] {
   if (!input?.trim()) return [];
 
-  return splitIntoListings(input)
-    .map((block, index) => ({ ...parseIdealistaText(block), index }))
-    // Sin titulo ni precio no hay nada aprovechable: probablemente sea
-    // texto de la interfaz de Idealista colado entre anuncios.
-    .filter(
-      (listing) =>
-        listing.title !== undefined &&
-        (listing.rentPrice !== undefined || listing.salePrice !== undefined)
-    );
+  return (
+    splitIntoListings(input)
+      .map((block, index) => ({ ...parseIdealistaText(block), index }))
+      // Sin titulo ni precio no hay nada aprovechable: probablemente sea
+      // texto de la interfaz de Idealista colado entre anuncios.
+      .filter(
+        (listing) =>
+          listing.title !== undefined &&
+          (listing.rentPrice !== undefined || listing.salePrice !== undefined),
+      )
+  );
 }
 
 export type SyncComparison = {
@@ -104,7 +106,7 @@ type ExistingProperty = {
 /// modificamos nada a partir de texto interpretado sin que alguien lo valide.
 export function compareWithExisting(
   parsed: ParsedPageListing[],
-  existing: ExistingProperty[]
+  existing: ExistingProperty[],
 ): SyncComparison[] {
   const byReference = new Map(existing.map((item) => [item.reference, item]));
   const byTitle = new Map(existing.map((item) => [item.title, item]));
@@ -125,7 +127,7 @@ export function compareWithExisting(
       listing.rentPrice !== (match.rentPrice ?? undefined)
     ) {
       changes.push(
-        `alquiler: ${match.rentPrice ?? "sin precio"} → ${listing.rentPrice}`
+        `alquiler: ${match.rentPrice ?? "sin precio"} → ${listing.rentPrice}`,
       );
     }
 
@@ -134,7 +136,7 @@ export function compareWithExisting(
       listing.salePrice !== (match.salePrice ?? undefined)
     ) {
       changes.push(
-        `venta: ${match.salePrice ?? "sin precio"} → ${listing.salePrice}`
+        `venta: ${match.salePrice ?? "sin precio"} → ${listing.salePrice}`,
       );
     }
 
@@ -146,7 +148,7 @@ export function compareWithExisting(
       listing,
       state: changes.length > 0 ? ("cambiado" as const) : ("igual" as const),
       existingId: match.id,
-      changes
+      changes,
     };
   });
 }

@@ -24,7 +24,7 @@ const ALLOWED_TYPES = [
   "image/jpeg",
   "image/png",
   "image/heic",
-  "image/webp"
+  "image/webp",
 ];
 
 const schema = z.object({
@@ -32,7 +32,7 @@ const schema = z.object({
   ticket: z.string().min(10).max(400),
   fileName: z.string().min(1).max(200),
   mimeType: z.string().min(1).max(120),
-  sizeBytes: z.number().int().positive().max(MAX_BYTES)
+  sizeBytes: z.number().int().positive().max(MAX_BYTES),
 });
 
 export async function POST(request: NextRequest) {
@@ -56,8 +56,8 @@ export async function POST(request: NextRequest) {
     where: { id: applicationId },
     select: {
       driveFolderId: true,
-      documents: { select: { sizeBytes: true } }
-    }
+      documents: { select: { sizeBytes: true } },
+    },
   });
 
   if (!application?.driveFolderId) {
@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
 
   const usedBytes = application.documents.reduce(
     (total, document) => total + document.sizeBytes,
-    0
+    0,
   );
 
   if (usedBytes + sizeBytes > MAX_TOTAL_BYTES_PER_APPLICATION) {
@@ -89,7 +89,7 @@ export async function POST(request: NextRequest) {
       // llega a Drive y la app se queda sin saber su identificador.
       // Con el movil en la red local el origen es 192.168.x.x, no localhost,
       // asi que hay que leerlo de la peticion en lugar de deducirlo.
-      origin: request.headers.get("origin") ?? request.nextUrl.origin
+      origin: request.headers.get("origin") ?? request.nextUrl.origin,
     });
 
     return NextResponse.json({ uploadUrl });

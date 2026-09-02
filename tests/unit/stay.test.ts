@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { describeStay, stayLengthText } from "../../src/lib/applications/stay";
+import {
+  describeStay,
+  isSeasonalStay,
+  stayLengthText,
+} from "../../src/lib/applications/stay";
 
 describe("stayLengthText", () => {
   it("cuenta en dias las estancias cortas", () => {
@@ -75,5 +79,67 @@ describe("describeStay", () => {
 
   it("ignora fechas que no se pueden leer", () => {
     expect(describeStay({ moveInDate: "cuando sea" })).toBeNull();
+  });
+});
+
+describe("isSeasonalStay", () => {
+  it("reconoce quien lo dice explicitamente", () => {
+    expect(isSeasonalStay({ stayLength: "season" })).toBe(true);
+  });
+
+  it("reconoce un verano por las fechas", () => {
+    expect(
+      isSeasonalStay({ moveInDate: "2026-07-01", moveOutDate: "2026-09-01" }),
+    ).toBe(true);
+  });
+
+  // Justo por debajo del corte de once meses.
+  it("cuenta diez meses como temporada", () => {
+    expect(
+      isSeasonalStay({ moveInDate: "2026-01-01", moveOutDate: "2026-11-01" }),
+    ).toBe(true);
+  });
+
+  it("un ano entero no es temporada", () => {
+    expect(
+      isSeasonalStay({ moveInDate: "2026-01-01", moveOutDate: "2027-01-01" }),
+    ).toBe(false);
+  });
+
+  it("no lo es quien pide un ano o mas", () => {
+    expect(isSeasonalStay({ stayLength: "oneYear" })).toBe(false);
+    expect(isSeasonalStay({ stayLength: "twoOrThree" })).toBe(false);
+    expect(isSeasonalStay({ stayLength: "longTerm" })).toBe(false);
+  });
+
+  // Las solicitudes anteriores a estas preguntas se siguen tratando como
+  // vivienda habitual, que es como se recibieron.
+  it("ante la falta de datos no lo da por temporada", () => {
+    expect(isSeasonalStay({})).toBe(false);
+    expect(isSeasonalStay({ moveInDate: "2026-07-01" })).toBe(false);
+  });
+});
+
+describe("una fecha de salida que ya no aplica", () => {
+  // Alguien pone "ya sabemos la fecha", escribe agosto, y luego cambia a
+  // "un ano". La fecha vieja no puede seguir decidiendo por el.
+  it("no convierte en temporada a quien pide un ano", () => {
+    expect(
+      isSeasonalStay({
+        stayLength: "oneYear",
+        moveInDate: "2026-07-01",
+        moveOutDate: "2026-08-31",
+      }),
+    ).toBe(false);
+  });
+
+  it("tampoco a quien no pone fecha de fin", () => {
+    expect(
+      isSeasonalStay({
+        stayLength: "longTerm",
+        moveInDate: "2026-07-01",
+        moveOutDate: "2026-08-31",
+      }),
+    ).toBe(false);
   });
 });

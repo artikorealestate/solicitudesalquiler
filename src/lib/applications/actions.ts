@@ -17,7 +17,7 @@ async function requireAdminEmail(): Promise<string> {
 
 export async function changeApplicationStatus(
   applicationId: string,
-  formData: FormData
+  formData: FormData,
 ) {
   const email = await requireAdminEmail();
   const status = String(formData.get("status") ?? "");
@@ -28,11 +28,11 @@ export async function changeApplicationStatus(
 
   await prisma.application.update({
     where: { id: applicationId },
-    data: { status: status as never }
+    data: { status: status as never },
   });
 
   console.info(
-    `[solicitudes] ${email} cambio la solicitud ${applicationId} a ${status}`
+    `[solicitudes] ${email} cambio la solicitud ${applicationId} a ${status}`,
   );
 
   revalidatePath(`/admin/solicitudes/${applicationId}`);
@@ -57,8 +57,8 @@ export async function deleteApplication(applicationId: string) {
       firstName: true,
       lastName: true,
       driveFolderId: true,
-      _count: { select: { documents: true } }
-    }
+      _count: { select: { documents: true } },
+    },
   });
 
   if (!application) redirect("/admin/solicitudes");
@@ -72,7 +72,7 @@ export async function deleteApplication(applicationId: string) {
     } catch (error) {
       console.error(
         `[solicitudes] No se ha podido mandar a la papelera la carpeta de ${applicationId}:`,
-        error
+        error,
       );
     }
   }
@@ -81,7 +81,7 @@ export async function deleteApplication(applicationId: string) {
 
   console.info(
     `[solicitudes] ${email} elimino la solicitud de ${application.firstName} ` +
-      `${application.lastName} (${application._count.documents} documentos)`
+      `${application.lastName} (${application._count.documents} documentos)`,
   );
 
   revalidatePath("/admin/solicitudes");
@@ -91,7 +91,7 @@ export async function deleteApplication(applicationId: string) {
 
 export async function addApplicationNote(
   applicationId: string,
-  formData: FormData
+  formData: FormData,
 ) {
   const email = await requireAdminEmail();
   const body = String(formData.get("body") ?? "").trim();
@@ -99,7 +99,7 @@ export async function addApplicationNote(
   if (!body) return;
 
   await prisma.note.create({
-    data: { applicationId, authorEmail: email, body: body.slice(0, 4000) }
+    data: { applicationId, authorEmail: email, body: body.slice(0, 4000) },
   });
 
   revalidatePath(`/admin/solicitudes/${applicationId}`);

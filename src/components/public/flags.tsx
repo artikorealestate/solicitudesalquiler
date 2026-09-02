@@ -48,7 +48,14 @@ function VerticalBands({ colors }: { colors: [string, string, string] }) {
   return (
     <Frame>
       {colors.map((color, index) => (
-        <rect key={color + index} x={index * 20} y="0" width="20" height="40" fill={color} />
+        <rect
+          key={color + index}
+          x={index * 20}
+          y="0"
+          width="20"
+          height="40"
+          fill={color}
+        />
       ))}
     </Frame>
   );
@@ -101,10 +108,25 @@ const flags: Record<Locale, React.ReactNode> = {
     <Frame>
       <rect x="0" y="0" width="60" height="40" fill="#da291c" />
       <rect x="0" y="0" width="24" height="40" fill="#046a38" />
-      <circle cx="24" cy="20" r="8" fill="none" stroke="#ffe900" strokeWidth="2" />
-      <rect x="20" y="16" width="8" height="8" fill="#fff" stroke="#da291c" strokeWidth="1" />
+      <circle
+        cx="24"
+        cy="20"
+        r="8"
+        fill="none"
+        stroke="#ffe900"
+        strokeWidth="2"
+      />
+      <rect
+        x="20"
+        y="16"
+        width="8"
+        height="8"
+        fill="#fff"
+        stroke="#da291c"
+        strokeWidth="1"
+      />
     </Frame>
-  )
+  ),
 };
 
 export function Flag({ locale }: { locale: Locale }) {

@@ -25,7 +25,7 @@ export type BuyerReadiness = {
 export const buyerBandLabels: Record<BuyerBand, string> = {
   listo: "Listo para comprar",
   encaminado: "Encaminado",
-  explorando: "Explorando"
+  explorando: "Explorando",
 };
 
 export const buyerBandHints: Record<BuyerBand, string> = {
@@ -33,11 +33,11 @@ export const buyerBandHints: Record<BuyerBand, string> = {
   encaminado:
     "Va en serio pero le queda algun paso: la hipoteca sin aprobar o un inmueble que vender.",
   explorando:
-    "Todavia esta mirando. Merece atencion, pero sin prioridad frente a los anteriores."
+    "Todavia esta mirando. Merece atencion, pero sin prioridad frente a los anteriores.",
 };
 
 export function assessBuyerReadiness(
-  answers: Record<string, string>
+  answers: Record<string, string>,
 ): BuyerReadiness {
   const signals: BuyerSignal[] = [];
   let score = 0;
@@ -53,7 +53,7 @@ export function assessBuyerReadiness(
     } else {
       signals.push({
         text: "Necesita financiacion y aun no la tiene aprobada",
-        weight: "debil"
+        weight: "debil",
       });
     }
   }
@@ -63,7 +63,7 @@ export function assessBuyerReadiness(
     score -= 1;
     signals.push({
       text: "Necesita vender otro inmueble antes de comprar",
-      weight: "debil"
+      weight: "debil",
     });
   } else if (answers.needToSell === "no") {
     score += 1;
@@ -81,12 +81,12 @@ export function assessBuyerReadiness(
     score += 1;
     signals.push({
       text: `Ha visitado unas ${visited} viviendas`,
-      weight: "neutro"
+      weight: "neutro",
     });
   } else if (Number.isFinite(visited) && visited > 0) {
     signals.push({
       text: `Ha visitado unas ${visited} viviendas`,
-      weight: "neutro"
+      weight: "neutro",
     });
   }
 
@@ -103,7 +103,10 @@ export function assessBuyerReadiness(
 
   // --- Experiencia previa ---
   if (answers.firstPurchase === "experienced") {
-    signals.push({ text: "Ya conoce el proceso de compraventa", weight: "neutro" });
+    signals.push({
+      text: "Ya conoce el proceso de compraventa",
+      weight: "neutro",
+    });
   }
 
   const band: BuyerBand =

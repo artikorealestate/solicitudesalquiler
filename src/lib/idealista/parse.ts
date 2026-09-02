@@ -72,14 +72,17 @@ function findTitleLine(lines: string[]): string | undefined {
 ///   -> direccion: "Calle Flor del Taronger", zona: "Canet d'En Berenguer"
 function splitLocation(titleLine: string): { address?: string; zone?: string } {
   const afterType = titleLine.replace(/^[^,]*?\s+en\s+/i, "");
-  const parts = afterType.split(",").map((part) => part.trim()).filter(Boolean);
+  const parts = afterType
+    .split(",")
+    .map((part) => part.trim())
+    .filter(Boolean);
 
   if (parts.length === 0) return {};
   if (parts.length === 1) return { zone: parts[0] };
 
   return {
     address: parts.slice(0, -1).join(", "),
-    zone: parts[parts.length - 1]
+    zone: parts[parts.length - 1],
   };
 }
 
@@ -99,7 +102,7 @@ export function parseIdealistaText(input: string): ParsedListing {
   // linea del listado no existe y al reves.
   const detailIndex = lines.findIndex(
     (line) =>
-      line.length <= MAX_DETAIL_TITLE_LENGTH && DETAIL_TITLE_PATTERN.test(line)
+      line.length <= MAX_DETAIL_TITLE_LENGTH && DETAIL_TITLE_PATTERN.test(line),
   );
 
   /// Linea de la que salio el titulo, para no confundirla luego con la
@@ -123,7 +126,8 @@ export function parseIdealistaText(input: string): ParsedListing {
     // Reconstruimos el titulo con el formato del listado para que un mismo
     // inmueble se llame igual venga de donde venga.
     const typeLabel =
-      propertyType.charAt(0).toUpperCase() + propertyType.slice(1).toLowerCase();
+      propertyType.charAt(0).toUpperCase() +
+      propertyType.slice(1).toLowerCase();
     result.title = result.zone
       ? `${typeLabel} en ${result.address}, ${result.zone}`
       : `${typeLabel} en ${result.address}`;
@@ -139,7 +143,7 @@ export function parseIdealistaText(input: string): ParsedListing {
   // --- Precios ---
   // El "/mes" (o "al mes") es lo que distingue un alquiler de una venta.
   const rentMatch = text.match(
-    /([\d.]+(?:,\d+)?)\s*(?:€|EUR|eur)\s*(?:\/\s*mes|al mes)/i
+    /([\d.]+(?:,\d+)?)\s*(?:€|EUR|eur)\s*(?:\/\s*mes|al mes)/i,
   );
   if (rentMatch) {
     result.rentPrice = parseSpanishNumber(rentMatch[1]);
@@ -160,7 +164,7 @@ export function parseIdealistaText(input: string): ParsedListing {
 
   // --- Enlace y referencia ---
   const urlMatch = text.match(
-    /https?:\/\/(?:www\.)?idealista\.com\/[^\s"'<>]+/i
+    /https?:\/\/(?:www\.)?idealista\.com\/[^\s"'<>]+/i,
   );
   if (urlMatch) {
     result.idealistaUrl = urlMatch[0].replace(/[.,;)]+$/, "");
@@ -193,7 +197,7 @@ export function parseIdealistaText(input: string): ParsedListing {
   // La damos por empezada en la primera linea larga que no sea el titulo:
   // las lineas cortas son etiquetas sueltas ("Contactar", "2 hab.").
   const descriptionLine = lines.find(
-    (line) => line !== titleSourceLine && line.length > 80
+    (line) => line !== titleSourceLine && line.length > 80,
   );
   if (descriptionLine) result.description = descriptionLine;
 

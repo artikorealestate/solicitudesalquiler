@@ -50,7 +50,7 @@ function Unavailable({ title, body }: { title: string; body: string }) {
 }
 
 export default async function DocumentRequestPage({
-  params
+  params,
 }: {
   params: Promise<{ token: string }>;
 }) {
@@ -66,10 +66,10 @@ export default async function DocumentRequestPage({
           locale: true,
           driveFolderId: true,
           property: { select: { title: true, zone: true } },
-          documents: { select: { fileName: true } }
-        }
-      }
-    }
+          documents: { select: { fileName: true } },
+        },
+      },
+    },
   });
 
   // El idioma sale de la solicitud; si el enlace no existe, se cae al

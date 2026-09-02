@@ -7,7 +7,7 @@ import { operationLabels, statusLabels } from "@/lib/properties/schema";
 const statusStyles: Record<string, string> = {
   ACTIVE: "bg-success/12 text-success",
   PAUSED: "bg-gold-wash text-gold-dark",
-  ARCHIVED: "bg-cream-deep text-ink-muted"
+  ARCHIVED: "bg-cream-deep text-ink-muted",
 };
 
 export type PropertyCardData = {
@@ -120,7 +120,7 @@ export function PropertyCard({ property }: { property: PropertyCardData }) {
               action={setPropertyStatus.bind(
                 null,
                 property.id,
-                property.status === "ACTIVE" ? "PAUSED" : "ACTIVE"
+                property.status === "ACTIVE" ? "PAUSED" : "ACTIVE",
               )}
             >
               <button

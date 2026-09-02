@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
 import {
   buildApplicationsCsv,
-  type ExportableApplication
+  type ExportableApplication,
 } from "../../src/lib/applications/export-csv";
 
 function application(
-  overrides: Partial<ExportableApplication> = {}
+  overrides: Partial<ExportableApplication> = {},
 ): ExportableApplication {
   return {
     submittedAt: new Date(2026, 7, 14, 9, 5),
@@ -19,15 +19,19 @@ function application(
     nationality: "Española",
     idDocument: "12345678A",
     comment: null,
-    answers: { householdSize: "2", provableIncome: "yes", monthlyIncome: "5200" },
+    answers: {
+      householdSize: "2",
+      provableIncome: "yes",
+      monthlyIncome: "5200",
+    },
     driveFolderUrl: "https://drive.google.com/drive/folders/abc",
     documentCount: 3,
     property: {
       reference: "195",
       title: "Piso en Calle de la Flor del Taronger",
-      zone: "Canet d'En Berenguer"
+      zone: "Canet d'En Berenguer",
     },
-    ...overrides
+    ...overrides,
   };
 }
 
@@ -65,7 +69,7 @@ describe("exportacion a CSV", () => {
 
   it("entrecomilla los valores que llevan punto y coma o salto de linea", () => {
     const csv = buildApplicationsCsv([
-      application({ comment: "Primero; segundo\nTercero" })
+      application({ comment: "Primero; segundo\nTercero" }),
     ]);
     expect(csv).toContain('"Primero; segundo\nTercero"');
   });
@@ -77,9 +81,7 @@ describe("exportacion a CSV", () => {
 
   it("neutraliza los valores que Excel interpretaria como formula", () => {
     // Un telefono guardado como "+34600123456" se ejecutaria como formula.
-    const csv = buildApplicationsCsv([
-      application({ phone: "+34600123456" })
-    ]);
+    const csv = buildApplicationsCsv([application({ phone: "+34600123456" })]);
     expect(csv).toContain("'+34600123456");
   });
 
@@ -87,8 +89,8 @@ describe("exportacion a CSV", () => {
     const csv = buildApplicationsCsv([
       application({
         operation: "SALE",
-        answers: { buyerProfile: "Pareja joven", needsFinancing: "yes" }
-      })
+        answers: { buyerProfile: "Pareja joven", needsFinancing: "yes" },
+      }),
     ]);
     const [header, row] = lines(csv);
 
@@ -96,7 +98,7 @@ describe("exportacion a CSV", () => {
     const values = row.split(";");
     const rentColumn = columns.findIndex((c) => c.startsWith("Alquiler:"));
     const saleColumn = columns.findIndex((c) =>
-      c.startsWith("Compra: Quien compra")
+      c.startsWith("Compra: Quien compra"),
     );
 
     // Las columnas de alquiler quedan vacias en una solicitud de compra.
@@ -106,7 +108,7 @@ describe("exportacion a CSV", () => {
 
   it("escribe la fecha en formato espanol", () => {
     const csv = buildApplicationsCsv([
-      application({ submittedAt: new Date(2026, 7, 14, 9, 5) })
+      application({ submittedAt: new Date(2026, 7, 14, 9, 5) }),
     ]);
     expect(csv).toContain("14/08/2026 09:05");
   });

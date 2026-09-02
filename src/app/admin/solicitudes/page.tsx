@@ -13,7 +13,7 @@ import {
   type ApplicationSearch,
 } from "@/lib/applications/filters";
 import { SolvencyBadge } from "@/components/admin/solvency-badge";
-import { describeStay } from "@/lib/applications/stay";
+import { describeStay, isSeasonalStay } from "@/lib/applications/stay";
 import { BuyerBadge } from "@/components/admin/buyer-badge";
 import { assessSolvency } from "@/lib/applications/types";
 import { assessBuyerReadiness } from "@/lib/applications/buyer-readiness";
@@ -248,7 +248,17 @@ export default async function ApplicationsPage({
                       {operationLabels[application.operation]}
                     </td>
                     <td className="px-5 py-3">
-                      {application.operation === "RENT" ? (
+                      {application.operation === "RENT" &&
+                      isSeasonalStay(
+                        (application.answers ?? {}) as Record<string, string>,
+                      ) ? (
+                        <span
+                          className="inline-block whitespace-nowrap rounded bg-gold-wash px-2 py-0.5 text-xs font-bold text-gold-dark"
+                          title="Estancia de temporada: no se le aplica el criterio del 30%."
+                        >
+                          Temporada
+                        </span>
+                      ) : application.operation === "RENT" ? (
                         <SolvencyBadge
                           compact
                           assessment={assessSolvency(

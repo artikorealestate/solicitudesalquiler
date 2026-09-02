@@ -9,7 +9,7 @@ import {
   checkRate,
   checkSubmissionShape,
   clientIpFrom,
-  hashIp
+  hashIp,
 } from "@/lib/security/spam-guard";
 import { getDictionary } from "@/i18n";
 import { isLocale, type Locale } from "@/i18n/config";
@@ -17,7 +17,7 @@ import { isDriveConfigured } from "@/lib/google/auth";
 import {
   ensureApplicantFolder,
   folderUrl,
-  uploadSummaryDocument
+  uploadSummaryDocument,
 } from "@/lib/google/drive";
 import { buildSummaryHtml } from "@/lib/applications/summary-html";
 import { issueUploadTicket } from "@/lib/applications/upload-ticket";
@@ -52,7 +52,7 @@ const submissionSchema = z.object({
   /// que solo llega relleno desde un programa automático.
   website: z.string().max(200).optional(),
   /// Momento en que se cargó el formulario, para medir cuánto se ha tardado.
-  startedAt: z.number().optional()
+  startedAt: z.number().optional(),
 });
 
 export type SubmitResult =
@@ -73,7 +73,7 @@ const SILENT_DISCARD: SubmitResult = {
   ok: true,
   applicationId: "",
   uploadTicket: "",
-  canUploadDocuments: false
+  canUploadDocuments: false,
 };
 
 export async function submitApplication(input: unknown): Promise<SubmitResult> {
@@ -86,7 +86,7 @@ export async function submitApplication(input: unknown): Promise<SubmitResult> {
   // --- Defensas frente a envios automaticos ---------------------------
   const shape = checkSubmissionShape({
     honeypot: data.website,
-    startedAt: data.startedAt
+    startedAt: data.startedAt,
   });
 
   if (!shape.allow) {
@@ -101,14 +101,14 @@ export async function submitApplication(input: unknown): Promise<SubmitResult> {
     const now = Date.now();
     const [lastHour, lastDay] = await Promise.all([
       prisma.application.count({
-        where: { ipHash, submittedAt: { gte: new Date(now - 60 * 60 * 1000) } }
+        where: { ipHash, submittedAt: { gte: new Date(now - 60 * 60 * 1000) } },
       }),
       prisma.application.count({
         where: {
           ipHash,
-          submittedAt: { gte: new Date(now - 24 * 60 * 60 * 1000) }
-        }
-      })
+          submittedAt: { gte: new Date(now - 24 * 60 * 60 * 1000) },
+        },
+      }),
     ]);
 
     const rate = checkRate({ lastHour, lastDay });
@@ -126,10 +126,10 @@ export async function submitApplication(input: unknown): Promise<SubmitResult> {
       email: data.email.toLowerCase(),
       propertyId: data.propertyId,
       submittedAt: {
-        gte: new Date(Date.now() - DUPLICATE_WINDOW_MINUTES * 60 * 1000)
-      }
+        gte: new Date(Date.now() - DUPLICATE_WINDOW_MINUTES * 60 * 1000),
+      },
     },
-    select: { id: true, driveFolderId: true }
+    select: { id: true, driveFolderId: true },
   });
 
   if (recentDuplicate) {
@@ -138,7 +138,7 @@ export async function submitApplication(input: unknown): Promise<SubmitResult> {
       ok: true,
       applicationId: recentDuplicate.id,
       uploadTicket: issueUploadTicket(recentDuplicate.id),
-      canUploadDocuments: Boolean(recentDuplicate.driveFolderId)
+      canUploadDocuments: Boolean(recentDuplicate.driveFolderId),
     };
   }
 
@@ -152,7 +152,7 @@ export async function submitApplication(input: unknown): Promise<SubmitResult> {
       operationType:
         data.operation === "RENT"
           ? { in: ["RENT", "BOTH"] }
-          : { in: ["SALE", "BOTH"] }
+          : { in: ["SALE", "BOTH"] },
     },
     select: {
       id: true,
@@ -162,8 +162,8 @@ export async function submitApplication(input: unknown): Promise<SubmitResult> {
       rentPrice: true,
       salePrice: true,
       driveRentFolderId: true,
-      driveSaleFolderId: true
-    }
+      driveSaleFolderId: true,
+    },
   });
 
   if (!property) return { ok: false, error: "property-unavailable" };
@@ -197,18 +197,18 @@ export async function submitApplication(input: unknown): Promise<SubmitResult> {
             type: "GDPR",
             textVersion: dictionary.consent.gdprVersion,
             textSnapshot: dictionary.consent.gdprText,
-            locale
+            locale,
           },
           {
             type: "OWNER_SHARING",
             textVersion: dictionary.consent.ownerVersion,
             textSnapshot: dictionary.consent.ownerText,
-            locale
-          }
-        ]
-      }
+            locale,
+          },
+        ],
+      },
     },
-    select: { id: true, submittedAt: true, accessToken: true }
+    select: { id: true, submittedAt: true, accessToken: true },
   });
 
   // --- Drive -------------------------------------------------------------
@@ -226,21 +226,22 @@ export async function submitApplication(input: unknown): Promise<SubmitResult> {
           ? property.driveRentFolderId
           : property.driveSaleFolderId;
 
-      const { applicantFolderId, propertyFolderId } = await ensureApplicantFolder({
-        operation: data.operation,
-        propertyReference: property.reference,
-        propertyTitle: property.title,
-        cachedPropertyFolderId: cached,
-        submittedAt: application.submittedAt,
-        firstName: data.firstName,
-        lastName: data.lastName
-      });
+      const { applicantFolderId, propertyFolderId } =
+        await ensureApplicantFolder({
+          operation: data.operation,
+          propertyReference: property.reference,
+          propertyTitle: property.title,
+          cachedPropertyFolderId: cached,
+          submittedAt: application.submittedAt,
+          firstName: data.firstName,
+          lastName: data.lastName,
+        });
 
       driveFolderUrl = folderUrl(applicantFolderId);
 
       await prisma.application.update({
         where: { id: application.id },
-        data: { driveFolderId: applicantFolderId, driveFolderUrl }
+        data: { driveFolderId: applicantFolderId, driveFolderUrl },
       });
 
       // Cacheamos la carpeta del inmueble para que las siguientes solicitudes
@@ -251,7 +252,7 @@ export async function submitApplication(input: unknown): Promise<SubmitResult> {
           data:
             data.operation === "RENT"
               ? { driveRentFolderId: propertyFolderId }
-              : { driveSaleFolderId: propertyFolderId }
+              : { driveSaleFolderId: propertyFolderId },
         });
       }
 
@@ -266,7 +267,7 @@ export async function submitApplication(input: unknown): Promise<SubmitResult> {
           property: {
             reference: property.reference,
             title: property.title,
-            zone: property.zone
+            zone: property.zone,
           },
           applicant: {
             firstName: data.firstName,
@@ -275,29 +276,29 @@ export async function submitApplication(input: unknown): Promise<SubmitResult> {
             phone: data.phone,
             nationality: data.nationality,
             idDocument: data.idDocument,
-            comment: data.comment
+            comment: data.comment,
           },
           answers: data.answers,
           consents: [
             {
               label: "Proteccion de datos (RGPD)",
               version: dictionary.consent.gdprVersion,
-              text: dictionary.consent.gdprText
+              text: dictionary.consent.gdprText,
             },
             {
               label: "Autorizacion para compartir con la propiedad",
               version: dictionary.consent.ownerVersion,
-              text: dictionary.consent.ownerText
-            }
-          ]
-        })
+              text: dictionary.consent.ownerText,
+            },
+          ],
+        }),
       });
 
       canUploadDocuments = true;
     } catch (error) {
       console.error(
         `[drive] Fallo preparando la carpeta de la solicitud ${application.id}:`,
-        error instanceof Error ? error.message : error
+        error instanceof Error ? error.message : error,
       );
     }
   }
@@ -323,24 +324,24 @@ export async function submitApplication(input: unknown): Promise<SubmitResult> {
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email.toLowerCase(),
-      phone: data.phone
+      phone: data.phone,
     },
     property: {
       reference: property.reference,
       title: property.title,
-      zone: property.zone
+      zone: property.zone,
     },
     price,
     answers: data.answers,
     documentCount: data.declaredDocumentCount ?? 0,
     driveUrl: driveFolderUrl,
-    accessToken: application.accessToken
+    accessToken: application.accessToken,
   });
 
   return {
     ok: true,
     applicationId: application.id,
     uploadTicket: issueUploadTicket(application.id),
-    canUploadDocuments
+    canUploadDocuments,
   };
 }

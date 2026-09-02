@@ -14,7 +14,7 @@ const statusLabels: Record<string, string> = {
   VISITED: "Visitado",
   OFFER: "Oferta",
   RESERVED: "Reservado",
-  CLOSED: "Cerrado"
+  CLOSED: "Cerrado",
 };
 
 export default async function AdminDashboardPage() {
@@ -26,8 +26,8 @@ export default async function AdminDashboardPage() {
       prisma.application.findMany({
         take: 8,
         orderBy: { submittedAt: "desc" },
-        include: { property: { select: { reference: true, title: true } } }
-      })
+        include: { property: { select: { reference: true, title: true } } },
+      }),
     ]);
 
   return (
@@ -45,7 +45,10 @@ export default async function AdminDashboardPage() {
             adjunten los interesados no se estan almacenando. Conectalo antes de
             publicar el formulario.
           </p>
-          <a href="/api/google/drive/authorize" className="btn-primary mt-4 py-2 text-sm">
+          <a
+            href="/api/google/drive/authorize"
+            className="btn-primary mt-4 py-2 text-sm"
+          >
             Conectar Google Drive
           </a>
         </div>
@@ -137,7 +140,7 @@ export default async function AdminDashboardPage() {
 function Stat({
   label,
   value,
-  accent = false
+  accent = false,
 }: {
   label: string;
   value: number;

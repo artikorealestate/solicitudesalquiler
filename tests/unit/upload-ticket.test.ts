@@ -1,7 +1,7 @@
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import {
   issueUploadTicket,
-  verifyUploadTicket
+  verifyUploadTicket,
 } from "../../src/lib/applications/upload-ticket";
 
 beforeAll(() => {
@@ -66,7 +66,7 @@ describe("billete de subida", () => {
 
   it("rechaza una caducidad que no es un numero", () => {
     expect(
-      verifyUploadTicket(`${applicationId}.manana.loquesea`, applicationId)
+      verifyUploadTicket(`${applicationId}.manana.loquesea`, applicationId),
     ).toBe(false);
   });
 });

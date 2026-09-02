@@ -21,7 +21,7 @@ import { listFolderFiles } from "@/lib/google/drive";
 
 const schema = z.object({
   applicationId: z.string().min(1).max(60),
-  ticket: z.string().min(10).max(400)
+  ticket: z.string().min(10).max(400),
 });
 
 export async function POST(request: NextRequest) {
@@ -42,8 +42,8 @@ export async function POST(request: NextRequest) {
     select: {
       id: true,
       driveFolderId: true,
-      documents: { select: { driveFileId: true } }
-    }
+      documents: { select: { driveFileId: true } },
+    },
   });
 
   if (!application?.driveFolderId) {
@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
     (file) =>
       !known.has(file.id) &&
       file.mimeType !== "application/vnd.google-apps.document" &&
-      file.mimeType !== "application/vnd.google-apps.folder"
+      file.mimeType !== "application/vnd.google-apps.folder",
   );
 
   for (const file of pending) {
@@ -77,15 +77,15 @@ export async function POST(request: NextRequest) {
         sizeBytes: Number(file.size ?? 0),
         driveFileId: file.id,
         driveViewUrl:
-          file.webViewLink ?? `https://drive.google.com/file/d/${file.id}/view`
-      }
+          file.webViewLink ?? `https://drive.google.com/file/d/${file.id}/view`,
+      },
     });
   }
 
   if (pending.length > 0) {
     console.info(
       `[drive] Recuperados ${pending.length} documentos de la solicitud ${applicationId} ` +
-        "que estaban en Drive sin registrar."
+        "que estaban en Drive sin registrar.",
     );
   }
 

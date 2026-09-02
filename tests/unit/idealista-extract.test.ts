@@ -24,7 +24,7 @@ let extractReferenceFromHtml: (html: string) => string | null;
 beforeAll(() => {
   const source = readFileSync(
     resolve(__dirname, "../../public/idealista-sync.js"),
-    "utf8"
+    "utf8",
   );
 
   // El script aborta pronto porque el dominio no es idealista.com, pero para
@@ -33,12 +33,12 @@ beforeAll(() => {
     exports: {} as {
       extractListings?: Extractor;
       extractReferenceFromHtml?: (html: string) => string | null;
-    }
+    },
   };
   new Function("module", "document", "location", source)(
     module,
     globalThis.document,
-    { hostname: "test.local", href: "http://test.local/" }
+    { hostname: "test.local", href: "http://test.local/" },
   );
 
   if (!module.exports.extractListings) {
@@ -93,12 +93,14 @@ describe("extractListings sobre HTML real de Idealista", () => {
 
     expect(listing.idealistaId).toBe("105799303");
     expect(listing.title).toBe(
-      "Piso en Calle de la Flor del Taronger, Canet d'En Berenguer"
+      "Piso en Calle de la Flor del Taronger, Canet d'En Berenguer",
     );
     expect(listing.priceText).toBe("1.600€/mes");
     expect(listing.url).toContain("/inmueble/105799303/");
     expect(listing.imageUrl).toContain("img4.idealista.com");
-    expect(listing.description).toContain("Alquiler de temporada en Gran Canet");
+    expect(listing.description).toContain(
+      "Alquiler de temporada en Gran Canet",
+    );
   });
 
   it("no duplica las caracteristicas con el contenedor que las agrupa", () => {
@@ -111,15 +113,15 @@ describe("extractListings sobre HTML real de Idealista", () => {
       "Garaje incluido",
       "2 hab.",
       "116 m²",
-      "2ª planta exterior con ascensor"
+      "2ª planta exterior con ascensor",
     ]);
   });
 
   it("descarta articulos sin identificador de Idealista", () => {
     const listings = extractListings(
       documentWith(
-        '<article class="item"><a class="item-link" title="Piso sin id">x</a></article>'
-      )
+        '<article class="item"><a class="item-link" title="Piso sin id">x</a></article>',
+      ),
     );
     expect(listings).toHaveLength(0);
   });
@@ -150,17 +152,17 @@ describe("extractListings sobre HTML real de Idealista", () => {
 
   it("devuelve null si la ficha no lleva referencia", () => {
     expect(extractReferenceFromHtml("<div>Sin referencia por aqui</div>")).toBe(
-      null
+      null,
     );
   });
 
   it("procesa varios anuncios de una pagina", () => {
     const listings = extractListings(
-      documentWith(realArticle + realArticle.replace("105799303", "101746100"))
+      documentWith(realArticle + realArticle.replace("105799303", "101746100")),
     );
     expect(listings.map((item) => item.idealistaId)).toEqual([
       "105799303",
-      "101746100"
+      "101746100",
     ]);
   });
 });

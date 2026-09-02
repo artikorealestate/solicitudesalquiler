@@ -38,7 +38,7 @@ export type NormalizedListing = {
 /// y de lectura de importes ya estan probadas.
 export function normalizeListing(raw: RawListing): NormalizedListing {
   const parsed = parseIdealistaText(
-    [raw.title, raw.priceText ?? ""].filter(Boolean).join("\n")
+    [raw.title, raw.priceText ?? ""].filter(Boolean).join("\n"),
   );
 
   const ownReference = raw.reference?.trim();
@@ -57,7 +57,7 @@ export function normalizeListing(raw: RawListing): NormalizedListing {
     operationType: parsed.salePrice !== undefined ? "SALE" : "RENT",
     idealistaUrl: raw.url ?? undefined,
     mainImageUrl: raw.imageUrl ?? undefined,
-    description: raw.description ?? undefined
+    description: raw.description ?? undefined,
   };
 }
 
@@ -83,7 +83,7 @@ export type BatchRow = {
 function describeChange(
   label: string,
   before: number | string | null,
-  after: number | string
+  after: number | string,
 ): string {
   return `${label}: ${before ?? "sin dato"} → ${after}`;
 }
@@ -93,12 +93,12 @@ function describeChange(
 /// Idealista, no por titulo: los titulos se reescriben a menudo.
 export function buildBatchRows(
   raw: RawListing[],
-  existing: ExistingProperty[]
+  existing: ExistingProperty[],
 ): BatchRow[] {
   const byIdealistaId = new Map(
     existing
       .filter((item) => item.idealistaId)
-      .map((item) => [item.idealistaId as string, item])
+      .map((item) => [item.idealistaId as string, item]),
   );
 
   return raw.map((rawListing) => {
@@ -115,7 +115,9 @@ export function buildBatchRows(
       listing.rentPrice !== undefined &&
       listing.rentPrice !== (match.rentPrice ?? undefined)
     ) {
-      changes.push(describeChange("alquiler", match.rentPrice, listing.rentPrice));
+      changes.push(
+        describeChange("alquiler", match.rentPrice, listing.rentPrice),
+      );
     }
 
     if (
@@ -142,7 +144,7 @@ export function buildBatchRows(
       state: changes.length > 0 ? ("cambiado" as const) : ("igual" as const),
       existingId: match.id,
       existingReference: match.reference,
-      changes
+      changes,
     };
   });
 }
@@ -151,6 +153,6 @@ export function summarizeBatch(rows: BatchRow[]) {
   return {
     nuevos: rows.filter((row) => row.state === "nuevo").length,
     cambiados: rows.filter((row) => row.state === "cambiado").length,
-    iguales: rows.filter((row) => row.state === "igual").length
+    iguales: rows.filter((row) => row.state === "igual").length,
   };
 }

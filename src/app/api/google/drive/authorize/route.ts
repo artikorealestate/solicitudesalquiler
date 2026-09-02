@@ -10,7 +10,7 @@ export async function GET(request: Request) {
   if (process.env.NODE_ENV === "production") {
     return NextResponse.json(
       { error: "La autorizacion se hace en local, no en produccion." },
-      { status: 404 }
+      { status: 404 },
     );
   }
 
@@ -23,13 +23,13 @@ export async function GET(request: Request) {
   if (!clientId) {
     return NextResponse.json(
       { error: "Falta GOOGLE_CLIENT_ID en el entorno." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
   const redirectUri = new URL(
     "/api/google/drive/callback",
-    request.url
+    request.url,
   ).toString();
 
   const params = new URLSearchParams({
@@ -40,10 +40,10 @@ export async function GET(request: Request) {
     // Sin estos dos, Google devuelve solo un token de una hora y ningun
     // refresh token, y la app dejaria de subir a Drive al rato.
     access_type: "offline",
-    prompt: "consent"
+    prompt: "consent",
   });
 
   return NextResponse.redirect(
-    `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`
+    `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`,
   );
 }

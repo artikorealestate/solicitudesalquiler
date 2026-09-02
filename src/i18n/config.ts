@@ -1,5 +1,15 @@
 /// Idiomas del formulario publico. El panel de administracion va solo en espanol.
-export const locales = ["es", "en", "de", "fr", "ru", "uk", "nl", "pt", "it"] as const;
+export const locales = [
+  "es",
+  "en",
+  "de",
+  "fr",
+  "ru",
+  "uk",
+  "nl",
+  "pt",
+  "it",
+] as const;
 
 export type Locale = (typeof locales)[number];
 
@@ -15,7 +25,7 @@ export const localeNames: Record<Locale, string> = {
   uk: "Українська",
   nl: "Nederlands",
   pt: "Português",
-  it: "Italiano"
+  it: "Italiano",
 };
 
 export function isLocale(value: string): value is Locale {
@@ -31,9 +41,15 @@ export function resolveLocale(acceptLanguage: string | null): Locale {
     .split(",")
     .map((part) => {
       const [tag, qualityPart] = part.trim().split(";q=");
-      return { tag: tag.split("-")[0].toLowerCase(), quality: Number(qualityPart ?? 1) };
+      return {
+        tag: tag.split("-")[0].toLowerCase(),
+        quality: Number(qualityPart ?? 1),
+      };
     })
     .sort((a, b) => b.quality - a.quality);
 
-  return preferred.find((entry) => isLocale(entry.tag))?.tag as Locale ?? defaultLocale;
+  return (
+    (preferred.find((entry) => isLocale(entry.tag))?.tag as Locale) ??
+    defaultLocale
+  );
 }

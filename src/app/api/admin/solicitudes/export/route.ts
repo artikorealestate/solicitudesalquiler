@@ -5,7 +5,7 @@ import { prisma } from "@/lib/db";
 import {
   buildApplicationsCsv,
   exportFileName,
-  type ExportableApplication
+  type ExportableApplication,
 } from "@/lib/applications/export-csv";
 import { buildApplicationWhere } from "@/lib/applications/filters";
 
@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
     q: params.get("q") ?? undefined,
     operacion: params.get("operacion") ?? undefined,
     estado: params.get("estado") ?? undefined,
-    inmueble: params.get("inmueble") ?? undefined
+    inmueble: params.get("inmueble") ?? undefined,
   });
 
   const applications = await prisma.application.findMany({
@@ -32,8 +32,8 @@ export async function GET(request: NextRequest) {
     orderBy: { submittedAt: "desc" },
     include: {
       property: { select: { reference: true, title: true, zone: true } },
-      _count: { select: { documents: true } }
-    }
+      _count: { select: { documents: true } },
+    },
   });
 
   const rows: ExportableApplication[] = applications.map((application) => ({
@@ -51,11 +51,11 @@ export async function GET(request: NextRequest) {
     answers: (application.answers ?? {}) as Record<string, string>,
     driveFolderUrl: application.driveFolderUrl,
     documentCount: application._count.documents,
-    property: application.property
+    property: application.property,
   }));
 
   console.info(
-    `[export] ${session.user.email} descargo ${rows.length} solicitudes`
+    `[export] ${session.user.email} descargo ${rows.length} solicitudes`,
   );
 
   return new NextResponse(buildApplicationsCsv(rows), {
@@ -63,7 +63,7 @@ export async function GET(request: NextRequest) {
       "Content-Type": "text/csv; charset=utf-8",
       "Content-Disposition": `attachment; filename="${exportFileName()}"`,
       // Datos personales: que ningun intermediario los guarde en cache.
-      "Cache-Control": "no-store, private"
-    }
+      "Cache-Control": "no-store, private",
+    },
   });
 }

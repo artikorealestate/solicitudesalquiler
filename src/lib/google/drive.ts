@@ -13,8 +13,8 @@ async function driveFetch(url: string, init: RequestInit = {}) {
     ...init,
     headers: {
       Authorization: `Bearer ${token}`,
-      ...(init.headers ?? {})
-    }
+      ...(init.headers ?? {}),
+    },
   });
 
   if (!response.ok) {
@@ -43,7 +43,7 @@ export function sanitizeFolderName(name: string): string {
 /// hayamos hecho nosotros.
 export async function getOrCreateFolder(
   name: string,
-  parentId: string
+  parentId: string,
 ): Promise<string> {
   const safeName = sanitizeFolderName(name);
   const escaped = safeName.replace(/'/g, "\\'");
@@ -52,11 +52,11 @@ export async function getOrCreateFolder(
     `mimeType='${FOLDER_MIME}'`,
     `name='${escaped}'`,
     `'${parentId}' in parents`,
-    "trashed=false"
+    "trashed=false",
   ].join(" and ");
 
   const search = await driveFetch(
-    `${DRIVE_API}/files?q=${encodeURIComponent(query)}&fields=files(id,name)&pageSize=1`
+    `${DRIVE_API}/files?q=${encodeURIComponent(query)}&fields=files(id,name)&pageSize=1`,
   );
   const found = (await search.json()) as { files: Array<{ id: string }> };
 
@@ -68,8 +68,8 @@ export async function getOrCreateFolder(
     body: JSON.stringify({
       name: safeName,
       mimeType: FOLDER_MIME,
-      parents: [parentId]
-    })
+      parents: [parentId],
+    }),
   });
 
   const folder = (await created.json()) as { id: string };
@@ -85,7 +85,7 @@ export function folderUrl(folderId: string): string {
 export function applicantFolderName(
   submittedAt: Date,
   firstName: string,
-  lastName: string
+  lastName: string,
 ): string {
   const date = submittedAt.toISOString().slice(0, 10);
   return sanitizeFolderName(`${date} - ${firstName} ${lastName}`);
@@ -114,17 +114,17 @@ export async function ensureApplicantFolder(input: {
     const rootId = await getOrCreateFolder(ROOT_FOLDER_NAME, parentRoot);
     const operationId = await getOrCreateFolder(
       input.operation === "RENT" ? "Alquiler" : "Compra",
-      rootId
+      rootId,
     );
     propertyFolderId = await getOrCreateFolder(
       `${input.propertyReference} - ${input.propertyTitle}`,
-      operationId
+      operationId,
     );
   }
 
   const applicantFolderId = await getOrCreateFolder(
     applicantFolderName(input.submittedAt, input.firstName, input.lastName),
-    propertyFolderId
+    propertyFolderId,
   );
 
   return { applicantFolderId, propertyFolderId };
@@ -159,19 +159,19 @@ export async function createResumableUpload(input: {
         "X-Upload-Content-Length": String(input.sizeBytes),
         // Sin esta cabecera Google no devuelve las cabeceras CORS y el
         // navegador bloquea la subida desde nuestra pagina.
-        Origin: input.origin
+        Origin: input.origin,
       },
       body: JSON.stringify({
         name: sanitizeFolderName(input.fileName),
-        parents: [input.parentFolderId]
-      })
-    }
+        parents: [input.parentFolderId],
+      }),
+    },
   );
 
   if (!response.ok) {
     const detail = await response.text();
     throw new Error(
-      `No se ha podido abrir la subida a Drive (${response.status}): ${detail}`
+      `No se ha podido abrir la subida a Drive (${response.status}): ${detail}`,
     );
   }
 
@@ -198,7 +198,7 @@ export async function uploadSummaryDocument(input: {
   const metadata = {
     name: sanitizeFolderName(input.name),
     parents: [input.parentFolderId],
-    mimeType: "application/vnd.google-apps.document"
+    mimeType: "application/vnd.google-apps.document",
   };
 
   const body =
@@ -216,16 +216,16 @@ export async function uploadSummaryDocument(input: {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": `multipart/related; boundary=${boundary}`
+        "Content-Type": `multipart/related; boundary=${boundary}`,
       },
-      body
-    }
+      body,
+    },
   );
 
   if (!response.ok) {
     const detail = await response.text();
     throw new Error(
-      `No se ha podido crear el resumen en Drive (${response.status}): ${detail}`
+      `No se ha podido crear el resumen en Drive (${response.status}): ${detail}`,
     );
   }
 
@@ -249,7 +249,7 @@ export async function listFolderFiles(folderId: string): Promise<DriveFile[]> {
 
   const response = await driveFetch(
     `${DRIVE_API}/files?q=${encodeURIComponent(query)}` +
-      "&fields=files(id,name,mimeType,size,webViewLink)&pageSize=100"
+      "&fields=files(id,name,mimeType,size,webViewLink)&pageSize=100",
   );
 
   const body = (await response.json()) as { files: DriveFile[] };
@@ -266,14 +266,14 @@ export async function trashFolder(folderId: string): Promise<void> {
   await driveFetch(`${DRIVE_API}/files/${folderId}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ trashed: true })
+    body: JSON.stringify({ trashed: true }),
   });
 }
 
 /// Datos publicos de un archivo ya subido, para guardar su enlace.
 export async function getFileLink(fileId: string): Promise<string> {
   const response = await driveFetch(
-    `${DRIVE_API}/files/${fileId}?fields=webViewLink`
+    `${DRIVE_API}/files/${fileId}?fields=webViewLink`,
   );
   const file = (await response.json()) as { webViewLink?: string };
   return file.webViewLink ?? `https://drive.google.com/file/d/${fileId}/view`;

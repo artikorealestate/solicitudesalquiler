@@ -9,13 +9,13 @@ import type { SolvencyAssessment } from "@/lib/applications/types";
 const bandStyles: Record<SolvencyAssessment["band"], string> = {
   holgado: "bg-success/12 text-success",
   ajustado: "bg-gold-wash text-gold-dark",
-  insuficiente: "bg-danger/10 text-danger"
+  insuficiente: "bg-danger/10 text-danger",
 };
 
 const bandLabels: Record<SolvencyAssessment["band"], string> = {
   holgado: "Cumple el criterio",
   ajustado: "Ajustado",
-  insuficiente: "Por debajo del criterio"
+  insuficiente: "Por debajo del criterio",
 };
 
 const bandHints: Record<SolvencyAssessment["band"], string> = {
@@ -23,12 +23,12 @@ const bandHints: Record<SolvencyAssessment["band"], string> = {
   ajustado:
     "Entre el 30% y el 45%. Merece una llamada: con aval, ahorros o un segundo titular puede encajar.",
   insuficiente:
-    "Supera el 45% de los ingresos declarados. Convendria aval o revisar el encaje."
+    "Supera el 45% de los ingresos declarados. Convendria aval o revisar el encaje.",
 };
 
 export function SolvencyBadge({
   assessment,
-  compact = false
+  compact = false,
 }: {
   assessment: SolvencyAssessment | null;
   compact?: boolean;

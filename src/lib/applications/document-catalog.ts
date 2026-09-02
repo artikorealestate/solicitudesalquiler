@@ -14,19 +14,18 @@
 /// Los textos viven en los diccionarios de idiomas; aqui solo estan las
 /// claves y la estructura.
 
+import { isSeasonalStay } from "./stay";
+
 export type ApplicantProfile =
-  | "SALARIED"
-  | "SELF_EMPLOYED"
-  | "PENSIONER"
-  | "COMPANY"
-  | "OTHER";
+  "SEASONAL" | "SALARIED" | "SELF_EMPLOYED" | "PENSIONER" | "COMPANY" | "OTHER";
 
 export const profileLabels: Record<ApplicantProfile, string> = {
+  SEASONAL: "Estancia de temporada",
   SALARIED: "Asalariado",
   SELF_EMPLOYED: "Autonomo",
   PENSIONER: "Jubilado o pensionista",
   COMPANY: "Empresa",
-  OTHER: "Otra situacion"
+  OTHER: "Otra situacion",
 };
 
 /// Claves del catalogo. El orden es el de presentacion.
@@ -45,7 +44,7 @@ export const documentKeys = [
   "representativeId",
   "companyAccounts",
   "guarantorDocuments",
-  "other"
+  "other",
 ] as const;
 
 export type DocumentKey = (typeof documentKeys)[number];
@@ -59,7 +58,7 @@ export const spanishOfficialName: Partial<Record<DocumentKey, string>> = {
   taxReturn: "declaración de la renta (IRPF)",
   selfEmployedProof: "alta de autónomo",
   quarterlyTax: "modelos 130 y 303",
-  companyAccounts: "Impuesto sobre Sociedades"
+  companyAccounts: "Impuesto sobre Sociedades",
 };
 
 /// Lo que se marca por defecto en cada perfil.
@@ -68,11 +67,13 @@ export const spanishOfficialName: Partial<Record<DocumentKey, string>> = {
 /// documento mas invasivo y con justificantes de ingresos, contrato e
 /// historial laboral el analisis ya se sostiene.
 export const defaultItemsByProfile: Record<ApplicantProfile, DocumentKey[]> = {
+  // Una estancia corta se cobra por adelantado: con saber quien viene basta.
+  SEASONAL: ["id"],
   SALARIED: ["id", "incomeProof", "employmentContract", "workHistory"],
   SELF_EMPLOYED: ["id", "selfEmployedProof", "taxReturn", "quarterlyTax"],
   PENSIONER: ["id", "pensionProof"],
   COMPANY: ["companyDocs", "representativeId", "companyAccounts"],
-  OTHER: ["id", "incomeProof"]
+  OTHER: ["id", "incomeProof"],
 };
 
 /// Todo lo que tiene sentido ofrecer para cada perfil.
@@ -80,47 +81,60 @@ export const defaultItemsByProfile: Record<ApplicantProfile, DocumentKey[]> = {
 /// El NIE y el permiso de residencia estan disponibles en todos los perfiles
 /// de persona fisica: hacen falta para firmar un contrato en Espana y buena
 /// parte de los interesados de Artiko vienen de fuera.
-const forEveryone: DocumentKey[] = ["nie", "residencePermit", "guarantorDocuments", "other"];
+const forEveryone: DocumentKey[] = [
+  "nie",
+  "residencePermit",
+  "guarantorDocuments",
+  "other",
+];
 
-export const availableItemsByProfile: Record<ApplicantProfile, DocumentKey[]> = {
-  SALARIED: [
-    "id",
-    "incomeProof",
-    "employmentContract",
-    "workHistory",
-    "taxReturn",
-    ...forEveryone
-  ],
-  SELF_EMPLOYED: [
-    "id",
-    "selfEmployedProof",
-    "taxReturn",
-    "quarterlyTax",
-    "incomeProof",
-    ...forEveryone
-  ],
-  PENSIONER: ["id", "pensionProof", "taxReturn", ...forEveryone],
-  COMPANY: [
-    "companyDocs",
-    "representativeId",
-    "companyAccounts",
-    "quarterlyTax",
-    "guarantorDocuments",
-    "other"
-  ],
-  OTHER: [
-    "id",
-    "incomeProof",
-    "employmentContract",
-    "workHistory",
-    "taxReturn",
-    ...forEveryone
-  ]
-};
+export const availableItemsByProfile: Record<ApplicantProfile, DocumentKey[]> =
+  {
+    SEASONAL: ["id", "nie", "residencePermit", "incomeProof", "other"],
+    SALARIED: [
+      "id",
+      "incomeProof",
+      "employmentContract",
+      "workHistory",
+      "taxReturn",
+      ...forEveryone,
+    ],
+    SELF_EMPLOYED: [
+      "id",
+      "selfEmployedProof",
+      "taxReturn",
+      "quarterlyTax",
+      "incomeProof",
+      ...forEveryone,
+    ],
+    PENSIONER: ["id", "pensionProof", "taxReturn", ...forEveryone],
+    COMPANY: [
+      "companyDocs",
+      "representativeId",
+      "companyAccounts",
+      "quarterlyTax",
+      "guarantorDocuments",
+      "other",
+    ],
+    OTHER: [
+      "id",
+      "incomeProof",
+      "employmentContract",
+      "workHistory",
+      "taxReturn",
+      ...forEveryone,
+    ],
+  };
 
 /// Adivina el perfil a partir de lo que el interesado contesto, para llegar
 /// con la casilla ya marcada.
-export function guessProfile(answers: Record<string, string>): ApplicantProfile {
+export function guessProfile(
+  answers: Record<string, string>,
+): ApplicantProfile {
+  // La temporada manda sobre la situacion laboral: a quien viene dos meses no
+  // se le piden nominas por tener contrato indefinido.
+  if (isSeasonalStay(answers)) return "SEASONAL";
+
   switch (answers.employmentType) {
     case "selfEmployed":
       return "SELF_EMPLOYED";
@@ -151,13 +165,11 @@ export type ResolvedDocumentItem = {
 /// Traduce las claves guardadas a textos del idioma del candidato.
 export function resolveDocumentItems(
   keys: string[],
-  labels: Record<string, string>
+  labels: Record<string, string>,
 ): ResolvedDocumentItem[] {
-  return keys
-    .filter(isDocumentKey)
-    .map((key) => ({
-      key,
-      label: labels[key] ?? key,
-      spanishName: spanishOfficialName[key]
-    }));
+  return keys.filter(isDocumentKey).map((key) => ({
+    key,
+    label: labels[key] ?? key,
+    spanishName: spanishOfficialName[key],
+  }));
 }

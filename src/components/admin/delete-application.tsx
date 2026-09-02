@@ -11,7 +11,7 @@ import { deleteApplication } from "@/lib/applications/actions";
 export function DeleteApplication({
   applicationId,
   applicantName,
-  documentCount
+  documentCount,
 }: {
   applicationId: string;
   applicantName: string;
@@ -65,7 +65,10 @@ export function DeleteApplication({
         por si te arrepientes. Lo del panel no se puede recuperar.
       </p>
 
-      <form action={deleteApplication.bind(null, applicationId)} className="mt-4">
+      <form
+        action={deleteApplication.bind(null, applicationId)}
+        className="mt-4"
+      >
         <button
           type="submit"
           className="w-full rounded-md bg-danger py-2.5 text-sm font-bold text-white transition-opacity hover:opacity-90"

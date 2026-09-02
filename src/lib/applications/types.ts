@@ -57,6 +57,7 @@ export const RENT_ANSWER_KEYS = [
   "moveInDate",
   "stayLength",
   "moveOutDate",
+  "stayPurpose",
   "occupation",
   "employmentType",
   "provableIncome",

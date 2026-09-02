@@ -13,7 +13,7 @@ export default async function SyncSetupPage() {
 
   const admin = await prisma.adminUser.findUnique({
     where: { email },
-    select: { syncToken: true }
+    select: { syncToken: true },
   });
 
   return (
@@ -47,20 +47,27 @@ export default async function SyncSetupPage() {
         {admin?.syncToken ? (
           <>
             <p className="mt-3 text-sm leading-relaxed text-ink">
-              Asegurate de tener la barra de marcadores visible
-              (<kbd className="rounded border border-line px-1.5 py-0.5 text-xs">Ctrl</kbd>{" "}
+              Asegurate de tener la barra de marcadores visible (
+              <kbd className="rounded border border-line px-1.5 py-0.5 text-xs">
+                Ctrl
+              </kbd>{" "}
               +{" "}
               <kbd className="rounded border border-line px-1.5 py-0.5 text-xs">
                 Mayus
               </kbd>{" "}
               +{" "}
-              <kbd className="rounded border border-line px-1.5 py-0.5 text-xs">B</kbd>{" "}
+              <kbd className="rounded border border-line px-1.5 py-0.5 text-xs">
+                B
+              </kbd>{" "}
               en Chrome) y arrastra este boton hasta ella:
             </p>
 
             <BookmarkletLink token={admin.syncToken} />
 
-            <form action={regenerateSyncToken} className="mt-6 border-t border-line-soft pt-5">
+            <form
+              action={regenerateSyncToken}
+              className="mt-6 border-t border-line-soft pt-5"
+            >
               <p className="text-xs leading-relaxed text-ink-muted">
                 Si pierdes el ordenador o alguien deja el equipo, crea un boton
                 nuevo: el anterior dejara de funcionar al instante.

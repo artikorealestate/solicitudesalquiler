@@ -1,19 +1,19 @@
 import {
   buyerBandHints,
   buyerBandLabels,
-  type BuyerReadiness
+  type BuyerReadiness,
 } from "@/lib/applications/buyer-readiness";
 
 const bandStyles: Record<BuyerReadiness["band"], string> = {
   listo: "bg-success/12 text-success",
   encaminado: "bg-gold-wash text-gold-dark",
-  explorando: "bg-cream-deep text-ink-muted"
+  explorando: "bg-cream-deep text-ink-muted",
 };
 
 const signalMarks = {
   fuerte: "✓",
   debil: "·",
-  neutro: "·"
+  neutro: "·",
 } as const;
 
 /// Perfil de comprador de un vistazo.
@@ -22,7 +22,7 @@ const signalMarks = {
 /// puede comprar el mes que viene. Es una senal de prioridad, no un descarte.
 export function BuyerBadge({
   readiness,
-  compact = false
+  compact = false,
 }: {
   readiness: BuyerReadiness;
   compact?: boolean;

@@ -19,6 +19,7 @@ import type { Dictionary } from "@/i18n";
 import { interpolate } from "@/i18n";
 import type { Locale } from "@/i18n/config";
 import { submitApplication } from "@/lib/applications/submit";
+import { isSeasonalStay } from "@/lib/applications/stay";
 import { uploadDocuments } from "@/lib/applications/upload-client";
 import {
   emptyDraft,
@@ -177,6 +178,10 @@ export function ApplicationForm({
     }
 
     if (step === "questions") {
+      // Una estancia de temporada no pasa el estudio de solvencia, asi que
+      // los ingresos no se piden ni se exigen; en su lugar va el motivo.
+      const seasonal = isSeasonalStay(draft.answers);
+
       const required =
         draft.operation === "RENT"
           ? [
@@ -186,8 +191,9 @@ export function ApplicationForm({
               "stayLength",
               "occupation",
               "employmentType",
-              "provableIncome",
-              "monthlyIncome",
+              ...(seasonal
+                ? ["stayPurpose"]
+                : ["provableIncome", "monthlyIncome"]),
               "pets",
               "searchDuration",
               "visitedOthers",
@@ -595,6 +601,7 @@ export function ApplicationForm({
             <DocumentsStep
               dictionary={dictionary}
               operation={(draft.operation || "RENT") as Operation}
+              seasonal={isSeasonalStay(draft.answers)}
               files={files}
               onChange={setFiles}
             />

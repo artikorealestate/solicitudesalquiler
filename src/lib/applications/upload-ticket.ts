@@ -28,7 +28,7 @@ export function issueUploadTicket(applicationId: string): string {
 
 export function verifyUploadTicket(
   ticket: string,
-  applicationId: string
+  applicationId: string,
 ): boolean {
   const parts = ticket.split(".");
   if (parts.length !== 3) return false;

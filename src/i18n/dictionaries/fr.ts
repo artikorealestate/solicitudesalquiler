@@ -111,6 +111,14 @@ export const fr: Dictionary = {
       other: "Autre situation",
     },
 
+    stayPurpose: "Quel est le motif du séjour ?",
+    stayPurposeOptions: {
+      work: "Travail ou mutation professionnelle",
+      studies: "Études",
+      holiday: "Vacances",
+      betweenHomes: "En attendant de trouver un logement ou la fin de travaux",
+      other: "Un autre motif",
+    },
     provableIncome:
       "Vos revenus peuvent-ils être justifiés par des bulletins de salaire ou documents équivalents ?",
     monthlyIncome: "Quel est le revenu net mensuel du foyer ? (€)",
@@ -193,6 +201,10 @@ export const fr: Dictionary = {
       "Contrat de travail",
       "Carte d'identité, NIE ou passeport",
       "Dernière déclaration de revenus (si indépendant)",
+    ],
+    suggestionsSeasonList: [
+      "Pièce d'identité (passeport, carte d'identité ou équivalent)",
+      "Si vous venez pour le travail ou les études, un justificatif",
     ],
     skip: "Continuer sans rien joindre",
     tooLarge: "« {name} » dépasse 10 Mo et ne peut pas être joint.",

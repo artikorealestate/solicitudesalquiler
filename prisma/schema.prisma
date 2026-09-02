@@ -185,6 +185,8 @@ model Consent {
 
 /// Perfil del candidato, que determina que documentacion se le pide.
 enum ApplicantProfile {
+  /// Estancia de temporada: no se le pide documentacion de solvencia.
+  SEASONAL
   SALARIED
   SELF_EMPLOYED
   PENSIONER

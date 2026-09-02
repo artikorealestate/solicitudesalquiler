@@ -15,10 +15,10 @@ const optionalPrice = z
   .optional()
   .refine(
     (value) => value === undefined || /^\d+$/.test(value.replace(/[.\s]/g, "")),
-    { message: "Escribe solo numeros, sin simbolos" }
+    { message: "Escribe solo numeros, sin simbolos" },
   )
   .transform((value) =>
-    value === undefined ? undefined : Number(value.replace(/[.\s]/g, ""))
+    value === undefined ? undefined : Number(value.replace(/[.\s]/g, "")),
   );
 
 export const propertySchema = z
@@ -44,11 +44,11 @@ export const propertySchema = z
       .transform((value) => (value === "" ? undefined : value))
       .optional()
       .refine((value) => value === undefined || /^https?:\/\//i.test(value), {
-        message: "Debe empezar por http:// o https://"
+        message: "Debe empezar por http:// o https://",
       }),
     mainImageUrl: optionalText,
     status: z.enum(["ACTIVE", "PAUSED", "ARCHIVED"]),
-    internalNotes: optionalText
+    internalNotes: optionalText,
   })
   // Un inmueble ofertado en alquiler sin precio de alquiler deja al
   // interesado sin la referencia de solvencia, que es justo lo que el
@@ -57,15 +57,15 @@ export const propertySchema = z
     (data) => data.operationType !== "RENT" || data.rentPrice !== undefined,
     {
       message: "Un inmueble en alquiler necesita precio de alquiler",
-      path: ["rentPrice"]
-    }
+      path: ["rentPrice"],
+    },
   )
   .refine(
     (data) => data.operationType !== "SALE" || data.salePrice !== undefined,
     {
       message: "Un inmueble en venta necesita precio de venta",
-      path: ["salePrice"]
-    }
+      path: ["salePrice"],
+    },
   )
   .refine(
     (data) =>
@@ -73,8 +73,8 @@ export const propertySchema = z
       (data.rentPrice !== undefined && data.salePrice !== undefined),
     {
       message: "Si se oferta en ambos regimenes hacen falta los dos precios",
-      path: ["salePrice"]
-    }
+      path: ["salePrice"],
+    },
   );
 
 export type PropertyInput = z.infer<typeof propertySchema>;
@@ -82,11 +82,11 @@ export type PropertyInput = z.infer<typeof propertySchema>;
 export const operationLabels: Record<string, string> = {
   RENT: "Alquiler",
   SALE: "Venta",
-  BOTH: "Alquiler y venta"
+  BOTH: "Alquiler y venta",
 };
 
 export const statusLabels: Record<string, string> = {
   ACTIVE: "Activo",
   PAUSED: "Pausado",
-  ARCHIVED: "Archivado"
+  ARCHIVED: "Archivado",
 };

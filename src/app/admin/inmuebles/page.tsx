@@ -5,7 +5,7 @@ import { prisma } from "@/lib/db";
 import { setStatusForAll } from "@/lib/properties/actions";
 import {
   PropertyCard,
-  type PropertyCardData
+  type PropertyCardData,
 } from "@/components/admin/property-card";
 
 export const dynamic = "force-dynamic";
@@ -14,11 +14,11 @@ const filters = [
   { key: "activos", label: "Activos", status: "ACTIVE" },
   { key: "pausados", label: "Pausados", status: "PAUSED" },
   { key: "archivados", label: "Archivados", status: "ARCHIVED" },
-  { key: "todos", label: "Todos", status: null }
+  { key: "todos", label: "Todos", status: null },
 ] as const;
 
 export default async function PropertiesPage({
-  searchParams
+  searchParams,
 }: {
   searchParams: Promise<{ estado?: string }>;
 }) {
@@ -34,17 +34,17 @@ export default async function PropertiesPage({
         ? { status: activeFilter.status as never }
         : undefined,
       orderBy: { updatedAt: "desc" },
-      include: { _count: { select: { applications: true } } }
+      include: { _count: { select: { applications: true } } },
     }),
     prisma.property.groupBy({ by: ["status"], _count: true }),
     prisma.importBatch.findFirst({
       where: {
         status: "PENDING",
-        createdByEmail: session?.user?.email?.toLowerCase() ?? ""
+        createdByEmail: session?.user?.email?.toLowerCase() ?? "",
       },
       orderBy: { createdAt: "desc" },
-      select: { id: true, itemCount: true, createdAt: true }
-    })
+      select: { id: true, itemCount: true, createdAt: true },
+    }),
   ]);
 
   const countFor = (status: string | null) =>
@@ -63,7 +63,7 @@ export default async function PropertiesPage({
     salePrice: property.salePrice,
     mainImageUrl: property.mainImageUrl,
     idealistaUrl: property.idealistaUrl,
-    applicationCount: property._count.applications
+    applicationCount: property._count.applications,
   }));
 
   return (
@@ -86,8 +86,8 @@ export default async function PropertiesPage({
       {pendingBatch ? (
         <div className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-card border border-gold/40 bg-gold-wash px-5 py-4">
           <p className="text-sm text-ink">
-            Tienes <strong>{pendingBatch.itemCount} anuncios</strong> de Idealista
-            esperando revision, traidos el{" "}
+            Tienes <strong>{pendingBatch.itemCount} anuncios</strong> de
+            Idealista esperando revision, traidos el{" "}
             {pendingBatch.createdAt.toLocaleDateString("es-ES")}.
           </p>
           <Link

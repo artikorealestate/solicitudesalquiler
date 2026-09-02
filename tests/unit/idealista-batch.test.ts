@@ -4,7 +4,7 @@ import {
   normalizeListing,
   summarizeBatch,
   type ExistingProperty,
-  type RawListing
+  type RawListing,
 } from "../../src/lib/idealista/batch";
 
 const rentalRaw: RawListing = {
@@ -14,7 +14,7 @@ const rentalRaw: RawListing = {
   url: "https://www.idealista.com/pro/artiko-real-estate/inmueble/105799303/",
   imageUrl: "https://img4.idealista.com/blur/480_360_mq/0/foto.jpg",
   description: "Alquiler de temporada en Gran Canet.",
-  details: ["Garaje incluido", "2 hab.", "116 m²"]
+  details: ["Garaje incluido", "2 hab.", "116 m²"],
 };
 
 const saleRaw: RawListing = {
@@ -24,7 +24,7 @@ const saleRaw: RawListing = {
   url: "https://www.idealista.com/pro/artiko-real-estate/inmueble/104112233/",
   imageUrl: null,
   description: null,
-  details: []
+  details: [],
 };
 
 function existing(overrides: Partial<ExistingProperty> = {}): ExistingProperty {
@@ -37,7 +37,7 @@ function existing(overrides: Partial<ExistingProperty> = {}): ExistingProperty {
     salePrice: null,
     zone: "Canet d'En Berenguer",
     mainImageUrl: rentalRaw.imageUrl ?? null,
-    ...overrides
+    ...overrides,
   };
 }
 
@@ -96,7 +96,7 @@ describe("normalizeListing", () => {
     const listing = normalizeListing({
       idealistaId: "1",
       title: "Piso en Algun Sitio",
-      priceText: null
+      priceText: null,
     });
 
     expect(listing.rentPrice).toBeUndefined();
@@ -112,13 +112,17 @@ describe("buildBatchRows", () => {
 
     expect(rows).toHaveLength(2);
     expect(rows.every((row) => row.state === "nuevo")).toBe(true);
-    expect(summarizeBatch(rows)).toEqual({ nuevos: 2, cambiados: 0, iguales: 0 });
+    expect(summarizeBatch(rows)).toEqual({
+      nuevos: 2,
+      cambiados: 0,
+      iguales: 0,
+    });
   });
 
   it("reconoce un inmueble ya existente aunque le hayan cambiado el titulo", () => {
     const rows = buildBatchRows(
       [rentalRaw],
-      [existing({ title: "Titulo antiguo completamente distinto" })]
+      [existing({ title: "Titulo antiguo completamente distinto" })],
     );
 
     // El emparejamiento va por identificador de Idealista, no por titulo.
@@ -142,10 +146,7 @@ describe("buildBatchRows", () => {
   });
 
   it("no empareja inmuebles dados de alta a mano, sin identificador", () => {
-    const rows = buildBatchRows(
-      [rentalRaw],
-      [existing({ idealistaId: null })]
-    );
+    const rows = buildBatchRows([rentalRaw], [existing({ idealistaId: null })]);
 
     expect(rows[0].state).toBe("nuevo");
   });

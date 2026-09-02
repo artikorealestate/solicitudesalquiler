@@ -6,7 +6,7 @@ import { DriveBanner } from "@/components/admin/drive-banner";
 import { ArtikoLogo } from "@/components/brand/logo";
 
 export default async function AdminLayout({
-  children
+  children,
 }: {
   children: React.ReactNode;
 }) {
@@ -20,7 +20,11 @@ export default async function AdminLayout({
     <div className="min-h-screen bg-cream">
       <header className="sticky top-0 z-10 border-b border-line bg-white/95 backdrop-blur">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-8 gap-y-3 px-5 py-3">
-          <Link href="/admin" className="shrink-0" aria-label="Inicio del panel">
+          <Link
+            href="/admin"
+            className="shrink-0"
+            aria-label="Inicio del panel"
+          >
             <ArtikoLogo height={28} />
           </Link>
 

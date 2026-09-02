@@ -17,7 +17,9 @@ export function SiteFooter({ dictionary }: { dictionary: Dictionary }) {
   return (
     <footer className="mt-10 border-t border-line pt-6 text-center">
       <p className="font-serif text-lg text-ink-strong">Artiko Real Estate</p>
-      <p className="mt-0.5 text-xs text-ink-muted">{dictionary.footer.agency}</p>
+      <p className="mt-0.5 text-xs text-ink-muted">
+        {dictionary.footer.agency}
+      </p>
 
       <div className="mt-4 flex flex-wrap items-center justify-center gap-2.5">
         {whatsapp ? (

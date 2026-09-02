@@ -5,7 +5,7 @@ import { prisma } from "@/lib/db";
 export const dynamic = "force-dynamic";
 
 export default async function EditPropertyPage({
-  params
+  params,
 }: {
   params: Promise<{ id: string }>;
 }) {
@@ -40,7 +40,7 @@ export default async function EditPropertyPage({
           idealistaUrl: property.idealistaUrl ?? "",
           mainImageUrl: property.mainImageUrl ?? "",
           status: property.status,
-          internalNotes: property.internalNotes ?? ""
+          internalNotes: property.internalNotes ?? "",
         }}
       />
     </main>

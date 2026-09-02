@@ -110,6 +110,14 @@ export const nl: Dictionary = {
       other: "Andere situatie",
     },
 
+    stayPurpose: "Wat is de reden van het verblijf?",
+    stayPurposeOptions: {
+      work: "Werk of een overplaatsing",
+      studies: "Studie",
+      holiday: "Vakantie",
+      betweenHomes: "Tot we een woning vinden of een verbouwing klaar is",
+      other: "Een andere reden",
+    },
     provableIncome:
       "Kunt u uw inkomen aantonen met loonstroken of vergelijkbare documenten?",
     monthlyIncome: "Wat is het netto maandinkomen van het huishouden? (€)",
@@ -192,6 +200,10 @@ export const nl: Dictionary = {
       "Arbeidsovereenkomst",
       "Identiteitskaart, NIE of paspoort",
       "Laatste belastingaangifte (bij zelfstandigen)",
+    ],
+    suggestionsSeasonList: [
+      "Identiteitsbewijs (paspoort, ID-kaart of gelijkwaardig)",
+      "Komt u voor werk of studie, dan iets dat dat bevestigt",
     ],
     skip: "Verdergaan zonder bijlagen",
     tooLarge: "„{name}” is groter dan 10 MB en kan niet worden bijgevoegd.",

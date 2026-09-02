@@ -2,12 +2,12 @@ import type { Dictionary } from "@/i18n";
 import {
   getFromAddress,
   getInternalRecipients,
-  getMailer
+  getMailer,
 } from "@/lib/mail/transport";
 import {
   LOGO_ATTACHMENT,
   buildApplicantEmail,
-  buildInternalEmail
+  buildInternalEmail,
 } from "@/lib/mail/templates";
 
 /// Envia los dos correos de una solicitud: la confirmacion al interesado (en
@@ -61,7 +61,7 @@ export async function sendApplicationEmails(input: {
       hadDocuments: input.documentCount > 0,
       selfServiceUrl: input.accessToken
         ? `${appUrl}/solicitud/${input.accessToken}`
-        : null
+        : null,
     });
 
     await mailer.sendMail({
@@ -70,14 +70,14 @@ export async function sendApplicationEmails(input: {
       subject: message.subject,
       html: message.html,
       text: message.text,
-      attachments: [LOGO_ATTACHMENT]
+      attachments: [LOGO_ATTACHMENT],
     });
 
     result.applicantSent = true;
   } catch (error) {
     console.error(
       `[email] No se ha podido avisar al interesado de la solicitud ${input.applicationId}:`,
-      error
+      error,
     );
   }
 
@@ -100,7 +100,7 @@ export async function sendApplicationEmails(input: {
       answers: input.answers,
       documentCount: input.documentCount,
       adminUrl,
-      driveUrl: input.driveUrl
+      driveUrl: input.driveUrl,
     });
 
     await mailer.sendMail({
@@ -112,14 +112,14 @@ export async function sendApplicationEmails(input: {
       subject: message.subject,
       html: message.html,
       text: message.text,
-      attachments: [LOGO_ATTACHMENT]
+      attachments: [LOGO_ATTACHMENT],
     });
 
     result.internalSent = true;
   } catch (error) {
     console.error(
       `[email] No se ha podido avisar a Artiko de la solicitud ${input.applicationId}:`,
-      error
+      error,
     );
   }
 
