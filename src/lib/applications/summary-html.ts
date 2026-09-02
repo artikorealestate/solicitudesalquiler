@@ -20,7 +20,7 @@ function escapeHtml(value: string): string {
 function row(label: string, value: string | null | undefined): string {
   if (!value) return "";
   return `<tr><td style="padding:6px 12px 6px 0;vertical-align:top"><b>${escapeHtml(
-    label
+    label,
   )}</b></td><td style="padding:6px 0">${escapeHtml(value)}</td></tr>`;
 }
 
@@ -29,6 +29,8 @@ const RENT_LABELS: Record<string, string> = {
   householdSize: "Personas que viviran en la vivienda",
   relationship: "Relacion entre ellas",
   moveInDate: "Fecha deseada de entrada",
+  stayLength: "Duracion que necesita",
+  moveOutDate: "Fecha de salida",
   occupation: "Ocupacion actual",
   employmentType: "Situacion laboral",
   provableIncome: "Ingresos demostrables",
@@ -37,7 +39,7 @@ const RENT_LABELS: Record<string, string> = {
   petsDetail: "Que mascotas",
   searchDuration: "Tiempo buscando vivienda",
   visitedOthers: "Ha visitado otras viviendas",
-  documentsReady: "Documentacion disponible"
+  documentsReady: "Documentacion disponible",
 };
 
 const SALE_LABELS: Record<string, string> = {
@@ -49,11 +51,15 @@ const SALE_LABELS: Record<string, string> = {
   needsFinancing: "Necesita financiacion",
   financingApproved: "Financiacion preaprobada",
   firstPurchase: "Primera compra",
-  occupation: "Ocupacion actual"
+  occupation: "Ocupacion actual",
 };
 
 /// Traduce los valores codificados a texto legible en espanol.
-function readableValue(key: string, value: string, dictionary: Dictionary): string {
+function readableValue(
+  key: string,
+  value: string,
+  dictionary: Dictionary,
+): string {
   if (value === "yes") return "Si";
   if (value === "no") return "No";
 
@@ -61,7 +67,7 @@ function readableValue(key: string, value: string, dictionary: Dictionary): stri
     relationship: dictionary.rentQuestions.relationshipOptions,
     employmentType: dictionary.rentQuestions.employmentOptions,
     documentsReady: dictionary.rentQuestions.documentsReadyOptions,
-    firstPurchase: dictionary.saleQuestions.firstPurchaseOptions
+    firstPurchase: dictionary.saleQuestions.firstPurchaseOptions,
   };
 
   const catalog = catalogs[key];
@@ -105,7 +111,7 @@ export function buildSummaryHtml(input: {
       (consent) =>
         `<p style="margin:10px 0"><b>${escapeHtml(consent.label)}</b>
          (version ${escapeHtml(consent.version)})<br>
-         <span style="color:#555">${escapeHtml(consent.text)}</span></p>`
+         <span style="color:#555">${escapeHtml(consent.text)}</span></p>`,
     )
     .join("");
 

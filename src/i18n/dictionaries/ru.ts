@@ -85,6 +85,16 @@ export const ru: Dictionary = {
     },
 
     moveInDate: "С какой даты вам нужно заселиться?",
+
+    stayLength: "На какой срок вам нужно жильё?",
+    stayOptions: {
+      withEndDate: "Мы уже знаем дату выезда",
+      season: "На сезон, меньше года",
+      oneYear: "Один год",
+      twoOrThree: "Два-три года",
+      longTerm: "Надолго, без определённой даты",
+    },
+    moveOutDate: "В какой день вы бы выехали?",
     occupation: "Чем вы сейчас занимаетесь?",
 
     employmentType: "Какой у вас тип договора или трудовая ситуация?",

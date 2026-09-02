@@ -95,6 +95,19 @@ export const es = {
     },
 
     moveInDate: "¿Para qué fecha necesitaríais entrar?",
+
+    /// Muchos alquileres de Artiko son de temporada en la costa, donde la
+    /// fecha de salida es el dato que decide la operacion. Quien no la
+    /// sabe todavia elige una duracion aproximada.
+    stayLength: "¿Para cuánto tiempo la necesitáis?",
+    stayOptions: {
+      withEndDate: "Ya sabemos la fecha de salida",
+      season: "Una temporada, menos de un año",
+      oneYear: "Un año",
+      twoOrThree: "Dos o tres años",
+      longTerm: "Largo plazo, sin fecha prevista",
+    },
+    moveOutDate: "¿Qué día dejaríais la vivienda?",
     occupation: "¿A qué os dedicáis actualmente?",
 
     employmentType: "¿Qué tipo de contrato o situación laboral tenéis?",

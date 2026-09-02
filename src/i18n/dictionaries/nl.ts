@@ -86,6 +86,16 @@ export const nl: Dictionary = {
     },
 
     moveInDate: "Vanaf wanneer zou u willen intrekken?",
+
+    stayLength: "Voor hoe lang zou u de woning nodig hebben?",
+    stayOptions: {
+      withEndDate: "We weten onze vertrekdatum al",
+      season: "Een seizoen, minder dan een jaar",
+      oneYear: "Eén jaar",
+      twoOrThree: "Twee of drie jaar",
+      longTerm: "Voor lange termijn, zonder einddatum",
+    },
+    moveOutDate: "Op welke dag zou u vertrekken?",
     occupation: "Wat doet u op dit moment voor werk?",
 
     employmentType: "Wat voor contract of arbeidssituatie heeft u?",

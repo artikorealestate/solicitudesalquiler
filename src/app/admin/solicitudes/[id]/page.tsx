@@ -8,6 +8,7 @@ import {
 import { SolvencyBadge } from "@/components/admin/solvency-badge";
 import { BuyerBadge } from "@/components/admin/buyer-badge";
 import { assessBuyerReadiness } from "@/lib/applications/buyer-readiness";
+import { describeStay } from "@/lib/applications/stay";
 import { DocumentRequestPanel } from "@/components/admin/document-request-panel";
 import { SelfServiceLink } from "@/components/admin/self-service-link";
 import { DeleteApplication } from "@/components/admin/delete-application";
@@ -86,6 +87,9 @@ export default async function ApplicationDetailPage({
   if (!application) notFound();
 
   const status = application.status as ApplicationStatus;
+  const estancia = describeStay(
+    (application.answers ?? {}) as Record<string, string>,
+  );
   const questionLabels = questionLabelsFor(application.operation);
   const answers = (application.answers ?? {}) as Record<string, string>;
 
@@ -112,6 +116,15 @@ export default async function ApplicationDetailPage({
             formulario en{" "}
             {localeLabels[application.locale] ?? application.locale}
           </p>
+
+          {/* Las fechas son lo primero que se mira en un alquiler de
+              temporada: si no encajan con lo que queda libre, no hay nada
+              que valorar. */}
+          {application.operation === "RENT" && estancia ? (
+            <p className="mt-3 inline-block rounded-md bg-gold-wash px-3 py-1.5 text-sm text-ink-strong">
+              {estancia}
+            </p>
+          ) : null}
         </div>
 
         <div className="flex flex-col items-end gap-3">

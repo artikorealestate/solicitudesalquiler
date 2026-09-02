@@ -86,6 +86,16 @@ export const fr: Dictionary = {
     },
 
     moveInDate: "À partir de quand souhaiteriez-vous emménager ?",
+
+    stayLength: "Pour combien de temps en auriez-vous besoin ?",
+    stayOptions: {
+      withEndDate: "Nous connaissons déjà notre date de départ",
+      season: "Une saison, moins d'un an",
+      oneYear: "Un an",
+      twoOrThree: "Deux ou trois ans",
+      longTerm: "Sur la durée, sans date de fin prévue",
+    },
+    moveOutDate: "Quel jour quitteriez-vous le logement ?",
     occupation: "Quelle est votre activité professionnelle ?",
 
     employmentType:

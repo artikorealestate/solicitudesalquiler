@@ -47,7 +47,7 @@ export const emptyDraft: ApplicationDraft = {
   comment: "",
   answers: {},
   consentGdpr: false,
-  consentOwner: false
+  consentOwner: false,
 };
 
 /// Preguntas de alquiler, en el orden en que se muestran.
@@ -55,6 +55,8 @@ export const RENT_ANSWER_KEYS = [
   "householdSize",
   "relationship",
   "moveInDate",
+  "stayLength",
+  "moveOutDate",
   "occupation",
   "employmentType",
   "provableIncome",
@@ -63,7 +65,7 @@ export const RENT_ANSWER_KEYS = [
   "petsDetail",
   "searchDuration",
   "visitedOthers",
-  "documentsReady"
+  "documentsReady",
 ] as const;
 
 /// Preguntas de compra, en el orden en que se muestran.
@@ -76,7 +78,7 @@ export const SALE_ANSWER_KEYS = [
   "needsFinancing",
   "financingApproved",
   "firstPurchase",
-  "occupation"
+  "occupation",
 ] as const;
 
 /// Umbral de solvencia que aplica Artiko: el alquiler no deberia superar el
@@ -91,7 +93,10 @@ export function recommendedIncomeFor(rentPrice: number): number {
   return Math.round(rentPrice / SOLVENCY_THRESHOLD / 10) * 10;
 }
 
-export function meetsSolvency(rentPrice: number, monthlyIncome: number): boolean {
+export function meetsSolvency(
+  rentPrice: number,
+  monthlyIncome: number,
+): boolean {
   return monthlyIncome > 0 && rentPrice / monthlyIncome <= SOLVENCY_THRESHOLD;
 }
 
@@ -123,7 +128,7 @@ export function parseDeclaredIncome(raw: string | undefined): number | null {
 /// algun dato: es preferible no mostrar nada a mostrar un numero inventado.
 export function assessSolvency(
   rentPrice: number | null,
-  declaredIncome: string | undefined
+  declaredIncome: string | undefined,
 ): SolvencyAssessment | null {
   const monthlyIncome = parseDeclaredIncome(declaredIncome);
   if (!rentPrice || rentPrice <= 0 || !monthlyIncome) return null;
@@ -140,6 +145,6 @@ export function assessSolvency(
         ? "holgado"
         : ratio <= 0.45
           ? "ajustado"
-          : "insuficiente"
+          : "insuficiente",
   };
 }

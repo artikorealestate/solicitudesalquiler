@@ -6,11 +6,14 @@ import { ArtikoLogo } from "@/components/brand/logo";
 import {
   CheckboxField,
   TextAreaField,
-  TextField
+  TextField,
 } from "@/components/public/fields";
 import { DocumentsStep } from "@/components/public/documents-step";
 import { PropertyPicker } from "@/components/public/property-picker";
-import { RentQuestions, SaleQuestions } from "@/components/public/question-steps";
+import {
+  RentQuestions,
+  SaleQuestions,
+} from "@/components/public/question-steps";
 import { SiteFooter } from "@/components/public/site-footer";
 import type { Dictionary } from "@/i18n";
 import { interpolate } from "@/i18n";
@@ -21,7 +24,7 @@ import {
   emptyDraft,
   type ApplicationDraft,
   type Operation,
-  type PublicProperty
+  type PublicProperty,
 } from "@/lib/applications/types";
 
 type StepId =
@@ -40,7 +43,7 @@ const STEP_ORDER: StepId[] = [
   "questions",
   "documents",
   "consent",
-  "review"
+  "review",
 ];
 
 function storageKey(locale: Locale) {
@@ -50,7 +53,7 @@ function storageKey(locale: Locale) {
 export function ApplicationForm({
   dictionary,
   locale,
-  properties
+  properties,
 }: {
   dictionary: Dictionary;
   locale: Locale;
@@ -88,7 +91,7 @@ export function ApplicationForm({
   const step = STEP_ORDER[stepIndex];
   const selectedProperty = useMemo(
     () => properties.find((property) => property.id === draft.propertyId),
-    [properties, draft.propertyId]
+    [properties, draft.propertyId],
   );
 
   // --- Persistencia local -------------------------------------------------
@@ -117,7 +120,7 @@ export function ApplicationForm({
 
   function update<K extends keyof ApplicationDraft>(
     key: K,
-    value: ApplicationDraft[K]
+    value: ApplicationDraft[K],
   ) {
     setDraft((current) => ({ ...current, [key]: value }));
     setErrors((current) => {
@@ -131,7 +134,7 @@ export function ApplicationForm({
   function setAnswer(key: string, value: string) {
     setDraft((current) => ({
       ...current,
-      answers: { ...current.answers, [key]: value }
+      answers: { ...current.answers, [key]: value },
     }));
     setErrors((current) => {
       if (!(key in current)) return current;
@@ -180,6 +183,7 @@ export function ApplicationForm({
               "householdSize",
               "relationship",
               "moveInDate",
+              "stayLength",
               "occupation",
               "employmentType",
               "provableIncome",
@@ -187,7 +191,7 @@ export function ApplicationForm({
               "pets",
               "searchDuration",
               "visitedOthers",
-              "documentsReady"
+              "documentsReady",
             ]
           : [
               "buyerProfile",
@@ -197,11 +201,21 @@ export function ApplicationForm({
               "needToSell",
               "needsFinancing",
               "firstPurchase",
-              "occupation"
+              "occupation",
             ];
 
       for (const key of required) {
         if (!draft.answers[key]?.trim()) found[key] = e.required;
+      }
+
+      // Quien dice tener fecha de salida tiene que darla: es justo el dato
+      // por el que se pregunta.
+      if (
+        draft.operation === "RENT" &&
+        draft.answers.stayLength === "withEndDate" &&
+        !draft.answers.moveOutDate?.trim()
+      ) {
+        found.moveOutDate = e.required;
       }
 
       if (
@@ -213,8 +227,10 @@ export function ApplicationForm({
     }
 
     if (step === "consent") {
-      if (!draft.consentGdpr) found.consentGdpr = dictionary.consent.requiredError;
-      if (!draft.consentOwner) found.consentOwner = dictionary.consent.requiredError;
+      if (!draft.consentGdpr)
+        found.consentGdpr = dictionary.consent.requiredError;
+      if (!draft.consentOwner)
+        found.consentOwner = dictionary.consent.requiredError;
     }
 
     return found;
@@ -266,14 +282,14 @@ export function ApplicationForm({
         website: honeypot,
         // Un cero significa que el navegador no llego a ejecutar el efecto;
         // se envia sin marca en lugar de una que pareceria manipulada.
-        startedAt: startedAtRef.current || undefined
+        startedAt: startedAtRef.current || undefined,
       });
 
       if (!result.ok) {
         setSubmitError(
           result.error === "demasiados-envios"
             ? dictionary.errors.tooManySubmissions
-            : dictionary.errors.submitFailed
+            : dictionary.errors.submitFailed,
         );
         return;
       }
@@ -294,16 +310,19 @@ export function ApplicationForm({
               setUploadPercent(progress.percent);
               setUploadStatus(
                 interpolate(dictionary.documents.uploading, {
-                  current: Math.min(progress.filesDone + 1, progress.totalFiles),
-                  total: progress.totalFiles
-                })
+                  current: Math.min(
+                    progress.filesDone + 1,
+                    progress.totalFiles,
+                  ),
+                  total: progress.totalFiles,
+                }),
               );
-            }
+            },
           );
 
           if (outcome.failed.length > 0) {
             notice = interpolate(dictionary.documents.uploadPartial, {
-              count: outcome.failed.length
+              count: outcome.failed.length,
             });
           }
         }
@@ -319,7 +338,7 @@ export function ApplicationForm({
       setSentTo({
         email: draft.email,
         property: selectedProperty?.title ?? "",
-        notice
+        notice,
       });
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch {
@@ -342,7 +361,7 @@ export function ApplicationForm({
           <h1 className="heading-lg mt-3">{dictionary.success.title}</h1>
           <p className="mt-4 text-sm leading-relaxed text-ink">
             {interpolate(dictionary.success.body, {
-              property: sentTo.property
+              property: sentTo.property,
             })}
           </p>
           <p className="mt-3 text-sm leading-relaxed text-ink-muted">
@@ -383,7 +402,7 @@ export function ApplicationForm({
           <p className="text-xs text-ink-muted">
             {interpolate(dictionary.common.stepOf, {
               current: stepIndex + 1,
-              total: STEP_ORDER.length
+              total: STEP_ORDER.length,
             })}
           </p>
         </div>
@@ -411,7 +430,7 @@ export function ApplicationForm({
               {(
                 [
                   ["RENT", dictionary.operation.rent],
-                  ["SALE", dictionary.operation.sale]
+                  ["SALE", dictionary.operation.sale],
                 ] as const
               ).map(([key, option]) => (
                 <label
@@ -621,6 +640,7 @@ export function ApplicationForm({
           >
             <ReviewSummary
               dictionary={dictionary}
+              locale={locale}
               draft={draft}
               property={selectedProperty}
               fileCount={files.length}
@@ -652,7 +672,7 @@ export function ApplicationForm({
           left: "-9999px",
           width: "1px",
           height: "1px",
-          overflow: "hidden"
+          overflow: "hidden",
         }}
       >
         <label htmlFor="website-url">No rellenes este campo</label>
@@ -674,7 +694,9 @@ export function ApplicationForm({
         <div className="mt-5 rounded-card border border-line bg-white p-4">
           <div className="flex items-baseline justify-between gap-3">
             <p className="text-sm text-ink">{uploadStatus}</p>
-            <p className="font-serif text-lg text-gold-dark">{uploadPercent}%</p>
+            <p className="font-serif text-lg text-gold-dark">
+              {uploadPercent}%
+            </p>
           </div>
           <div
             className="mt-2 h-1.5 overflow-hidden rounded-full bg-line"
@@ -740,7 +762,7 @@ export function ApplicationForm({
 function StepShell({
   title,
   subtitle,
-  children
+  children,
 }: {
   title: string;
   subtitle: string;
@@ -755,19 +777,60 @@ function StepShell({
   );
 }
 
+/// La estancia tal y como la vera el interesado en su idioma.
+///
+/// Es lo que mas se equivoca la gente al rellenar (un mes de mas, un ano
+/// equivocado en el desplegable del movil), asi que tiene que estar en el
+/// resumen previo al envio, no solo en nuestra ficha.
+function stayLine(
+  draft: ApplicationDraft,
+  dictionary: Dictionary,
+  locale: Locale,
+): string | null {
+  if (draft.operation !== "RENT") return null;
+
+  const format = (value: string | undefined) => {
+    if (!value) return null;
+    const date = new Date(value);
+    return Number.isNaN(date.getTime())
+      ? null
+      : date.toLocaleDateString(locale, {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        });
+  };
+
+  const from = format(draft.answers.moveInDate);
+  const to = format(draft.answers.moveOutDate);
+  const length =
+    dictionary.rentQuestions.stayOptions[
+      draft.answers
+        .stayLength as keyof typeof dictionary.rentQuestions.stayOptions
+    ];
+
+  if (from && to) return `${from} – ${to}`;
+  if (from) return length ? `${from} · ${length}` : from;
+  return length ?? null;
+}
+
 function ReviewSummary({
   dictionary,
+  locale,
   draft,
   property,
   fileCount,
-  onEdit
+  onEdit,
 }: {
   dictionary: Dictionary;
+  locale: Locale;
   draft: ApplicationDraft;
   property: PublicProperty | undefined;
   fileCount: number;
   onEdit: (step: StepId) => void;
 }) {
+  const stay = stayLine(draft, dictionary, locale);
+
   const rows: Array<{ step: StepId; label: string; value: string }> = [
     {
       step: "operation",
@@ -775,23 +838,32 @@ function ReviewSummary({
       value:
         draft.operation === "SALE"
           ? dictionary.operation.sale.label
-          : dictionary.operation.rent.label
+          : dictionary.operation.rent.label,
     },
     {
       step: "property",
       label: dictionary.review.sectionProperty,
-      value: property?.title ?? "—"
+      value: property?.title ?? "—",
     },
+    ...(stay
+      ? [
+          {
+            step: "questions" as StepId,
+            label: dictionary.review.sectionQuestions,
+            value: stay,
+          },
+        ]
+      : []),
     {
       step: "personal",
       label: dictionary.review.sectionPersonal,
       value: [
         `${draft.firstName} ${draft.lastName}`.trim(),
         draft.email,
-        draft.phone
+        draft.phone,
       ]
         .filter(Boolean)
-        .join(" · ")
+        .join(" · "),
     },
     {
       step: "documents",
@@ -799,8 +871,8 @@ function ReviewSummary({
       value:
         fileCount > 0
           ? interpolate(dictionary.review.documentCount, { count: fileCount })
-          : dictionary.review.noDocuments
-    }
+          : dictionary.review.noDocuments,
+    },
   ];
 
   return (

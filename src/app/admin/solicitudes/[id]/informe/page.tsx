@@ -4,10 +4,11 @@ import { ArtikoLogo } from "@/components/brand/logo";
 import { PrintButton } from "@/components/admin/print-button";
 import { prisma } from "@/lib/db";
 import { assessSolvency } from "@/lib/applications/types";
+import { describeStay } from "@/lib/applications/stay";
 import {
   operationLabels,
   questionLabelsFor,
-  readableAnswer
+  readableAnswer,
 } from "@/lib/applications/labels";
 
 export const dynamic = "force-dynamic";
@@ -32,9 +33,8 @@ const RENT_KEYS_FOR_OWNER = [
   "occupation",
   "employmentType",
   "provableIncome",
-  "moveInDate",
   "pets",
-  "searchDuration"
+  "searchDuration",
 ];
 
 const SALE_KEYS_FOR_OWNER = [
@@ -43,11 +43,11 @@ const SALE_KEYS_FOR_OWNER = [
   "financingApproved",
   "needToSell",
   "firstPurchase",
-  "occupation"
+  "occupation",
 ];
 
 export default async function OwnerReportPage({
-  params
+  params,
 }: {
   params: Promise<{ id: string }>;
 }) {
@@ -57,8 +57,8 @@ export default async function OwnerReportPage({
     where: { id },
     include: {
       property: true,
-      documents: { select: { fileName: true, mimeType: true } }
-    }
+      documents: { select: { fileName: true, mimeType: true } },
+    },
   });
 
   if (!application) notFound();
@@ -66,7 +66,11 @@ export default async function OwnerReportPage({
   const answers = (application.answers ?? {}) as Record<string, string>;
   const labels = questionLabelsFor(application.operation);
   const keys =
-    application.operation === "RENT" ? RENT_KEYS_FOR_OWNER : SALE_KEYS_FOR_OWNER;
+    application.operation === "RENT"
+      ? RENT_KEYS_FOR_OWNER
+      : SALE_KEYS_FOR_OWNER;
+
+  const estancia = describeStay(answers);
 
   const solvency =
     application.operation === "RENT"
@@ -102,7 +106,7 @@ export default async function OwnerReportPage({
               {new Date().toLocaleDateString("es-ES", {
                 day: "numeric",
                 month: "long",
-                year: "numeric"
+                year: "numeric",
               })}
             </p>
           </div>
@@ -146,6 +150,14 @@ export default async function OwnerReportPage({
           {application.nationality ? (
             <p className="mt-1 text-sm text-ink-muted">
               Nacionalidad: {application.nationality}
+            </p>
+          ) : null}
+
+          {/* Para el propietario esto es la primera criba: o las fechas le
+              encajan, o el resto del informe le da igual. */}
+          {application.operation === "RENT" && estancia ? (
+            <p className="mt-3 border-l-2 border-gold pl-3 font-serif text-lg text-ink-strong">
+              {estancia}
             </p>
           ) : null}
 
@@ -209,9 +221,7 @@ export default async function OwnerReportPage({
         <section className="mt-8">
           <p className="eyebrow">Documentación</p>
           {application.documents.length === 0 ? (
-            <p className="mt-2 text-sm text-ink-muted">
-              Pendiente de recibir.
-            </p>
+            <p className="mt-2 text-sm text-ink-muted">Pendiente de recibir.</p>
           ) : (
             <>
               <p className="mt-2 text-sm text-ink">
@@ -222,7 +232,10 @@ export default async function OwnerReportPage({
               </p>
               <ul className="mt-2 space-y-1">
                 {application.documents.map((document) => (
-                  <li key={document.fileName} className="text-sm text-ink-strong">
+                  <li
+                    key={document.fileName}
+                    className="text-sm text-ink-strong"
+                  >
                     · {document.fileName}
                   </li>
                 ))}
@@ -246,9 +259,7 @@ export default async function OwnerReportPage({
         ) : null}
 
         <footer className="mt-10 border-t border-line pt-5 text-xs leading-relaxed text-ink-muted">
-          <p className="font-bold text-ink-strong">
-            INMOARTIKO SL · B56527930
-          </p>
+          <p className="font-bold text-ink-strong">INMOARTIKO SL · B56527930</p>
           <p>C/ Numancia 6, 2-5, 46500 Sagunto (Valencia)</p>
           <p>info@artikore.com · artikore.com</p>
           <p className="mt-3">

@@ -6,11 +6,11 @@ import {
   SelectField,
   TextAreaField,
   TextField,
-  YesNoField
+  YesNoField,
 } from "@/components/public/fields";
 import {
   recommendedIncomeFor,
-  type PublicProperty
+  type PublicProperty,
 } from "@/lib/applications/types";
 
 type QuestionProps = {
@@ -25,7 +25,7 @@ export function RentQuestions({
   answers,
   setAnswer,
   errors,
-  property
+  property,
 }: QuestionProps & { property: PublicProperty | undefined }) {
   const t = dictionary.rentQuestions;
   const rentPrice = property?.rentPrice ?? null;
@@ -60,6 +60,30 @@ export function RentQuestions({
         error={errors.moveInDate}
         required
       />
+
+      <SelectField
+        label={t.stayLength}
+        value={answers.stayLength ?? ""}
+        onChange={(value) => setAnswer("stayLength", value)}
+        options={t.stayOptions}
+        placeholder={dictionary.common.selectPlaceholder}
+        error={errors.stayLength}
+        required
+      />
+
+      {/* La fecha de salida solo se pide a quien ha dicho que ya la tiene.
+          Preguntarsela a quien busca vivienda habitual no tiene sentido y
+          ademas le hace dudar de si el alquiler tiene fecha de caducidad. */}
+      {answers.stayLength === "withEndDate" ? (
+        <TextField
+          label={t.moveOutDate}
+          type="date"
+          value={answers.moveOutDate ?? ""}
+          onChange={(value) => setAnswer("moveOutDate", value)}
+          error={errors.moveOutDate}
+          required
+        />
+      ) : null}
 
       <TextField
         label={t.occupation}
@@ -100,7 +124,7 @@ export function RentQuestions({
               ? interpolate(t.solvencyForProperty, {
                   rent: rentPrice.toLocaleString("es-ES"),
                   recommended:
-                    recommendedIncomeFor(rentPrice).toLocaleString("es-ES")
+                    recommendedIncomeFor(rentPrice).toLocaleString("es-ES"),
                 })
               : t.solvencyHelp
           }
@@ -176,7 +200,7 @@ export function SaleQuestions({
   dictionary,
   answers,
   setAnswer,
-  errors
+  errors,
 }: QuestionProps) {
   const t = dictionary.saleQuestions;
 

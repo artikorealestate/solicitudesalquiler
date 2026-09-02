@@ -13,7 +13,7 @@ export const applicationStatuses = [
   "VISITED",
   "OFFER",
   "RESERVED",
-  "CLOSED"
+  "CLOSED",
 ] as const;
 
 export type ApplicationStatus = (typeof applicationStatuses)[number];
@@ -28,7 +28,7 @@ export const statusLabels: Record<ApplicationStatus, string> = {
   VISITED: "Visitado",
   OFFER: "Oferta",
   RESERVED: "Reservado",
-  CLOSED: "Cerrado"
+  CLOSED: "Cerrado",
 };
 
 /// Color de cada estado. Agrupados por significado para que el listado se
@@ -44,12 +44,12 @@ export const statusStyles: Record<ApplicationStatus, string> = {
   VISITED: "bg-success/12 text-success",
   OFFER: "bg-success/12 text-success",
   RESERVED: "bg-success/12 text-success",
-  CLOSED: "bg-cream-deep text-ink-muted"
+  CLOSED: "bg-cream-deep text-ink-muted",
 };
 
 export const operationLabels: Record<string, string> = {
   RENT: "Alquiler",
-  SALE: "Compra"
+  SALE: "Compra",
 };
 
 export const localeLabels: Record<string, string> = {
@@ -61,7 +61,7 @@ export const localeLabels: Record<string, string> = {
   uk: "Ucraniano",
   nl: "Neerlandés",
   pt: "Portugués",
-  it: "Italiano"
+  it: "Italiano",
 };
 
 /// Etiquetas de las preguntas del formulario, para la ficha del interesado.
@@ -69,6 +69,8 @@ export const rentQuestionLabels: Record<string, string> = {
   householdSize: "Personas que viviran en la vivienda",
   relationship: "Relacion entre ellas",
   moveInDate: "Fecha deseada de entrada",
+  stayLength: "Duracion que necesita",
+  moveOutDate: "Fecha de salida",
   occupation: "Ocupacion actual",
   employmentType: "Situacion laboral",
   provableIncome: "Ingresos demostrables",
@@ -77,7 +79,7 @@ export const rentQuestionLabels: Record<string, string> = {
   petsDetail: "Que mascotas",
   searchDuration: "Tiempo buscando vivienda",
   visitedOthers: "Ha visitado otras viviendas",
-  documentsReady: "Documentacion disponible"
+  documentsReady: "Documentacion disponible",
 };
 
 export const saleQuestionLabels: Record<string, string> = {
@@ -89,7 +91,7 @@ export const saleQuestionLabels: Record<string, string> = {
   needsFinancing: "Necesita financiacion",
   financingApproved: "Financiacion preaprobada",
   firstPurchase: "Primera compra",
-  occupation: "Ocupacion actual"
+  occupation: "Ocupacion actual",
 };
 
 /// Valores codificados que guarda el formulario, traducidos para el panel.
@@ -115,12 +117,24 @@ const valueLabels: Record<string, string> = {
   lessThanThree: "Menos de tres meses",
   threeToTwelve: "Entre tres meses y un ano",
   moreThanYear: "Mas de un ano",
+  withEndDate: "Ya tiene fecha de salida",
+  season: "Una temporada, menos de un ano",
+  oneYear: "Un ano",
+  twoOrThree: "Dos o tres anos",
+  longTerm: "Largo plazo, sin fecha prevista",
   partly: "En parte",
   first: "Si, es su primera compra",
-  experienced: "No, ya conoce el proceso"
+  experienced: "No, ya conoce el proceso",
 };
 
+const ISO_DATE = /^(d{4})-(d{2})-(d{2})$/;
+
 export function readableAnswer(value: string): string {
+  const date = ISO_DATE.exec(value);
+  if (date) {
+    const [, ano, mes, dia] = date;
+    return `${Number(dia)}/${Number(mes)}/${ano}`;
+  }
   return valueLabels[value] ?? value;
 }
 

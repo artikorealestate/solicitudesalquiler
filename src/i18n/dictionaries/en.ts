@@ -86,6 +86,16 @@ export const en: Dictionary = {
     },
 
     moveInDate: "When would you need to move in?",
+
+    stayLength: "How long would you need it for?",
+    stayOptions: {
+      withEndDate: "We already know our leaving date",
+      season: "A season, less than a year",
+      oneYear: "One year",
+      twoOrThree: "Two or three years",
+      longTerm: "Long term, with no end date in mind",
+    },
+    moveOutDate: "What day would you be leaving?",
     occupation: "What do you do for a living?",
 
     employmentType:

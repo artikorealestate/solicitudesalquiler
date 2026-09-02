@@ -5,7 +5,7 @@ import {
   localeLabels,
   operationLabels,
   questionLabelsFor,
-  readableAnswer
+  readableAnswer,
 } from "@/lib/applications/labels";
 
 /// Plantillas de los dos correos que salen con cada solicitud.
@@ -59,7 +59,7 @@ export const LOGO_ATTACHMENT = {
   filename: "artiko.png",
   content: ARTIKO_LOGO_BASE64,
   encoding: "base64" as const,
-  cid: LOGO_CID
+  cid: LOGO_CID,
 };
 
 /// Cabecera de marca: el logotipo enlazado a la web.
@@ -140,7 +140,12 @@ function personalContactBlock(texts: {
   </table>`;
 }
 
-function propertyBox(reference: string, title: string, zone: string | null, price: string): string {
+function propertyBox(
+  reference: string,
+  title: string,
+  zone: string | null,
+  price: string,
+): string {
   return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0"
      style="margin:18px 0;background:${CREAM};border-radius:8px;">
     <tr><td style="padding:16px 18px;">
@@ -191,7 +196,7 @@ export function buildApplicantEmail(input: {
       input.property.reference,
       input.property.title,
       input.property.zone,
-      input.price
+      input.price,
     )}
     <p style="margin:0 0 14px;">${escapeHtml(t.nextSteps)}</p>
     ${
@@ -238,15 +243,18 @@ export function buildApplicantEmail(input: {
     `${t.visitWebsite}: ${websiteUrl()}`,
     "",
     t.signature,
-    t.signatureTagline
+    t.signatureTagline,
   ]
     .filter(Boolean)
     .join("\n");
 
   return {
     subject: t.subject,
-    html: shell(content, `${escapeHtml(t.noReply)}<br>${escapeHtml(t.signatureTagline)}`),
-    text
+    html: shell(
+      content,
+      `${escapeHtml(t.noReply)}<br>${escapeHtml(t.signatureTagline)}`,
+    ),
+    text,
   };
 }
 
@@ -280,7 +288,7 @@ export function buildDocumentRequestEmail(input: {
       (item) =>
         `<tr><td style="padding:7px 0;border-bottom:1px solid ${LINE};color:${INK};">
            ${escapeHtml(itemName(item))}
-         </td></tr>`
+         </td></tr>`,
     )
     .join("");
 
@@ -333,7 +341,7 @@ export function buildDocumentRequestEmail(input: {
     input.link,
     interpolate(t.emailExpiry, { date: expiryDate }),
     "",
-    "Artiko Real Estate"
+    "Artiko Real Estate",
   ]
     .filter(Boolean)
     .join("\n");
@@ -341,7 +349,7 @@ export function buildDocumentRequestEmail(input: {
   return {
     subject: interpolate(t.emailSubject, { property: input.property.title }),
     html: shell(content, "Artiko Real Estate · artikore.com"),
-    text
+    text,
   };
 }
 
@@ -373,7 +381,15 @@ export function buildInternalEmail(input: {
   // ficha. Un correo interno de treinta lineas no lo lee nadie.
   const highlightKeys =
     input.operation === "RENT"
-      ? ["householdSize", "monthlyIncome", "employmentType", "provableIncome", "moveInDate"]
+      ? [
+          "householdSize",
+          "monthlyIncome",
+          "employmentType",
+          "provableIncome",
+          "moveInDate",
+          "stayLength",
+          "moveOutDate",
+        ]
       : ["buyerProfile", "needsFinancing", "financingApproved", "needToSell"];
 
   const labels = questionLabelsFor(input.operation);
@@ -413,7 +429,7 @@ export function buildInternalEmail(input: {
       input.property.reference,
       input.property.title,
       input.property.zone,
-      input.price
+      input.price,
     )}
 
     ${
@@ -447,7 +463,7 @@ export function buildInternalEmail(input: {
     `${input.property.reference} — ${input.property.title}`,
     "",
     `Ver la solicitud: ${input.adminUrl}`,
-    input.driveUrl ? `Carpeta en Drive: ${input.driveUrl}` : ""
+    input.driveUrl ? `Carpeta en Drive: ${input.driveUrl}` : "",
   ]
     .filter(Boolean)
     .join("\n");
@@ -455,6 +471,6 @@ export function buildInternalEmail(input: {
   return {
     subject,
     html: shell(content, "Aviso automatico de Artiko Interesados."),
-    text
+    text,
   };
 }

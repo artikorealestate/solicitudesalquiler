@@ -5,14 +5,15 @@ import {
   operationLabels,
   statusLabels,
   statusStyles,
-  type ApplicationStatus
+  type ApplicationStatus,
 } from "@/lib/applications/labels";
 import {
   buildApplicationWhere,
   searchToQueryString,
-  type ApplicationSearch
+  type ApplicationSearch,
 } from "@/lib/applications/filters";
 import { SolvencyBadge } from "@/components/admin/solvency-badge";
+import { describeStay } from "@/lib/applications/stay";
 import { BuyerBadge } from "@/components/admin/buyer-badge";
 import { assessSolvency } from "@/lib/applications/types";
 import { assessBuyerReadiness } from "@/lib/applications/buyer-readiness";
@@ -20,7 +21,7 @@ import { assessBuyerReadiness } from "@/lib/applications/buyer-readiness";
 export const dynamic = "force-dynamic";
 
 export default async function ApplicationsPage({
-  searchParams
+  searchParams,
 }: {
   searchParams: Promise<ApplicationSearch>;
 }) {
@@ -34,24 +35,24 @@ export default async function ApplicationsPage({
       take: 200,
       include: {
         property: {
-          select: { id: true, reference: true, title: true, rentPrice: true }
+          select: { id: true, reference: true, title: true, rentPrice: true },
         },
-        _count: { select: { documents: true } }
-      }
+        _count: { select: { documents: true } },
+      },
     }),
     prisma.property.findMany({
       where: { applications: { some: {} } },
       orderBy: { reference: "asc" },
-      select: { id: true, reference: true, title: true }
+      select: { id: true, reference: true, title: true },
     }),
-    prisma.application.groupBy({ by: ["status"], _count: true })
+    prisma.application.groupBy({ by: ["status"], _count: true }),
   ]);
 
   const totalFor = (status: string) =>
     statusCounts.find((group) => group.status === status)?._count ?? 0;
 
   const hasFilters = Boolean(
-    search.q || search.operacion || search.estado || search.inmueble
+    search.q || search.operacion || search.estado || search.inmueble,
   );
 
   return (
@@ -180,7 +181,9 @@ export default async function ApplicationsPage({
           <p className="mt-6 text-sm text-ink-muted">
             {applications.length} solicitud
             {applications.length === 1 ? "" : "es"}
-            {applications.length === 200 ? " (mostrando las 200 mas recientes)" : ""}
+            {applications.length === 200
+              ? " (mostrando las 200 mas recientes)"
+              : ""}
           </p>
 
           <div className="surface mt-3 overflow-x-auto">
@@ -222,7 +225,24 @@ export default async function ApplicationsPage({
                       <span className="font-mono text-xs text-ink-muted">
                         {application.property.reference}
                       </span>
-                      <span className="block">{application.property.title}</span>
+                      <span className="block">
+                        {application.property.title}
+                      </span>
+                      {application.operation === "RENT"
+                        ? (() => {
+                            const estancia = describeStay(
+                              (application.answers ?? {}) as Record<
+                                string,
+                                string
+                              >,
+                            );
+                            return estancia ? (
+                              <span className="mt-0.5 block text-xs text-gold-dark">
+                                {estancia}
+                              </span>
+                            ) : null;
+                          })()
+                        : null}
                     </td>
                     <td className="px-5 py-3">
                       {operationLabels[application.operation]}
@@ -234,19 +254,24 @@ export default async function ApplicationsPage({
                           assessment={assessSolvency(
                             application.property.rentPrice,
                             (application.answers as Record<string, string>)
-                              ?.monthlyIncome
+                              ?.monthlyIncome,
                           )}
                         />
                       ) : (
                         <BuyerBadge
                           compact
                           readiness={assessBuyerReadiness(
-                            (application.answers ?? {}) as Record<string, string>
+                            (application.answers ?? {}) as Record<
+                              string,
+                              string
+                            >,
                           )}
                         />
                       )}
                     </td>
-                    <td className="px-5 py-3">{application._count.documents}</td>
+                    <td className="px-5 py-3">
+                      {application._count.documents}
+                    </td>
                     <td className="px-5 py-3">
                       <span
                         className={`inline-block whitespace-nowrap rounded px-2 py-0.5 text-xs ${

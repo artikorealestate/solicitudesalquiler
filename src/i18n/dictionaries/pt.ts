@@ -86,6 +86,16 @@ export const pt: Dictionary = {
     },
 
     moveInDate: "A partir de que data precisariam de entrar?",
+
+    stayLength: "Por quanto tempo precisariam?",
+    stayOptions: {
+      withEndDate: "Já sabemos a data de saída",
+      season: "Uma temporada, menos de um ano",
+      oneYear: "Um ano",
+      twoOrThree: "Dois ou três anos",
+      longTerm: "A longo prazo, sem data prevista",
+    },
+    moveOutDate: "Em que dia sairiam da habitação?",
     occupation: "Qual é a sua atividade profissional?",
 
     employmentType: "Que tipo de contrato ou situação laboral têm?",
