@@ -9,7 +9,12 @@ import { SolvencyBadge } from "@/components/admin/solvency-badge";
 import { SeasonalNote } from "@/components/admin/seasonal-note";
 import { BuyerBadge } from "@/components/admin/buyer-badge";
 import { assessBuyerReadiness } from "@/lib/applications/buyer-readiness";
-import { describeStay, isSeasonalStay } from "@/lib/applications/stay";
+import {
+  describeStay,
+  isSeasonalStay,
+  stayKind,
+  stayKindLabel,
+} from "@/lib/applications/stay";
 import { DocumentRequestPanel } from "@/components/admin/document-request-panel";
 import { SelfServiceLink } from "@/components/admin/self-service-link";
 import { DeleteApplication } from "@/components/admin/delete-application";
@@ -319,7 +324,15 @@ export default async function ApplicationDetailPage({
                 {temporada ? "Estancia" : "Solvencia"}
               </h2>
               {temporada ? (
-                <SeasonalNote stay={estancia} purpose={answers.stayPurpose} />
+                <SeasonalNote
+                  titulo={
+                    stayKind(answers)
+                      ? stayKindLabel(stayKind(answers)!)
+                      : "Estancia de temporada"
+                  }
+                  stay={estancia}
+                  purpose={answers.stayPurpose}
+                />
               ) : (
                 <SolvencyBadge
                   assessment={assessSolvency(

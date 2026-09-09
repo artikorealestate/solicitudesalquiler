@@ -12,15 +12,19 @@ const purposeLabels: Record<string, string> = {
 };
 
 export function SeasonalNote({
+  titulo,
   stay,
   purpose,
 }: {
+  /// "Temporada alta" o "Media temporada": son negocios distintos con
+  /// tarifas distintas y conviene ver cual es sin abrir las fechas.
+  titulo: string;
   stay: string | null;
   purpose: string | undefined;
 }) {
   return (
     <div className="rounded-card bg-gold-wash p-4">
-      <p className="text-sm font-bold text-gold-dark">Estancia de temporada</p>
+      <p className="text-sm font-bold text-gold-dark">{titulo}</p>
 
       {stay ? <p className="mt-2 text-sm text-ink-strong">{stay}</p> : null}
 

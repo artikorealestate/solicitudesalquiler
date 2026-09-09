@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   describeStay,
   isSeasonalStay,
+  stayKind,
   stayLengthText,
 } from "../../src/lib/applications/stay";
 
@@ -55,7 +56,7 @@ describe("describeStay", () => {
   it("muestra el tramo completo cuando hay las dos fechas", () => {
     expect(
       describeStay({ moveInDate: "2026-07-01", moveOutDate: "2026-09-01" }),
-    ).toBe("Temporada · del 1 jul 2026 al 1 sept 2026 (2 meses)");
+    ).toBe("Temporada alta · del 1 jul 2026 al 1 sept 2026 (2 meses)");
   });
 
   it("muestra entrada y duracion cuando no hay fecha de salida", () => {
@@ -152,14 +153,14 @@ describe("de que tipo de alquiler se trata", () => {
         moveInDate: "2026-07-01",
         moveOutDate: "2026-08-31",
       }),
-    ).toBe("Temporada · del 1 jul 2026 al 31 ago 2026 (2 meses)");
+    ).toBe("Temporada alta · del 1 jul 2026 al 31 ago 2026 (2 meses)");
   });
 
   // "Temporada · una temporada" sobraba.
   it("no repite la palabra cuando la duracion ya lo dice", () => {
     expect(
       describeStay({ stayLength: "season", moveInDate: "2026-06-15" }),
-    ).toBe("Temporada · desde el 15 jun 2026");
+    ).toBe("Media temporada · desde el 15 jun 2026");
   });
 
   it("dice Larga estancia en un contrato de un ano con fechas", () => {
@@ -186,5 +187,89 @@ describe("de que tipo de alquiler se trata", () => {
     expect(describeStay({ moveInDate: "2026-09-01" })).toBe(
       "Desde el 1 sept 2026",
     );
+  });
+});
+
+describe("temporada alta frente a media temporada", () => {
+  // El negocio de Gran Canet: julio y agosto a precio de temporada alta, de
+  // septiembre a junio contratos sueltos por meses a bastante menos.
+  it("julio y agosto es temporada alta", () => {
+    expect(
+      stayKind({
+        stayLength: "withEndDate",
+        moveInDate: "2026-07-01",
+        moveOutDate: "2026-08-31",
+      }),
+    ).toBe("ALTA");
+  });
+
+  it("de septiembre a mayo es media temporada", () => {
+    expect(
+      stayKind({
+        stayLength: "withEndDate",
+        moveInDate: "2026-09-01",
+        moveOutDate: "2027-05-31",
+      }),
+    ).toBe("MEDIA");
+  });
+
+  // El dia de salida no cuenta: se van el 1 de julio, no lo ocupan.
+  it("un contrato que termina el 1 de julio sigue siendo media", () => {
+    expect(
+      stayKind({
+        stayLength: "withEndDate",
+        moveInDate: "2026-09-01",
+        moveOutDate: "2027-07-01",
+      }),
+    ).toBe("MEDIA");
+  });
+
+  it("pero si se queda hasta mediados de julio, es alta", () => {
+    expect(
+      stayKind({
+        stayLength: "withEndDate",
+        moveInDate: "2026-09-01",
+        moveOutDate: "2027-07-15",
+      }),
+    ).toBe("ALTA");
+  });
+
+  it("junio completo todavia no es alta", () => {
+    expect(
+      stayKind({
+        stayLength: "withEndDate",
+        moveInDate: "2026-06-01",
+        moveOutDate: "2026-07-01",
+      }),
+    ).toBe("MEDIA");
+  });
+
+  it("entrar el 31 de agosto si lo es", () => {
+    expect(
+      stayKind({
+        stayLength: "withEndDate",
+        moveInDate: "2026-08-31",
+        moveOutDate: "2027-05-31",
+      }),
+    ).toBe("ALTA");
+  });
+
+  it("sin fecha de salida decide el mes de entrada", () => {
+    expect(stayKind({ stayLength: "season", moveInDate: "2026-07-10" })).toBe(
+      "ALTA",
+    );
+    expect(stayKind({ stayLength: "season", moveInDate: "2026-10-01" })).toBe(
+      "MEDIA",
+    );
+  });
+
+  it("un ano o mas es larga estancia", () => {
+    expect(stayKind({ stayLength: "oneYear", moveInDate: "2026-09-01" })).toBe(
+      "LARGA",
+    );
+  });
+
+  it("no clasifica una solicitud antigua", () => {
+    expect(stayKind({ moveInDate: "2026-09-01" })).toBeNull();
   });
 });

@@ -46,6 +46,66 @@ export function stayLengthText(desde: Date, hasta: Date): string | null {
     : `${parteAnos} y ${resto} ${resto === 1 ? "mes" : "meses"}`;
 }
 
+/// Tipo de alquiler al que corresponde la estancia.
+///
+/// Los tres son negocios distintos con tarifas distintas, sobre todo en Gran
+/// Canet: julio y agosto se alquilan a precio de temporada alta, de
+/// septiembre a junio se hacen contratos sueltos por meses a bastante menos,
+/// y la larga estancia es otra cosa. Saber en cual cae una solicitud es lo
+/// primero que hace falta para saber que precio se le contesta.
+export type StayKind = "ALTA" | "MEDIA" | "LARGA";
+
+const KIND_LABELS: Record<StayKind, string> = {
+  ALTA: "Temporada alta",
+  MEDIA: "Media temporada",
+  LARGA: "Larga estancia",
+};
+
+export function stayKindLabel(kind: StayKind): string {
+  return KIND_LABELS[kind];
+}
+
+/// Si la estancia pisa julio o agosto.
+///
+/// El dia de salida no cuenta: un contrato de septiembre a junio que termina
+/// el 1 de julio no es temporada alta, aunque la fecha caiga en julio.
+function pisaTemporadaAlta(desde: Date, hasta: Date): boolean {
+  // Todo en UTC: las fechas del formulario llegan como 2026-07-01, que se
+  // interpreta a medianoche UTC. Construir los limites en hora local las
+  // desplazaba dos horas en verano y hacia que un contrato terminado el 1 de
+  // julio contase como temporada alta.
+  for (let ano = desde.getUTCFullYear(); ano <= hasta.getUTCFullYear(); ano++) {
+    const empiezaAlta = new Date(Date.UTC(ano, 6, 1)); // 1 de julio
+    const acabaAlta = new Date(Date.UTC(ano, 8, 1)); // 1 de septiembre
+    if (desde < acabaAlta && hasta > empiezaAlta) return true;
+  }
+  return false;
+}
+
+/// Devuelve null cuando la solicitud no dice lo suficiente: en compras, y en
+/// las anteriores a que se preguntara la duracion.
+export function stayKind(answers: Record<string, string>): StayKind | null {
+  const entrada = fecha(answers.moveInDate);
+  const salida = fecha(answers.moveOutDate);
+
+  if (!isSeasonalStay(answers)) {
+    return answers.stayLength ? "LARGA" : null;
+  }
+
+  if (entrada && salida) {
+    return pisaTemporadaAlta(entrada, salida) ? "ALTA" : "MEDIA";
+  }
+
+  // Sin fecha de salida, la de entrada es lo unico que hay: quien entra en
+  // julio o en agosto viene a la temporada alta.
+  if (entrada) {
+    const mes = entrada.getUTCMonth();
+    return mes === 6 || mes === 7 ? "ALTA" : "MEDIA";
+  }
+
+  return "MEDIA";
+}
+
 /// Devuelve null cuando no hay ni fecha de entrada ni duracion: en compras, y
 /// en las solicitudes anteriores a que se preguntara esto.
 ///
@@ -60,13 +120,8 @@ export function describeStay(answers: Record<string, string>): string | null {
   // Solo se etiqueta cuando se sabe: las solicitudes anteriores a estas
   // preguntas tienen fecha de entrada y nada mas, y llamarlas "larga
   // estancia" seria inventarselo.
-  const clasificable =
-    Boolean(answers.stayLength) || Boolean(entrada && salida);
-  const tipo = clasificable
-    ? isSeasonalStay(answers)
-      ? "Temporada"
-      : "Larga estancia"
-    : null;
+  const kind = stayKind(answers);
+  const tipo = kind ? KIND_LABELS[kind] : null;
 
   const detalle = (() => {
     if (entrada && salida) {

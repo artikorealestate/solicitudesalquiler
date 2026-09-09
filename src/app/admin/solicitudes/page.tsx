@@ -13,7 +13,7 @@ import {
   type ApplicationSearch,
 } from "@/lib/applications/filters";
 import { SolvencyBadge } from "@/components/admin/solvency-badge";
-import { describeStay, isSeasonalStay } from "@/lib/applications/stay";
+import { describeStay, stayKind, stayKindLabel } from "@/lib/applications/stay";
 import { BuyerBadge } from "@/components/admin/buyer-badge";
 import { assessSolvency } from "@/lib/applications/types";
 import { assessBuyerReadiness } from "@/lib/applications/buyer-readiness";
@@ -205,97 +205,103 @@ export default async function ApplicationsPage({
                 </tr>
               </thead>
               <tbody>
-                {applications.map((application) => (
-                  <tr
-                    key={application.id}
-                    className="border-b border-line-soft last:border-0 hover:bg-cream"
-                  >
-                    <td className="px-5 py-3">
-                      <Link
-                        href={`/admin/solicitudes/${application.id}`}
-                        className="font-bold text-ink-strong hover:text-gold-dark"
-                      >
-                        {application.firstName} {application.lastName}
-                      </Link>
-                      <span className="block text-xs text-ink-muted">
-                        {application.email} · {application.phone}
-                      </span>
-                    </td>
-                    <td className="px-5 py-3">
-                      <span className="font-mono text-xs text-ink-muted">
-                        {application.property.reference}
-                      </span>
-                      <span className="block">
-                        {application.property.title}
-                      </span>
-                      {application.operation === "RENT"
-                        ? (() => {
-                            const estancia = describeStay(
+                {applications.map((application) => {
+                  const answers = (application.answers ?? {}) as Record<
+                    string,
+                    string
+                  >;
+                  const kind =
+                    application.operation === "RENT" ? stayKind(answers) : null;
+                  const estancia =
+                    application.operation === "RENT"
+                      ? describeStay(answers)
+                      : null;
+
+                  return (
+                    <tr
+                      key={application.id}
+                      className="border-b border-line-soft last:border-0 hover:bg-cream"
+                    >
+                      <td className="px-5 py-3">
+                        <Link
+                          href={`/admin/solicitudes/${application.id}`}
+                          className="font-bold text-ink-strong hover:text-gold-dark"
+                        >
+                          {application.firstName} {application.lastName}
+                        </Link>
+                        <span className="block text-xs text-ink-muted">
+                          {application.email} · {application.phone}
+                        </span>
+                      </td>
+                      <td className="px-5 py-3">
+                        <span className="font-mono text-xs text-ink-muted">
+                          {application.property.reference}
+                        </span>
+                        <span className="block">
+                          {application.property.title}
+                        </span>
+                        {estancia ? (
+                          <span className="mt-0.5 block text-xs text-gold-dark">
+                            {estancia}
+                          </span>
+                        ) : null}
+                      </td>
+                      <td className="px-5 py-3">
+                        {operationLabels[application.operation]}
+                      </td>
+                      <td className="px-5 py-3">
+                        {kind && kind !== "LARGA" ? (
+                          <span
+                            className="inline-block whitespace-nowrap rounded bg-gold-wash px-2 py-0.5 text-xs font-bold text-gold-dark"
+                            title="Estancia de temporada: no se le aplica el criterio del 30%."
+                          >
+                            {stayKindLabel(kind)}
+                          </span>
+                        ) : application.operation === "RENT" ? (
+                          <SolvencyBadge
+                            compact
+                            assessment={assessSolvency(
+                              application.property.rentPrice,
+                              (application.answers as Record<string, string>)
+                                ?.monthlyIncome,
+                            )}
+                          />
+                        ) : (
+                          <BuyerBadge
+                            compact
+                            readiness={assessBuyerReadiness(
                               (application.answers ?? {}) as Record<
                                 string,
                                 string
                               >,
-                            );
-                            return estancia ? (
-                              <span className="mt-0.5 block text-xs text-gold-dark">
-                                {estancia}
-                              </span>
-                            ) : null;
-                          })()
-                        : null}
-                    </td>
-                    <td className="px-5 py-3">
-                      {operationLabels[application.operation]}
-                    </td>
-                    <td className="px-5 py-3">
-                      {application.operation === "RENT" &&
-                      isSeasonalStay(
-                        (application.answers ?? {}) as Record<string, string>,
-                      ) ? (
+                            )}
+                          />
+                        )}
+                      </td>
+                      <td className="px-5 py-3">
+                        {application._count.documents}
+                      </td>
+                      <td className="px-5 py-3">
                         <span
-                          className="inline-block whitespace-nowrap rounded bg-gold-wash px-2 py-0.5 text-xs font-bold text-gold-dark"
-                          title="Estancia de temporada: no se le aplica el criterio del 30%."
+                          className={`inline-block whitespace-nowrap rounded px-2 py-0.5 text-xs ${
+                            statusStyles[
+                              application.status as ApplicationStatus
+                            ]
+                          }`}
                         >
-                          Temporada
+                          {
+                            statusLabels[
+                              application.status as ApplicationStatus
+                            ]
+                          }
                         </span>
-                      ) : application.operation === "RENT" ? (
-                        <SolvencyBadge
-                          compact
-                          assessment={assessSolvency(
-                            application.property.rentPrice,
-                            (application.answers as Record<string, string>)
-                              ?.monthlyIncome,
-                          )}
-                        />
-                      ) : (
-                        <BuyerBadge
-                          compact
-                          readiness={assessBuyerReadiness(
-                            (application.answers ?? {}) as Record<
-                              string,
-                              string
-                            >,
-                          )}
-                        />
-                      )}
-                    </td>
-                    <td className="px-5 py-3">
-                      {application._count.documents}
-                    </td>
-                    <td className="px-5 py-3">
-                      <span
-                        className={`inline-block whitespace-nowrap rounded px-2 py-0.5 text-xs ${
-                          statusStyles[application.status as ApplicationStatus]
-                        }`}
-                      >
-                        {statusLabels[application.status as ApplicationStatus]}
-                      </span>
-                    </td>
-                    <td className="px-5 py-3 whitespace-nowrap text-ink-muted">
-                      {application.submittedAt.toLocaleDateString("es-ES")}
-                    </td>
-                  </tr>
-                ))}
+                      </td>
+                      <td className="px-5 py-3 whitespace-nowrap text-ink-muted">
+                        {application.submittedAt.toLocaleDateString("es-ES")}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
