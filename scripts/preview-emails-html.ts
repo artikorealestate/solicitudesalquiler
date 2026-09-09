@@ -9,7 +9,7 @@ import { es } from "../src/i18n/dictionaries/es";
 import {
   buildApplicantEmail,
   buildDocumentRequestEmail,
-  buildInternalEmail
+  buildInternalEmail,
 } from "../src/lib/mail/templates";
 import { ARTIKO_LOGO_BASE64 } from "../src/lib/mail/logo";
 import { resolveDocumentItems } from "../src/lib/applications/document-catalog";
@@ -19,14 +19,14 @@ const property = {
   listingUrl:
     "https://www.idealista.com/pro/artiko-real-estate/inmueble/112125480/",
   title: "Piso en Calle de la Flor del Taronger, Canet d'En Berenguer",
-  zone: "Canet d'En Berenguer"
+  zone: "Canet d'En Berenguer",
 };
 
 const applicant = {
   firstName: "Ana",
   lastName: "García López",
   email: "ana.garcia@example.com",
-  phone: "600 123 456"
+  phone: "600 123 456",
 };
 
 const answers: Record<string, string> = {
@@ -34,7 +34,10 @@ const answers: Record<string, string> = {
   monthlyIncome: "5200",
   employmentType: "permanent",
   provableIncome: "yes",
-  moveInDate: "2026-10-01"
+  moveInDate: "2026-07-01",
+  stayLength: "withEndDate",
+  moveOutDate: "2026-08-31",
+  stayPurpose: "holiday",
 };
 
 const correos = [
@@ -47,8 +50,9 @@ const correos = [
       property,
       price: "1.600 €/mes",
       hadDocuments: true,
-      selfServiceUrl: "https://artiko-interesados.vercel.app/solicitud/token-de-ejemplo"
-    })
+      selfServiceUrl:
+        "https://artiko-interesados.vercel.app/solicitud/token-de-ejemplo",
+    }),
   },
   {
     titulo: "2 · Aviso interno a info@artikore.com",
@@ -62,8 +66,8 @@ const correos = [
       answers,
       documentCount: 2,
       adminUrl: "https://artiko.vercel.app/admin/solicitudes/muestra",
-      driveUrl: "https://drive.google.com/drive/folders/ejemplo"
-    })
+      driveUrl: "https://drive.google.com/drive/folders/ejemplo",
+    }),
   },
   {
     titulo: "3 · Petición de documentación",
@@ -73,14 +77,14 @@ const correos = [
       property,
       items: resolveDocumentItems(
         ["id", "incomeProof", "employmentContract", "workHistory"],
-        es.docs.items
+        es.docs.items,
       ),
       message: "Con la vida laboral nos vale la que descargues hoy mismo.",
       link: "https://artiko.vercel.app/documentos/muestra",
       expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-      locale: "es"
-    })
-  }
+      locale: "es",
+    }),
+  },
 ];
 
 const dataUri = `data:image/png;base64,${ARTIKO_LOGO_BASE64}`;
@@ -92,7 +96,7 @@ const secciones = correos
     <h2>${c.titulo}</h2>
     <p class="asunto"><b>Asunto:</b> ${c.subject}</p>
     <div class="marco">${c.html.replace(/cid:artiko-logo/g, dataUri)}</div>
-  </section>`
+  </section>`,
   )
   .join("");
 

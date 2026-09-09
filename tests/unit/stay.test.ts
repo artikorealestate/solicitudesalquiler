@@ -8,13 +8,13 @@ import {
 describe("stayLengthText", () => {
   it("cuenta en dias las estancias cortas", () => {
     expect(stayLengthText(new Date("2026-07-01"), new Date("2026-07-15"))).toBe(
-      "14 dias",
+      "14 días",
     );
   });
 
   it("usa el singular con un solo dia", () => {
     expect(stayLengthText(new Date("2026-07-01"), new Date("2026-07-02"))).toBe(
-      "1 dia",
+      "1 día",
     );
   });
 
@@ -32,13 +32,13 @@ describe("stayLengthText", () => {
 
   it("pasa a anos al llegar al ano", () => {
     expect(stayLengthText(new Date("2026-01-01"), new Date("2027-01-01"))).toBe(
-      "1 ano",
+      "1 año",
     );
   });
 
   it("combina anos y meses", () => {
     expect(stayLengthText(new Date("2026-01-01"), new Date("2027-07-01"))).toBe(
-      "1 ano y 6 meses",
+      "1 año y 6 meses",
     );
   });
 
@@ -55,13 +55,13 @@ describe("describeStay", () => {
   it("muestra el tramo completo cuando hay las dos fechas", () => {
     expect(
       describeStay({ moveInDate: "2026-07-01", moveOutDate: "2026-09-01" }),
-    ).toBe("Del 1 jul 2026 al 1 sept 2026 · 2 meses");
+    ).toBe("Temporada · del 1 jul 2026 al 1 sept 2026 (2 meses)");
   });
 
   it("muestra entrada y duracion cuando no hay fecha de salida", () => {
     expect(
       describeStay({ moveInDate: "2026-09-01", stayLength: "oneYear" }),
-    ).toBe("Desde el 1 sept 2026 · Un ano");
+    ).toBe("Larga estancia · desde el 1 sept 2026 · un año");
   });
 
   it("se conforma con la fecha de entrada sola", () => {
@@ -141,5 +141,50 @@ describe("una fecha de salida que ya no aplica", () => {
         moveOutDate: "2026-08-31",
       }),
     ).toBe(false);
+  });
+});
+
+describe("de que tipo de alquiler se trata", () => {
+  it("dice Temporada delante de las fechas", () => {
+    expect(
+      describeStay({
+        stayLength: "withEndDate",
+        moveInDate: "2026-07-01",
+        moveOutDate: "2026-08-31",
+      }),
+    ).toBe("Temporada · del 1 jul 2026 al 31 ago 2026 (2 meses)");
+  });
+
+  // "Temporada · una temporada" sobraba.
+  it("no repite la palabra cuando la duracion ya lo dice", () => {
+    expect(
+      describeStay({ stayLength: "season", moveInDate: "2026-06-15" }),
+    ).toBe("Temporada · desde el 15 jun 2026");
+  });
+
+  it("dice Larga estancia en un contrato de un ano con fechas", () => {
+    expect(
+      describeStay({
+        stayLength: "withEndDate",
+        moveInDate: "2026-09-01",
+        moveOutDate: "2027-09-01",
+      }),
+    ).toBe("Larga estancia · del 1 sept 2026 al 1 sept 2027 (1 año)");
+  });
+
+  it("dice Larga estancia sin fecha de salida", () => {
+    expect(
+      describeStay({ stayLength: "longTerm", moveInDate: "2026-09-01" }),
+    ).toBe(
+      "Larga estancia · desde el 1 sept 2026 · sin fecha de salida prevista",
+    );
+  });
+
+  // Las solicitudes anteriores solo tienen fecha de entrada: llamarlas larga
+  // estancia seria inventarselo.
+  it("no clasifica lo que no puede saber", () => {
+    expect(describeStay({ moveInDate: "2026-09-01" })).toBe(
+      "Desde el 1 sept 2026",
+    );
   });
 });

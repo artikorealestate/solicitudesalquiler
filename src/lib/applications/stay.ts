@@ -7,12 +7,12 @@
 /// interno y en el informe del propietario, y no enterrada entre el resto de
 /// respuestas.
 
-const DURACIONES: Record<string, string> = {
-  withEndDate: "Con fecha de salida",
-  season: "Una temporada, menos de un ano",
-  oneYear: "Un ano",
-  twoOrThree: "Dos o tres anos",
-  longTerm: "Largo plazo, sin fecha prevista",
+const DURACIONES: Record<string, string | null> = {
+  withEndDate: "con fecha de salida",
+  season: null,
+  oneYear: "un año",
+  twoOrThree: "dos o tres años",
+  longTerm: "sin fecha de salida prevista",
 };
 
 function fecha(valor: string | undefined): Date | null {
@@ -33,14 +33,14 @@ function corta(d: Date): string {
 export function stayLengthText(desde: Date, hasta: Date): string | null {
   const dias = Math.round((hasta.getTime() - desde.getTime()) / 86_400_000);
   if (dias <= 0) return null;
-  if (dias < 31) return `${dias} ${dias === 1 ? "dia" : "dias"}`;
+  if (dias < 31) return `${dias} ${dias === 1 ? "día" : "días"}`;
 
   const meses = Math.round(dias / 30.44);
   if (meses < 12) return `${meses} ${meses === 1 ? "mes" : "meses"}`;
 
   const anos = Math.floor(meses / 12);
   const resto = meses % 12;
-  const parteAnos = `${anos} ${anos === 1 ? "ano" : "anos"}`;
+  const parteAnos = `${anos} ${anos === 1 ? "año" : "años"}`;
   return resto === 0
     ? parteAnos
     : `${parteAnos} y ${resto} ${resto === 1 ? "mes" : "meses"}`;
@@ -48,23 +48,44 @@ export function stayLengthText(desde: Date, hasta: Date): string | null {
 
 /// Devuelve null cuando no hay ni fecha de entrada ni duracion: en compras, y
 /// en las solicitudes anteriores a que se preguntara esto.
+///
+/// Empieza diciendo de que tipo de alquiler se trata porque es lo primero que
+/// decide si la solicitud interesa: un piso que se quiere alquilar todo el ano
+/// no encaja con quien pide julio y agosto, por muy buen candidato que sea.
 export function describeStay(answers: Record<string, string>): string | null {
   const entrada = fecha(answers.moveInDate);
   const salida = fecha(answers.moveOutDate);
   const duracion = DURACIONES[answers.stayLength ?? ""] ?? null;
 
-  if (entrada && salida) {
-    const cuanto = stayLengthText(entrada, salida);
-    return `Del ${corta(entrada)} al ${corta(salida)}${cuanto ? ` · ${cuanto}` : ""}`;
-  }
+  // Solo se etiqueta cuando se sabe: las solicitudes anteriores a estas
+  // preguntas tienen fecha de entrada y nada mas, y llamarlas "larga
+  // estancia" seria inventarselo.
+  const clasificable =
+    Boolean(answers.stayLength) || Boolean(entrada && salida);
+  const tipo = clasificable
+    ? isSeasonalStay(answers)
+      ? "Temporada"
+      : "Larga estancia"
+    : null;
 
-  if (entrada) {
-    return duracion
-      ? `Desde el ${corta(entrada)} · ${duracion}`
-      : `Desde el ${corta(entrada)}`;
-  }
+  const detalle = (() => {
+    if (entrada && salida) {
+      const cuanto = stayLengthText(entrada, salida);
+      return `del ${corta(entrada)} al ${corta(salida)}${cuanto ? ` (${cuanto})` : ""}`;
+    }
 
-  return duracion;
+    if (entrada) {
+      return duracion
+        ? `desde el ${corta(entrada)} · ${duracion}`
+        : `desde el ${corta(entrada)}`;
+    }
+
+    return duracion ? duracion : null;
+  })();
+
+  if (!tipo)
+    return detalle ? detalle[0].toUpperCase() + detalle.slice(1) : null;
+  return detalle ? `${tipo} · ${detalle}` : tipo;
 }
 
 /// Frontera entre alquiler de temporada y vivienda habitual.

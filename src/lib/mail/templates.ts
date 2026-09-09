@@ -1,4 +1,4 @@
-import { isSeasonalStay } from "@/lib/applications/stay";
+import { describeStay, isSeasonalStay } from "@/lib/applications/stay";
 import type { Dictionary } from "@/i18n";
 import { interpolate } from "@/i18n";
 import { ARTIKO_LOGO_BASE64 } from "@/lib/mail/logo";
@@ -213,7 +213,6 @@ export function buildApplicantEmail(input: {
       input.property.title,
       input.property.zone,
       input.price,
-      input.property.listingUrl,
     )}
     <p style="margin:0 0 14px;">${escapeHtml(t.nextSteps)}</p>
     ${
@@ -249,7 +248,6 @@ export function buildApplicantEmail(input: {
     "",
     interpolate(t.received, { operation: operationWord }),
     `${input.property.reference} — ${input.property.title}`,
-    input.property.listingUrl ? `Anuncio: ${input.property.listingUrl}` : "",
     "",
     t.nextSteps,
     "",
@@ -410,15 +408,21 @@ export function buildInternalEmail(input: {
     input.operation === "RENT"
       ? [
           "householdSize",
-          "moveInDate",
-          "moveOutDate",
-          "stayLength",
           ...(seasonal ? ["stayPurpose"] : ["monthlyIncome", "provableIncome"]),
           "employmentType",
         ]
       : ["buyerProfile", "needsFinancing", "financingApproved", "needToSell"];
 
   const labels = questionLabelsFor(input.operation);
+
+  const stay = input.operation === "RENT" ? describeStay(input.answers) : null;
+
+  const stayRow = stay
+    ? `<tr>
+        <td style="padding:4px 14px 4px 0;color:#8a8a8a;vertical-align:top;">Estancia</td>
+        <td style="padding:4px 0;color:${INK};font-weight:bold;">${escapeHtml(stay)}</td>
+      </tr>`
+    : "";
 
   const highlights = highlightKeys
     .map((key) => {
@@ -456,12 +460,13 @@ export function buildInternalEmail(input: {
       input.property.title,
       input.property.zone,
       input.price,
+      input.property.listingUrl,
     )}
 
     ${
-      highlights
+      stayRow || highlights
         ? `<table role="presentation" cellpadding="0" cellspacing="0"
-             style="font:400 14px/1.5 Arial,sans-serif;margin:0 0 22px;">${highlights}</table>`
+             style="font:400 14px/1.5 Arial,sans-serif;margin:0 0 22px;">${stayRow}${highlights}</table>`
         : ""
     }
 
@@ -487,6 +492,8 @@ export function buildInternalEmail(input: {
     fullName,
     `${input.applicant.email} · ${input.applicant.phone}`,
     `${input.property.reference} — ${input.property.title}`,
+    input.property.listingUrl ? `Anuncio: ${input.property.listingUrl}` : "",
+    stay ? `Estancia: ${stay}` : "",
     "",
     `Ver la solicitud: ${input.adminUrl}`,
     input.driveUrl ? `Carpeta en Drive: ${input.driveUrl}` : "",

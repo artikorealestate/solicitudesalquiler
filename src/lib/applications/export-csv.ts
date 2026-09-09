@@ -1,3 +1,4 @@
+import { describeStay } from "./stay";
 import {
   localeLabels,
   operationLabels,
@@ -52,6 +53,7 @@ const BASE_COLUMNS = [
   "Idioma",
   "Documentos adjuntos",
   "Carpeta Drive",
+  "Estancia",
 ];
 
 /// Las preguntas de alquiler y de compra van en columnas distintas. Mezclarlas
@@ -121,6 +123,7 @@ export function buildApplicationsCsv(
       localeLabels[application.locale] ?? application.locale,
       application.documentCount,
       application.driveFolderUrl,
+      isRent ? (describeStay(application.answers) ?? "") : "",
     ];
 
     for (const key of RENT_KEYS) {
