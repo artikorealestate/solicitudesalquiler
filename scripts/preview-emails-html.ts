@@ -16,6 +16,8 @@ import { resolveDocumentItems } from "../src/lib/applications/document-catalog";
 
 const property = {
   reference: "195",
+  listingUrl:
+    "https://www.idealista.com/pro/artiko-real-estate/inmueble/112125480/",
   title: "Piso en Calle de la Flor del Taronger, Canet d'En Berenguer",
   zone: "Canet d'En Berenguer"
 };

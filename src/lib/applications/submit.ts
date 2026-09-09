@@ -161,6 +161,7 @@ export async function submitApplication(input: unknown): Promise<SubmitResult> {
       zone: true,
       rentPrice: true,
       salePrice: true,
+      idealistaUrl: true,
       driveRentFolderId: true,
       driveSaleFolderId: true,
     },
@@ -260,7 +261,6 @@ export async function submitApplication(input: unknown): Promise<SubmitResult> {
         name: `Resumen - ${data.firstName} ${data.lastName}`,
         parentFolderId: applicantFolderId,
         html: buildSummaryHtml({
-          dictionary,
           operation: data.operation,
           locale,
           submittedAt: application.submittedAt,
@@ -268,6 +268,11 @@ export async function submitApplication(input: unknown): Promise<SubmitResult> {
             reference: property.reference,
             title: property.title,
             zone: property.zone,
+            price:
+              data.operation === "RENT"
+                ? property.rentPrice
+                : property.salePrice,
+            idealistaUrl: property.idealistaUrl,
           },
           applicant: {
             firstName: data.firstName,
@@ -330,6 +335,7 @@ export async function submitApplication(input: unknown): Promise<SubmitResult> {
       reference: property.reference,
       title: property.title,
       zone: property.zone,
+      listingUrl: property.idealistaUrl,
     },
     price,
     answers: data.answers,

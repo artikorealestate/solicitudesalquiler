@@ -1,4 +1,6 @@
-import type { Dictionary } from "@/i18n";
+import { es } from "@/i18n/dictionaries/es";
+import { describeStay } from "./stay";
+import { localeLabels } from "./labels";
 
 /// Genera el resumen de la solicitud que se guarda en la carpeta de Drive.
 ///
@@ -56,19 +58,31 @@ const SALE_LABELS: Record<string, string> = {
 };
 
 /// Traduce los valores codificados a texto legible en espanol.
-function readableValue(
-  key: string,
-  value: string,
-  dictionary: Dictionary,
-): string {
+///
+/// Va siempre en castellano aunque el interesado rellenara en otro idioma:
+/// este documento lo lee Artiko, no el. Un resumen interno con
+/// "Unbefristeter Vertrag" no le sirve a nadie de la oficina.
+function readableValue(key: string, value: string): string {
   if (value === "yes") return "Si";
   if (value === "no") return "No";
 
+  // El formulario guarda las fechas como 2026-07-01.
+  const date = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  if (date) return `${Number(date[3])}/${Number(date[2])}/${date[1]}`;
+
   const catalogs: Record<string, Record<string, string>> = {
-    relationship: dictionary.rentQuestions.relationshipOptions,
-    employmentType: dictionary.rentQuestions.employmentOptions,
-    documentsReady: dictionary.rentQuestions.documentsReadyOptions,
-    firstPurchase: dictionary.saleQuestions.firstPurchaseOptions,
+    relationship: es.rentQuestions.relationshipOptions,
+    employmentType: es.rentQuestions.employmentOptions,
+    documentsReady: es.rentQuestions.documentsReadyOptions,
+    stayLength: es.rentQuestions.stayOptions,
+    stayPurpose: es.rentQuestions.stayPurposeOptions,
+    // El tiempo buscando se pregunta en alquiler y en compra con opciones
+    // distintas; las claves no se solapan, asi que valen las dos juntas.
+    searchDuration: {
+      ...es.rentQuestions.searchDurationOptions,
+      ...es.saleQuestions.searchDurationOptions,
+    },
+    firstPurchase: es.saleQuestions.firstPurchaseOptions,
   };
 
   const catalog = catalogs[key];
@@ -80,11 +94,18 @@ function readableValue(
 }
 
 export function buildSummaryHtml(input: {
-  dictionary: Dictionary;
   operation: "RENT" | "SALE";
   locale: string;
   submittedAt: Date;
-  property: { reference: string; title: string; zone: string | null };
+  property: {
+    reference: string;
+    title: string;
+    zone: string | null;
+    price: number | null;
+    /// Enlace al anuncio. Sin el hay que buscar el inmueble a mano cada vez
+    /// que se abre el resumen para saber de que vivienda se esta hablando.
+    idealistaUrl: string | null;
+  };
   applicant: {
     firstName: string;
     lastName: string;
@@ -103,7 +124,7 @@ export function buildSummaryHtml(input: {
     .map(([key, label]) => {
       const raw = input.answers[key];
       if (!raw) return "";
-      return row(label, readableValue(key, raw, input.dictionary));
+      return row(label, readableValue(key, raw));
     })
     .join("");
 
@@ -125,6 +146,28 @@ export function buildSummaryHtml(input: {
       ${escapeHtml(input.property.reference)} — ${escapeHtml(input.property.title)}
     </p>
 
+    <h2 style="font-size:15px;margin:20px 0 6px">Inmueble</h2>
+    <table>
+      ${row("Referencia", input.property.reference)}
+      ${row("Titulo", input.property.title)}
+      ${row("Zona", input.property.zone)}
+      ${row(
+        input.operation === "RENT" ? "Precio" : "Precio de venta",
+        input.property.price
+          ? `${input.property.price.toLocaleString("es-ES")} EUR${
+              input.operation === "RENT" ? " al mes" : ""
+            }`
+          : null,
+      )}
+      ${
+        input.property.idealistaUrl
+          ? `<tr><td style="padding:6px 12px 6px 0;vertical-align:top"><b>Anuncio</b></td><td style="padding:6px 0"><a href="${escapeHtml(
+              input.property.idealistaUrl,
+            )}">${escapeHtml(input.property.idealistaUrl)}</a></td></tr>`
+          : ""
+      }
+    </table>
+
     <h2 style="font-size:15px;margin:20px 0 6px">Datos del interesado</h2>
     <table>
       ${row("Nombre", `${input.applicant.firstName} ${input.applicant.lastName}`)}
@@ -132,9 +175,18 @@ export function buildSummaryHtml(input: {
       ${row("Telefono", input.applicant.phone)}
       ${row("Nacionalidad", input.applicant.nationality)}
       ${row("Documento de identidad", input.applicant.idDocument)}
-      ${row("Idioma del formulario", input.locale)}
+      ${row("Idioma del formulario", localeLabels[input.locale] ?? input.locale)}
       ${row("Fecha de envio", input.submittedAt.toLocaleString("es-ES"))}
     </table>
+
+${
+  input.operation === "RENT" && describeStay(input.answers)
+    ? `<h2 style="font-size:15px;margin:24px 0 6px">Estancia</h2>
+           <p style="margin:0;font-size:16px"><b>${escapeHtml(
+             describeStay(input.answers) ?? "",
+           )}</b></p>`
+    : ""
+}
 
     <h2 style="font-size:15px;margin:24px 0 6px">Respuestas</h2>
     <table>${answerRows}</table>

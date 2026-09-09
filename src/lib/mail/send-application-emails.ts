@@ -27,7 +27,12 @@ export async function sendApplicationEmails(input: {
     email: string;
     phone: string;
   };
-  property: { reference: string; title: string; zone: string | null };
+  property: {
+    reference: string;
+    title: string;
+    zone: string | null;
+    listingUrl?: string | null;
+  };
   price: string;
   answers: Record<string, string>;
   documentCount: number;

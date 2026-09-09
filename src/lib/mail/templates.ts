@@ -146,6 +146,9 @@ function propertyBox(
   title: string,
   zone: string | null,
   price: string,
+  /// Enlace al anuncio publicado. Ahorra tener que buscar el inmueble para
+  /// recordar de cual se esta hablando.
+  listingUrl?: string | null,
 ): string {
   return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0"
      style="margin:18px 0;background:${CREAM};border-radius:8px;">
@@ -166,6 +169,13 @@ function propertyBox(
           ? `<p style="margin:8px 0 0;font:400 16px Georgia,serif;color:${GOLD};">${escapeHtml(price)}</p>`
           : ""
       }
+      ${
+        listingUrl
+          ? `<p style="margin:10px 0 0;font:400 13px Arial,sans-serif;"><a href="${escapeHtml(
+              listingUrl,
+            )}" style="color:#A8914F;">Ver el anuncio</a></p>`
+          : ""
+      }
     </td></tr>
   </table>`;
 }
@@ -175,7 +185,12 @@ export function buildApplicantEmail(input: {
   dictionary: Dictionary;
   firstName: string;
   operation: "RENT" | "SALE";
-  property: { reference: string; title: string; zone: string | null };
+  property: {
+    reference: string;
+    title: string;
+    zone: string | null;
+    listingUrl?: string | null;
+  };
   price: string;
   hadDocuments: boolean;
   /// Enlace personal para volver a esta misma solicitud y anadir lo que
@@ -198,6 +213,7 @@ export function buildApplicantEmail(input: {
       input.property.title,
       input.property.zone,
       input.price,
+      input.property.listingUrl,
     )}
     <p style="margin:0 0 14px;">${escapeHtml(t.nextSteps)}</p>
     ${
@@ -233,6 +249,7 @@ export function buildApplicantEmail(input: {
     "",
     interpolate(t.received, { operation: operationWord }),
     `${input.property.reference} — ${input.property.title}`,
+    input.property.listingUrl ? `Anuncio: ${input.property.listingUrl}` : "",
     "",
     t.nextSteps,
     "",
@@ -366,7 +383,12 @@ export function buildInternalEmail(input: {
     email: string;
     phone: string;
   };
-  property: { reference: string; title: string; zone: string | null };
+  property: {
+    reference: string;
+    title: string;
+    zone: string | null;
+    listingUrl?: string | null;
+  };
   price: string;
   answers: Record<string, string>;
   documentCount: number;
