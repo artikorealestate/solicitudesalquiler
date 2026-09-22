@@ -1,0 +1,59 @@
+# Vigilancia de la aplicacion en produccion.
+#
+# Comprueba cada hora que el formulario publico responde. Si falla dos veces
+# seguidas, la ejecucion se marca como fallida y GitHub avisa por correo al
+# dueno del repositorio.
+#
+# Por que cada hora y no cada cinco minutos: en un repositorio privado cada
+# ejecucion consume un minuto de los 2000 gratuitos al mes. Cada hora son 720
+# al mes y cabe de sobra; cada quince minutos se pasaria del limite. Para
+# deteccion en minutos esta UptimeRobot apuntando a la misma direccion, que
+# es gratis y no consume nada de aqui.
+#
+# Se comprueban las dos cosas que le importan a un interesado: que la
+# aplicacion este viva y que el formulario cargue de verdad.
+
+name: Vigilancia de produccion
+
+on:
+  schedule:
+    - cron: "17 * * * *"
+  # Para poder lanzarla a mano desde la pestana Actions.
+  workflow_dispatch:
+
+jobs:
+  comprobar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Comprobar la aplicacion y el formulario
+        run: |
+          URL="https://artiko-interesados.vercel.app"
+
+          comprobar() {
+            ruta="$1"
+            for intento in 1 2 3; do
+              codigo=$(curl -s -o /tmp/respuesta -w "%{http_code}" --max-time 25 "$URL$ruta" || echo 000)
+              if [ "$codigo" = "200" ]; then
+                echo "$ruta -> $codigo"
+                return 0
+              fi
+              echo "$ruta -> $codigo (intento $intento de 3)"
+              [ "$intento" -lt 3 ] && sleep 30
+            done
+            echo "::error::$URL$ruta no responde (ultimo codigo: $codigo)"
+            head -c 300 /tmp/respuesta || true
+            return 1
+          }
+
+          fallos=0
+          comprobar "/api/health" || fallos=1
+          comprobar "/es" || fallos=1
+
+          if [ "$fallos" -ne 0 ]; then
+            echo "::error::Artiko Interesados no esta funcionando. Si /api/health falla, lo normal es que el proyecto de Supabase se haya pausado: entra en su panel y pulsa Restore."
+            exit 1
+          fi
+
+          echo "Todo correcto."
