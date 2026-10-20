@@ -138,32 +138,6 @@ export async function keepApplication(applicationId: string) {
   revalidatePath("/admin/solicitudes");
 }
 
-/// Saca al interesado de la bolsa de candidatos.
-///
-/// Es la forma de atender a quien retira ese consentimiento: retirarlo tiene
-/// que ser tan facil como darlo. Su plazo vuelve a ser el normal de 3 meses.
-export async function leaveCandidatePool(applicationId: string) {
-  const email = await requireAdminEmail();
-
-  await prisma.$transaction([
-    prisma.application.update({
-      where: { id: applicationId },
-      data: { candidatePool: false },
-    }),
-    prisma.note.create({
-      data: {
-        applicationId,
-        authorEmail: email,
-        body: "Retirada de la bolsa de candidatos (el interesado retira su consentimiento).",
-      },
-    }),
-    prisma.retentionWarning.deleteMany({ where: { applicationId } }),
-  ]);
-
-  revalidatePath(`/admin/solicitudes/${applicationId}`);
-  revalidatePath("/admin/solicitudes");
-}
-
 export async function addApplicationNote(
   applicationId: string,
   formData: FormData,

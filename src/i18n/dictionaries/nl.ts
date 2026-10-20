@@ -257,10 +257,6 @@ export const nl: Dictionary = {
     moreInfo: "Volledige informatie over gegevensbescherming",
     acknowledgeText: "Ik heb de informatie over gegevensbescherming gelezen.",
 
-    poolVersion: "2026-10-pool-v1-nl",
-    poolText:
-      "Ik wil dat u mijn gegevens 12 maanden bewaart om mij andere passende woningen aan te bieden. Dit is vrijwillig en ik kan het op elk moment intrekken.",
-
     requiredError:
       "Bevestig dat u de informatie hebt gelezen, zodat wij uw aanvraag kunnen versturen.",
   },
@@ -308,8 +304,6 @@ export const nl: Dictionary = {
     selfServiceCta: "Documenten toevoegen",
     privacyNote:
       "Gaat uw aanvraag niet door, dan verwijderen wij uw gegevens en documenten 3 maanden na de laatste handeling.",
-    privacyNotePool:
-      "Zoals u vroeg, bewaren wij uw gegevens 12 maanden om u andere woningen aan te bieden. U kunt dit op elk moment intrekken via info@artikore.com.",
     privacyLink: "Informatie over gegevensbescherming",
     visitWebsite: "Bekijk onze woningen",
   },

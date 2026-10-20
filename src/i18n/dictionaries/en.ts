@@ -257,10 +257,6 @@ export const en: Dictionary = {
     moreInfo: "Full data protection information",
     acknowledgeText: "I have read the data protection information.",
 
-    poolVersion: "2026-10-pool-v1-en",
-    poolText:
-      "I would like you to keep my data for 12 months to offer me other properties that suit me. This is optional and I can withdraw it at any time.",
-
     requiredError:
       "Please confirm you have read the information so we can send your application.",
   },
@@ -308,8 +304,6 @@ export const en: Dictionary = {
     selfServiceCta: "Add documents",
     privacyNote:
       "If your application does not go ahead, we will delete your data and documents 3 months after the last action taken on it.",
-    privacyNotePool:
-      "As you asked, we will keep your data for 12 months to offer you other properties. You can withdraw this at any time by writing to info@artikore.com.",
     privacyLink: "Data protection information",
     visitWebsite: "See our properties",
   },

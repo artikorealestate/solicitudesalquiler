@@ -9,7 +9,6 @@ import { retentionFor, type Retention } from "./retention";
 export const retentionSelect = {
   status: true,
   lastActivityAt: true,
-  candidatePool: true,
   documents: {
     select: { uploadedAt: true },
     orderBy: { uploadedAt: "desc" },
@@ -35,7 +34,6 @@ export function applicationRetention(application: RetentionFields): Retention {
   return retentionFor({
     status: application.status,
     lastActivityAt: application.lastActivityAt,
-    candidatePool: application.candidatePool,
     activity: [
       application.documents[0]?.uploadedAt,
       application.notes[0]?.createdAt,

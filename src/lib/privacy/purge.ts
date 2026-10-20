@@ -142,8 +142,8 @@ async function sendDigest(
   }
 
   lines.push(
-    "Plazos: 3 meses desde la ultima gestion, o 12 si el interesado acepto la",
-    "bolsa de candidatos. Las reservas y operaciones cerradas no se borran solas.",
+    "Plazo: 3 meses desde la ultima gestion. Las reservas y operaciones",
+    "cerradas no se borran solas.",
   );
 
   const subjectParts = [

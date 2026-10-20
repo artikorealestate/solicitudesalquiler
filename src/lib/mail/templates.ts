@@ -196,8 +196,6 @@ export function buildApplicantEmail(input: {
   /// Enlace personal para volver a esta misma solicitud y anadir lo que
   /// falte, sin rellenar el formulario otra vez.
   selfServiceUrl: string | null;
-  /// Acepto la bolsa de candidatos: el plazo que se le recuerda es otro.
-  candidatePool: boolean;
   /// Informacion completa de proteccion de datos, en su idioma.
   privacyUrl: string;
 }): { subject: string; html: string; text: string } {
@@ -207,7 +205,7 @@ export function buildApplicantEmail(input: {
 
   // Recordatorio del plazo de conservacion: es la parte de la informacion
   // que mas le importa a quien acaba de mandar su DNI y sus nominas.
-  const privacyNote = input.candidatePool ? t.privacyNotePool : t.privacyNote;
+  const privacyNote = t.privacyNote;
 
   const content = `
     <p style="margin:0 0 14px;">

@@ -42,7 +42,6 @@ describe("retentionFor", () => {
   const base = {
     status: "NEW",
     lastActivityAt: d("2026-09-01T00:00:00Z"),
-    candidatePool: false,
     activity: [],
   };
 
@@ -50,12 +49,6 @@ describe("retentionFor", () => {
     const r = scheduled(retentionFor(base));
     expect(r.months).toBe(3);
     expect(r.deleteAfter.toISOString()).toBe("2026-12-01T00:00:00.000Z");
-  });
-
-  it("con la bolsa de candidatos aceptada, a los doce meses", () => {
-    const r = scheduled(retentionFor({ ...base, candidatePool: true }));
-    expect(r.months).toBe(12);
-    expect(r.deleteAfter.toISOString()).toBe("2027-09-01T00:00:00.000Z");
   });
 
   // Un documento subido despues cuenta como actividad: quien sigue mandando
@@ -110,7 +103,6 @@ describe("cuando toca borrar y avisar", () => {
   const r = retentionFor({
     status: "REVIEWING",
     lastActivityAt: d("2026-08-01T00:00:00Z"),
-    candidatePool: false,
     activity: [],
   });
   // Borrado previsto: 1 de noviembre de 2026.
@@ -138,7 +130,6 @@ describe("cuando toca borrar y avisar", () => {
     const contrato = retentionFor({
       status: "CLOSED",
       lastActivityAt: d("2020-01-01T00:00:00Z"),
-      candidatePool: false,
       activity: [],
     });
     expect(isDue(contrato, d("2030-01-01T00:00:00Z"))).toBe(false);

@@ -59,8 +59,10 @@ enum ConsentType {
   /// datos. NO es un consentimiento: valorar una solicitud se basa en
   /// medidas precontractuales a peticion del interesado (art. 6.1.b RGPD).
   PRIVACY_NOTICE
-  /// Consentimiento opcional, de verdad: guardar sus datos para ofrecerle
-  /// otros inmuebles cuando esta solicitud ya no siga adelante.
+  /// Sin uso. Era el consentimiento para una bolsa de candidatos que Artiko
+  /// decidio no ofrecer (octubre de 2026). Ninguna solicitud lo llego a
+  /// tener. Sigue en el tipo porque PostgreSQL no permite quitar valores de
+  /// un enum sin rehacerlo.
   CANDIDATE_POOL
 }
 
@@ -159,11 +161,6 @@ model Application {
   /// esos se leen de sus propias fechas: asi un sitio que olvide actualizar
   /// este campo no puede provocar un borrado antes de tiempo.
   lastActivityAt DateTime @default(now())
-
-  /// El interesado acepto que guardemos sus datos para ofrecerle otros
-  /// inmuebles. Alarga el plazo de conservacion; la prueba (texto, version,
-  /// fecha) esta en su Consent de tipo CANDIDATE_POOL.
-  candidatePool Boolean @default(false)
 
   documents        Document[]
   consents         Consent[]

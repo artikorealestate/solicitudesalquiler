@@ -58,7 +58,6 @@ const es: PrivacyPolicy = {
         "Gestionar tu solicitud, comunicarnos contigo y valorar tu candidatura, incluida una orientación sobre solvencia cuando procede.",
         "Presentar tu candidatura a la propiedad del inmueble.",
         "Si sigue adelante, preparar el contrato.",
-        "Solo si lo aceptas: ofrecerte otros inmuebles que encajen contigo durante 12 meses.",
         "Proteger el formulario frente a envíos automáticos y abusos.",
       ],
     },
@@ -66,7 +65,6 @@ const es: PrivacyPolicy = {
       heading: "Con qué base legal",
       items: [
         "Gestionar y valorar tu solicitud, y presentársela a la propiedad: son medidas previas a un posible contrato que nos pides tú (artículo 6.1.b del RGPD).",
-        "La bolsa de candidatos: tu consentimiento (artículo 6.1.a), que puedes retirar cuando quieras sin que afecte a lo ya hecho.",
         "Proteger el formulario: nuestro interés legítimo en mantener el servicio seguro (artículo 6.1.f).",
         "Conservar el expediente si llegamos a firmar un contrato: el cumplimiento de obligaciones legales (artículo 6.1.c).",
       ],
@@ -104,7 +102,6 @@ const es: PrivacyPolicy = {
       heading: "Cuánto tiempo los conservamos",
       items: [
         "Si tu solicitud no sigue adelante, la borramos con todos tus documentos 3 meses después de la última gestión. El borrado es automático.",
-        "Si aceptas la bolsa de candidatos, 12 meses después de la última gestión.",
         "Si llegamos a firmar un contrato contigo, tus datos pasan al expediente de la operación y se conservan durante los plazos que exige la ley (por ejemplo, fiscales o mercantiles).",
       ],
       paragraphs: [
@@ -114,7 +111,7 @@ const es: PrivacyPolicy = {
     {
       heading: "Tus derechos",
       paragraphs: [
-        "Puedes pedirnos acceder a tus datos, rectificarlos, suprimirlos, oponerte a su tratamiento, limitarlo o recibirlos en un formato portable, y retirar en cualquier momento tu consentimiento para la bolsa de candidatos.",
+        "Puedes pedirnos acceder a tus datos, rectificarlos, suprimirlos, oponerte a su tratamiento, limitarlo o recibirlos en un formato portable.",
         "Escríbenos a info@artikore.com indicando qué quieres. Si no podemos confirmar que eres tú con el correo desde el que nos escribes, te pediremos que lo acredites. Te responderemos en un mes como máximo.",
         "Si crees que no hemos atendido bien tu petición, puedes reclamar ante la Agencia Española de Protección de Datos (www.aepd.es).",
       ],
@@ -165,7 +162,6 @@ const en: PrivacyPolicy = {
         "To handle your application, communicate with you and assess your candidacy, including an affordability indication where relevant.",
         "To present your application to the owner of the property.",
         "If it goes ahead, to prepare the contract.",
-        "Only if you agree: to offer you other suitable properties for 12 months.",
         "To protect the form against automated submissions and abuse.",
       ],
     },
@@ -173,7 +169,6 @@ const en: PrivacyPolicy = {
       heading: "Legal basis",
       items: [
         "Handling and assessing your application, and presenting it to the owner: steps prior to a possible contract that you ask us to take (Art. 6(1)(b) GDPR).",
-        "The pool of candidates: your consent (Art. 6(1)(a)), which you can withdraw at any time without affecting what was done before.",
         "Protecting the form: our legitimate interest in keeping the service secure (Art. 6(1)(f)).",
         "Keeping the file if we sign a contract with you: compliance with legal obligations (Art. 6(1)(c)).",
       ],
@@ -211,7 +206,6 @@ const en: PrivacyPolicy = {
       heading: "How long we keep it",
       items: [
         "If your application does not go ahead, we delete it together with all your documents 3 months after the last action taken on it. Deletion is automatic.",
-        "If you join the pool of candidates, 12 months after the last action.",
         "If we sign a contract with you, your data becomes part of the transaction file and is kept for the periods required by law (for example, tax or commercial law).",
       ],
       paragraphs: [
@@ -221,7 +215,7 @@ const en: PrivacyPolicy = {
     {
       heading: "Your rights",
       paragraphs: [
-        "You can ask us to access, rectify or erase your data, object to or restrict its processing, receive it in a portable format, and withdraw your consent to the pool of candidates at any time.",
+        "You can ask us to access, rectify or erase your data, object to or restrict its processing, or receive it in a portable format.",
         "Write to info@artikore.com saying what you would like. If we cannot confirm it is you from the email address you write from, we will ask you to prove your identity. We will reply within one month at the latest.",
         "If you believe we have not handled your request properly, you can complain to the Spanish Data Protection Agency (www.aepd.es).",
       ],
@@ -272,7 +266,6 @@ const de: PrivacyPolicy = {
         "Um Ihre Anfrage zu bearbeiten, mit Ihnen zu kommunizieren und Ihre Bewerbung zu prüfen, gegebenenfalls einschließlich einer Einschätzung der Zahlungsfähigkeit.",
         "Um Ihre Bewerbung dem Eigentümer der Immobilie vorzustellen.",
         "Wenn es weitergeht, um den Vertrag vorzubereiten.",
-        "Nur mit Ihrer Zustimmung: um Ihnen 12 Monate lang andere passende Immobilien anzubieten.",
         "Um das Formular vor automatisierten Einsendungen und Missbrauch zu schützen.",
       ],
     },
@@ -280,7 +273,6 @@ const de: PrivacyPolicy = {
       heading: "Rechtsgrundlage",
       items: [
         "Bearbeitung und Prüfung Ihrer Anfrage sowie Vorstellung beim Eigentümer: Schritte vor einem möglichen Vertrag, die Sie bei uns anfragen (Art. 6 Abs. 1 lit. b DSGVO).",
-        "Der Bewerberpool: Ihre Einwilligung (Art. 6 Abs. 1 lit. a), die Sie jederzeit widerrufen können, ohne dass dies das bereits Geschehene berührt.",
         "Schutz des Formulars: unser berechtigtes Interesse an einem sicheren Dienst (Art. 6 Abs. 1 lit. f).",
         "Aufbewahrung der Akte, wenn wir einen Vertrag mit Ihnen schließen: Erfüllung gesetzlicher Pflichten (Art. 6 Abs. 1 lit. c).",
       ],
@@ -318,7 +310,6 @@ const de: PrivacyPolicy = {
       heading: "Wie lange wir sie aufbewahren",
       items: [
         "Kommt Ihre Bewerbung nicht zustande, löschen wir sie mitsamt allen Unterlagen 3 Monate nach dem letzten Bearbeitungsschritt. Die Löschung erfolgt automatisch.",
-        "Wenn Sie dem Bewerberpool zustimmen, 12 Monate nach dem letzten Bearbeitungsschritt.",
         "Schließen wir einen Vertrag mit Ihnen, werden Ihre Daten Teil der Vorgangsakte und so lange aufbewahrt, wie es das Gesetz verlangt (zum Beispiel steuer- oder handelsrechtlich).",
       ],
       paragraphs: [
@@ -328,7 +319,7 @@ const de: PrivacyPolicy = {
     {
       heading: "Ihre Rechte",
       paragraphs: [
-        "Sie können Auskunft über Ihre Daten verlangen, sie berichtigen oder löschen lassen, der Verarbeitung widersprechen oder sie einschränken lassen, sie in einem übertragbaren Format erhalten und Ihre Einwilligung zum Bewerberpool jederzeit widerrufen.",
+        "Sie können Auskunft über Ihre Daten verlangen, sie berichtigen oder löschen lassen, der Verarbeitung widersprechen oder sie einschränken lassen und sie in einem übertragbaren Format erhalten.",
         "Schreiben Sie an info@artikore.com und teilen Sie uns Ihr Anliegen mit. Können wir anhand Ihrer E-Mail-Adresse nicht bestätigen, dass Sie es sind, bitten wir Sie um einen Nachweis. Wir antworten spätestens innerhalb eines Monats.",
         "Wenn Sie meinen, dass wir Ihr Anliegen nicht ordnungsgemäß behandelt haben, können Sie sich bei der spanischen Datenschutzbehörde beschweren (www.aepd.es).",
       ],
@@ -379,7 +370,6 @@ const fr: PrivacyPolicy = {
         "Gérer votre demande, communiquer avec vous et évaluer votre candidature, y compris une indication de solvabilité le cas échéant.",
         "Présenter votre candidature au propriétaire du bien.",
         "Si elle aboutit, préparer le contrat.",
-        "Uniquement si vous l'acceptez : vous proposer d'autres biens adaptés pendant 12 mois.",
         "Protéger le formulaire contre les envois automatisés et les abus.",
       ],
     },
@@ -387,7 +377,6 @@ const fr: PrivacyPolicy = {
       heading: "Base juridique",
       items: [
         "Gérer et évaluer votre demande, et la présenter au propriétaire : démarches préalables à un éventuel contrat, que vous nous demandez (art. 6.1.b du RGPD).",
-        "Le fichier de candidats : votre consentement (art. 6.1.a), que vous pouvez retirer à tout moment sans que cela n'affecte ce qui a déjà été fait.",
         "Protéger le formulaire : notre intérêt légitime à maintenir un service sûr (art. 6.1.f).",
         "Conserver le dossier si nous signons un contrat avec vous : le respect d'obligations légales (art. 6.1.c).",
       ],
@@ -425,7 +414,6 @@ const fr: PrivacyPolicy = {
       heading: "Durée de conservation",
       items: [
         "Si votre demande n'aboutit pas, nous la supprimons avec tous vos documents 3 mois après la dernière démarche. La suppression est automatique.",
-        "Si vous acceptez le fichier de candidats, 12 mois après la dernière démarche.",
         "Si nous signons un contrat avec vous, vos données rejoignent le dossier de l'opération et sont conservées pendant les durées exigées par la loi (par exemple en matière fiscale ou commerciale).",
       ],
       paragraphs: [
@@ -435,7 +423,7 @@ const fr: PrivacyPolicy = {
     {
       heading: "Vos droits",
       paragraphs: [
-        "Vous pouvez nous demander d'accéder à vos données, de les rectifier ou de les effacer, vous opposer à leur traitement ou le faire limiter, les recevoir dans un format portable, et retirer à tout moment votre consentement au fichier de candidats.",
+        "Vous pouvez nous demander d'accéder à vos données, de les rectifier ou de les effacer, vous opposer à leur traitement ou le faire limiter, ou les recevoir dans un format portable.",
         "Écrivez à info@artikore.com en précisant votre demande. Si nous ne pouvons pas confirmer votre identité à partir de l'adresse e-mail utilisée, nous vous demanderons de la justifier. Nous vous répondrons dans un délai d'un mois au plus.",
         "Si vous estimez que nous n'avons pas traité correctement votre demande, vous pouvez introduire une réclamation auprès de l'Agence espagnole de protection des données (www.aepd.es).",
       ],
@@ -486,7 +474,6 @@ const it: PrivacyPolicy = {
         "Gestire la tua richiesta, comunicare con te e valutare la tua candidatura, compresa un'indicazione sulla solvibilità quando serve.",
         "Presentare la tua candidatura alla proprietà dell'immobile.",
         "Se va avanti, preparare il contratto.",
-        "Solo se lo accetti: proporti altri immobili adatti a te per 12 mesi.",
         "Proteggere il modulo da invii automatici e abusi.",
       ],
     },
@@ -494,7 +481,6 @@ const it: PrivacyPolicy = {
       heading: "Base giuridica",
       items: [
         "Gestire e valutare la tua richiesta e presentarla alla proprietà: passaggi preliminari a un possibile contratto che ci chiedi tu (art. 6.1.b del GDPR).",
-        "L'elenco dei candidati: il tuo consenso (art. 6.1.a), che puoi revocare in qualsiasi momento senza effetti su quanto già fatto.",
         "Proteggere il modulo: il nostro legittimo interesse a mantenere sicuro il servizio (art. 6.1.f).",
         "Conservare la pratica se firmiamo un contratto con te: l'adempimento di obblighi di legge (art. 6.1.c).",
       ],
@@ -532,7 +518,6 @@ const it: PrivacyPolicy = {
       heading: "Per quanto tempo li conserviamo",
       items: [
         "Se la tua richiesta non va avanti, la cancelliamo con tutti i tuoi documenti 3 mesi dopo l'ultima gestione. La cancellazione è automatica.",
-        "Se accetti l'elenco dei candidati, 12 mesi dopo l'ultima gestione.",
         "Se firmiamo un contratto con te, i tuoi dati entrano nella pratica dell'operazione e vengono conservati per i periodi richiesti dalla legge (ad esempio fiscali o commerciali).",
       ],
       paragraphs: [
@@ -542,7 +527,7 @@ const it: PrivacyPolicy = {
     {
       heading: "I tuoi diritti",
       paragraphs: [
-        "Puoi chiederci di accedere ai tuoi dati, rettificarli, cancellarli, opporti al trattamento o limitarlo, riceverli in un formato portabile e revocare in qualsiasi momento il consenso all'elenco dei candidati.",
+        "Puoi chiederci di accedere ai tuoi dati, rettificarli, cancellarli, opporti al trattamento o limitarlo, o riceverli in un formato portabile.",
         "Scrivi a info@artikore.com indicando cosa desideri. Se non possiamo confermare che sei tu dall'indirizzo e-mail da cui scrivi, ti chiederemo di dimostrarlo. Ti risponderemo entro un mese al massimo.",
         "Se ritieni che non abbiamo gestito correttamente la tua richiesta, puoi presentare reclamo all'Agenzia spagnola per la protezione dei dati (www.aepd.es).",
       ],
@@ -593,7 +578,6 @@ const pt: PrivacyPolicy = {
         "Gerir o seu pedido, comunicar consigo e avaliar a sua candidatura, incluindo uma orientação sobre solvência quando aplicável.",
         "Apresentar a sua candidatura ao proprietário do imóvel.",
         "Se avançar, preparar o contrato.",
-        "Só se aceitar: propor-lhe outros imóveis adequados durante 12 meses.",
         "Proteger o formulário contra envios automáticos e abusos.",
       ],
     },
@@ -601,7 +585,6 @@ const pt: PrivacyPolicy = {
       heading: "Fundamento jurídico",
       items: [
         "Gerir e avaliar o seu pedido e apresentá-lo ao proprietário: diligências prévias a um possível contrato, a seu pedido (art. 6.º, n.º 1, alínea b), do RGPD).",
-        "A bolsa de candidatos: o seu consentimento (alínea a)), que pode retirar a qualquer momento sem afetar o que já foi feito.",
         "Proteger o formulário: o nosso interesse legítimo em manter o serviço seguro (alínea f)).",
         "Conservar o processo se celebrarmos um contrato consigo: o cumprimento de obrigações legais (alínea c)).",
       ],
@@ -639,7 +622,6 @@ const pt: PrivacyPolicy = {
       heading: "Durante quanto tempo os conservamos",
       items: [
         "Se o seu pedido não avançar, apagamo-lo com todos os seus documentos 3 meses após a última diligência. O apagamento é automático.",
-        "Se aceitar a bolsa de candidatos, 12 meses após a última diligência.",
         "Se celebrarmos um contrato consigo, os seus dados passam para o processo da operação e são conservados pelos prazos exigidos por lei (por exemplo, fiscais ou comerciais).",
       ],
       paragraphs: [
@@ -649,7 +631,7 @@ const pt: PrivacyPolicy = {
     {
       heading: "Os seus direitos",
       paragraphs: [
-        "Pode pedir-nos acesso aos seus dados, a sua retificação ou apagamento, opor-se ao tratamento ou limitá-lo, recebê-los num formato portável e retirar a qualquer momento o consentimento para a bolsa de candidatos.",
+        "Pode pedir-nos acesso aos seus dados, a sua retificação ou apagamento, opor-se ao tratamento ou limitá-lo, ou recebê-los num formato portável.",
         "Escreva para info@artikore.com indicando o que pretende. Se não conseguirmos confirmar a sua identidade a partir do e-mail que utiliza, pedir-lhe-emos que a comprove. Responderemos no prazo máximo de um mês.",
         "Se considerar que não tratámos bem o seu pedido, pode apresentar reclamação junto da Agência Espanhola de Proteção de Dados (www.aepd.es).",
       ],
@@ -703,7 +685,6 @@ const nl: PrivacyPolicy = {
         "Uw aanvraag behandelen, met u communiceren en uw kandidatuur beoordelen, zo nodig met een indicatie van uw betaalcapaciteit.",
         "Uw kandidatuur voorleggen aan de eigenaar van de woning.",
         "Als het doorgaat, het contract voorbereiden.",
-        "Alleen als u daarmee instemt: u 12 maanden lang andere passende woningen aanbieden.",
         "Het formulier beschermen tegen geautomatiseerde inzendingen en misbruik.",
       ],
     },
@@ -711,7 +692,6 @@ const nl: PrivacyPolicy = {
       heading: "Rechtsgrond",
       items: [
         "Uw aanvraag behandelen en beoordelen en aan de eigenaar voorleggen: stappen voorafgaand aan een mogelijk contract, waar u zelf om vraagt (art. 6, lid 1, onder b, AVG).",
-        "Het kandidatenbestand: uw toestemming (onder a), die u op elk moment kunt intrekken zonder gevolgen voor wat al is gebeurd.",
         "Het formulier beschermen: ons gerechtvaardigd belang bij een veilige dienst (onder f).",
         "Het dossier bewaren als we een contract met u sluiten: het nakomen van wettelijke verplichtingen (onder c).",
       ],
@@ -749,7 +729,6 @@ const nl: PrivacyPolicy = {
       heading: "Hoe lang we ze bewaren",
       items: [
         "Gaat uw aanvraag niet door, dan verwijderen we haar met al uw documenten 3 maanden na de laatste handeling. Het verwijderen gebeurt automatisch.",
-        "Als u instemt met het kandidatenbestand, 12 maanden na de laatste handeling.",
         "Sluiten we een contract met u, dan worden uw gegevens onderdeel van het dossier van de transactie en bewaard zo lang als de wet voorschrijft (bijvoorbeeld fiscaal of handelsrechtelijk).",
       ],
       paragraphs: [
@@ -759,7 +738,7 @@ const nl: PrivacyPolicy = {
     {
       heading: "Uw rechten",
       paragraphs: [
-        "U kunt ons vragen om inzage in uw gegevens, rectificatie of wissing, bezwaar maken tegen de verwerking of die laten beperken, uw gegevens in een overdraagbaar formaat ontvangen en uw toestemming voor het kandidatenbestand op elk moment intrekken.",
+        "U kunt ons vragen om inzage in uw gegevens, rectificatie of wissing, bezwaar maken tegen de verwerking of die laten beperken, of uw gegevens in een overdraagbaar formaat ontvangen.",
         "Schrijf naar info@artikore.com en vermeld wat u wilt. Als we aan de hand van uw e-mailadres niet kunnen vaststellen dat u het bent, vragen we u dat aan te tonen. We antwoorden uiterlijk binnen een maand.",
         "Vindt u dat we uw verzoek niet goed hebben behandeld, dan kunt u een klacht indienen bij de Spaanse toezichthouder (www.aepd.es).",
       ],
@@ -810,7 +789,6 @@ const ru: PrivacyPolicy = {
         "Чтобы обработать вашу заявку, связываться с вами и рассматривать вашу кандидатуру, в том числе с ориентировочной оценкой платёжеспособности, когда это уместно.",
         "Чтобы представить вашу кандидатуру собственнику объекта.",
         "Если всё сложится, — чтобы подготовить договор.",
-        "Только с вашего согласия: предлагать вам другие подходящие объекты в течение 12 месяцев.",
         "Чтобы защищать форму от автоматических отправок и злоупотреблений.",
       ],
     },
@@ -818,7 +796,6 @@ const ru: PrivacyPolicy = {
       heading: "Правовое основание",
       items: [
         "Обработка и рассмотрение заявки и её представление собственнику: действия, предшествующие возможному договору, о которых вы нас просите (ст. 6.1.b GDPR).",
-        "База кандидатов: ваше согласие (ст. 6.1.a), которое можно отозвать в любой момент без влияния на уже совершённые действия.",
         "Защита формы: наш законный интерес в безопасной работе сервиса (ст. 6.1.f).",
         "Хранение дела, если мы заключим с вами договор: выполнение требований закона (ст. 6.1.c).",
       ],
@@ -856,7 +833,6 @@ const ru: PrivacyPolicy = {
       heading: "Сколько мы их храним",
       items: [
         "Если ваша заявка не будет продолжена, мы удалим её вместе со всеми документами через 3 месяца после последнего действия по ней. Удаление происходит автоматически.",
-        "Если вы согласитесь на включение в базу кандидатов — через 12 месяцев после последнего действия.",
         "Если мы заключим с вами договор, ваши данные войдут в дело по сделке и будут храниться в течение сроков, установленных законом (например, налоговым или коммерческим).",
       ],
       paragraphs: [
@@ -866,7 +842,7 @@ const ru: PrivacyPolicy = {
     {
       heading: "Ваши права",
       paragraphs: [
-        "Вы можете запросить доступ к своим данным, их исправление или удаление, возразить против обработки или ограничить её, получить данные в переносимом формате и в любой момент отозвать согласие на включение в базу кандидатов.",
+        "Вы можете запросить доступ к своим данным, их исправление или удаление, возразить против обработки или ограничить её, а также получить данные в переносимом формате.",
         "Напишите на info@artikore.com, указав ваш запрос. Если по адресу электронной почты мы не сможем подтвердить, что это вы, мы попросим подтвердить личность. Мы ответим не позднее чем через месяц.",
         "Если вы считаете, что мы ненадлежащим образом рассмотрели ваш запрос, вы можете подать жалобу в Испанское агентство по защите данных (www.aepd.es).",
       ],
@@ -917,7 +893,6 @@ const uk: PrivacyPolicy = {
         "Щоб опрацювати вашу заявку, зв'язуватися з вами та розглядати вашу кандидатуру, зокрема з орієнтовною оцінкою платоспроможності, коли це доречно.",
         "Щоб представити вашу кандидатуру власникові об'єкта.",
         "Якщо все складеться, — щоб підготувати договір.",
-        "Лише за вашою згодою: пропонувати вам інші відповідні об'єкти протягом 12 місяців.",
         "Щоб захищати форму від автоматичних надсилань і зловживань.",
       ],
     },
@@ -925,7 +900,6 @@ const uk: PrivacyPolicy = {
       heading: "Правова підстава",
       items: [
         "Опрацювання та розгляд заявки і її представлення власникові: дії, що передують можливому договору, про які ви нас просите (ст. 6.1.b GDPR).",
-        "База кандидатів: ваша згода (ст. 6.1.a), яку можна відкликати будь-коли без впливу на вже здійснені дії.",
         "Захист форми: наш законний інтерес у безпечній роботі сервісу (ст. 6.1.f).",
         "Зберігання справи, якщо ми укладемо з вами договір: виконання вимог закону (ст. 6.1.c).",
       ],
@@ -963,7 +937,6 @@ const uk: PrivacyPolicy = {
       heading: "Скільки ми їх зберігаємо",
       items: [
         "Якщо ваша заявка не матиме продовження, ми видалимо її разом з усіма документами через 3 місяці після останньої дії щодо неї. Видалення відбувається автоматично.",
-        "Якщо ви погодитеся на включення до бази кандидатів — через 12 місяців після останньої дії.",
         "Якщо ми укладемо з вами договір, ваші дані увійдуть до справи щодо угоди і зберігатимуться протягом строків, встановлених законом (наприклад, податковим або комерційним).",
       ],
       paragraphs: [
@@ -973,7 +946,7 @@ const uk: PrivacyPolicy = {
     {
       heading: "Ваші права",
       paragraphs: [
-        "Ви можете запросити доступ до своїх даних, їх виправлення чи видалення, заперечити проти обробки або обмежити її, отримати дані в переносному форматі та будь-коли відкликати згоду на включення до бази кандидатів.",
+        "Ви можете запросити доступ до своїх даних, їх виправлення чи видалення, заперечити проти обробки або обмежити її, а також отримати дані в переносному форматі.",
         "Напишіть на info@artikore.com, зазначивши ваш запит. Якщо за адресою електронної пошти ми не зможемо підтвердити, що це ви, ми попросимо підтвердити особу. Ми відповімо не пізніше ніж за місяць.",
         "Якщо ви вважаєте, що ми неналежним чином розглянули ваш запит, ви можете подати скаргу до Іспанського агентства із захисту даних (www.aepd.es).",
       ],
@@ -999,14 +972,86 @@ const uk: PrivacyPolicy = {
   ],
 };
 
+/// Decision de Artiko (octubre de 2026): si hay diferencias entre idiomas,
+/// prevalece el castellano. Va al final de la informacion completa en cada
+/// idioma, en ese mismo idioma, para que quien la lea sepa cual es la
+/// version de referencia.
+///
+/// No sustituye a traducir bien: la informacion tiene que entenderla quien la
+/// recibe. Sirve para resolver dudas de interpretacion.
+const LANGUAGE_NOTE: Record<Locale, PrivacySection> = {
+  es: {
+    heading: "Idioma",
+    paragraphs: [
+      "Esta información está disponible en varios idiomas para facilitar su lectura. Si hubiera alguna diferencia entre versiones, prevalece la versión en español.",
+    ],
+  },
+  en: {
+    heading: "Language",
+    paragraphs: [
+      "This information is available in several languages for your convenience. In the event of any discrepancy between versions, the Spanish version shall prevail.",
+    ],
+  },
+  de: {
+    heading: "Sprache",
+    paragraphs: [
+      "Diese Informationen stehen zur besseren Verständlichkeit in mehreren Sprachen zur Verfügung. Bei Abweichungen zwischen den Fassungen ist die spanische Fassung maßgeblich.",
+    ],
+  },
+  fr: {
+    heading: "Langue",
+    paragraphs: [
+      "Ces informations sont disponibles en plusieurs langues pour en faciliter la lecture. En cas de divergence entre les versions, la version espagnole prévaut.",
+    ],
+  },
+  it: {
+    heading: "Lingua",
+    paragraphs: [
+      "Queste informazioni sono disponibili in più lingue per facilitarne la lettura. In caso di differenze tra le versioni, prevale la versione in spagnolo.",
+    ],
+  },
+  pt: {
+    heading: "Idioma",
+    paragraphs: [
+      "Esta informação está disponível em várias línguas para facilitar a sua leitura. Em caso de divergência entre versões, prevalece a versão em espanhol.",
+    ],
+  },
+  nl: {
+    heading: "Taal",
+    paragraphs: [
+      "Deze informatie is voor uw gemak in meerdere talen beschikbaar. Bij verschillen tussen de versies is de Spaanse versie leidend.",
+    ],
+  },
+  ru: {
+    heading: "Язык",
+    paragraphs: [
+      "Эта информация доступна на нескольких языках для удобства чтения. В случае расхождений между версиями преимущественную силу имеет версия на испанском языке.",
+    ],
+  },
+  uk: {
+    heading: "Мова",
+    paragraphs: [
+      "Ця інформація доступна кількома мовами для зручності читання. У разі розбіжностей між версіями переважну силу має версія іспанською мовою.",
+    ],
+  },
+};
+
+const withLanguageNote = (
+  locale: Locale,
+  policy: PrivacyPolicy,
+): PrivacyPolicy => ({
+  ...policy,
+  sections: [...policy.sections, LANGUAGE_NOTE[locale]],
+});
+
 export const privacyPolicies: Record<Locale, PrivacyPolicy> = {
-  es,
-  en,
-  de,
-  fr,
-  it,
-  pt,
-  nl,
-  ru,
-  uk,
+  es: withLanguageNote("es", es),
+  en: withLanguageNote("en", en),
+  de: withLanguageNote("de", de),
+  fr: withLanguageNote("fr", fr),
+  it: withLanguageNote("it", it),
+  pt: withLanguageNote("pt", pt),
+  nl: withLanguageNote("nl", nl),
+  ru: withLanguageNote("ru", ru),
+  uk: withLanguageNote("uk", uk),
 };

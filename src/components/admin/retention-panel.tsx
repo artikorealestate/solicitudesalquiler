@@ -1,7 +1,4 @@
-import {
-  keepApplication,
-  leaveCandidatePool,
-} from "@/lib/applications/actions";
+import { keepApplication } from "@/lib/applications/actions";
 import {
   daysUntilDeletion,
   isInWarningWindow,
@@ -16,11 +13,9 @@ import {
 export function RetentionPanel({
   applicationId,
   retention,
-  candidatePool,
 }: {
   applicationId: string;
   retention: Retention;
-  candidatePool: boolean;
 }) {
   if (retention.kind === "contract") {
     return (
@@ -66,10 +61,8 @@ export function RetentionPanel({
 
       <p className="mt-2 text-xs leading-relaxed text-ink-muted">
         {retention.months} meses desde la última gestión (
-        {retention.lastActivity.toLocaleDateString("es-ES")}).{" "}
-        {candidatePool
-          ? "El interesado aceptó la bolsa de candidatos."
-          : "Cambiar el estado, añadir una nota o pedir documentación reinicia el plazo."}
+        {retention.lastActivity.toLocaleDateString("es-ES")}). Cambiar el
+        estado, añadir una nota o pedir documentación reinicia el plazo.
       </p>
 
       <form action={keepApplication.bind(null, applicationId)} className="mt-3">
@@ -77,20 +70,6 @@ export function RetentionPanel({
           Conservar {retention.months} meses más
         </button>
       </form>
-
-      {candidatePool ? (
-        <form
-          action={leaveCandidatePool.bind(null, applicationId)}
-          className="mt-2"
-        >
-          <button
-            type="submit"
-            className="w-full text-xs text-ink-muted underline-offset-4 hover:text-danger hover:underline"
-          >
-            Sacar de la bolsa de candidatos (si retira su consentimiento)
-          </button>
-        </form>
-      ) : null}
     </section>
   );
 }

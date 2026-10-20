@@ -259,10 +259,6 @@ export const de: Dictionary = {
     moreInfo: "Vollständige Datenschutzinformationen",
     acknowledgeText: "Ich habe die Datenschutzinformationen gelesen.",
 
-    poolVersion: "2026-10-pool-v1-de",
-    poolText:
-      "Ich möchte, dass Sie meine Daten 12 Monate lang aufbewahren, um mir andere passende Immobilien anzubieten. Dies ist freiwillig und ich kann es jederzeit widerrufen.",
-
     requiredError:
       "Bitte bestätigen Sie, dass Sie die Informationen gelesen haben, damit wir Ihre Anfrage senden können.",
   },
@@ -310,8 +306,6 @@ export const de: Dictionary = {
     selfServiceCta: "Unterlagen nachreichen",
     privacyNote:
       "Kommt Ihre Bewerbung nicht zustande, löschen wir Ihre Daten und Unterlagen 3 Monate nach dem letzten Bearbeitungsschritt.",
-    privacyNotePool:
-      "Wie gewünscht bewahren wir Ihre Daten 12 Monate lang auf, um Ihnen andere Immobilien anzubieten. Sie können dies jederzeit per E-Mail an info@artikore.com widerrufen.",
     privacyLink: "Datenschutzinformationen",
     visitWebsite: "Unsere Immobilien ansehen",
   },

@@ -15,13 +15,13 @@ compra es la actividad diaria de Artiko, así que **hay que tenerlo**.
 | | |
 |---|---|
 | **Finalidad** | Recibir y gestionar solicitudes de alquiler y compra; valorar candidaturas (incluida una orientación de solvencia); presentarlas a la propiedad; preparar el contrato si sigue adelante. |
-| **Base jurídica** | Medidas precontractuales a petición del interesado (art. 6.1.b). Bolsa de candidatos: consentimiento (art. 6.1.a). Protección del formulario frente a abusos: interés legítimo (art. 6.1.f). Expediente de operaciones cerradas: obligación legal (art. 6.1.c). |
+| **Base jurídica** | Medidas precontractuales a petición del interesado (art. 6.1.b). Protección del formulario frente a abusos: interés legítimo (art. 6.1.f). Expediente de operaciones cerradas: obligación legal (art. 6.1.c). No se pide consentimiento para nada: Artiko decidió no ofrecer una bolsa de candidatos. |
 | **Interesados** | Personas que solicitan alquilar o comprar un inmueble a través del formulario. |
 | **Categorías de datos** | Identificación y contacto (nombre, email, teléfono, nacionalidad, nº de documento de identidad). Situación personal y económica declarada (convivientes, ocupación, situación laboral, ingresos, mascotas, fechas y motivo de estancia; en compras, financiación). Documentación aportada (identidad, nóminas, contratos, declaraciones fiscales…). Huella cifrada de la IP. |
 | **Categorías especiales** | No se solicitan. Riesgo residual: una nómina puede mostrar cuota sindical. La información al interesado le invita a taparla. |
 | **Destinatarios** | Propiedad del inmueble (informe de perfil sin contacto ni nº de documento; documentación concreta solo si hace falta para decidir). Encargados: Google (Drive y Gmail), Supabase (base de datos, Irlanda), Vercel (servidor, Irlanda). Autoridades cuando lo exija la ley. |
 | **Transferencias internacionales** | Google y Vercel son empresas de EE. UU.; Supabase también tiene matriz estadounidense. Mecanismo: Marco de Privacidad de Datos UE-EE. UU. o cláusulas contractuales tipo. **Pendiente: verificar el mecanismo de cada proveedor y firmar/aceptar sus contratos de encargado (ver abajo).** |
-| **Plazos de conservación** | Sin operación: borrado automático 3 meses después de la última gestión. Bolsa de candidatos: 12 meses. Reservas y operaciones cerradas: no se borran automáticamente; pasan al expediente de la operación con los plazos legales que correspondan (fiscales, mercantiles; en compraventas, 10 años para la identificación según la normativa de prevención del blanqueo). |
+| **Plazos de conservación** | Sin operación: borrado automático 3 meses después de la última gestión. Reservas y operaciones cerradas: no se borran automáticamente; pasan al expediente de la operación con los plazos legales que correspondan (fiscales, mercantiles; en compraventas, 10 años para la identificación según la normativa de prevención del blanqueo). |
 | **Medidas de seguridad** | Conexión cifrada. Documentos en carpetas privadas de Drive sin compartir. Panel solo para administradores autorizados con inicio de sesión de Google y lista cerrada de correos. IP cifrada en un solo sentido. Servidor y base de datos en la UE. Borrado automático diario con aviso previo de 14 días y constancia sin datos personales. Vigilancia de disponibilidad. |
 
 ---
@@ -43,7 +43,11 @@ compra es la actividad diaria de Artiko, así que **hay que tenerlo**.
      expediente, se solicita desde el apartado de documentos legales del
      panel de la organización o escribiendo a privacy@supabase.io.
 3. **Textos legales en nueve idiomas.** Redactados con cuidado pero no revisados
-   por un jurista ni por nativos (sobre todo alemán, ruso y ucraniano).
+   por un jurista ni por nativos (sobre todo alemán, ruso y ucraniano). La
+   información completa dice en cada idioma que, si hay diferencias, prevalece
+   la versión en español (decisión de Artiko). Eso ayuda a interpretar, pero
+   no sustituye a una buena traducción: la información tiene que entenderla
+   quien la recibe.
 4. **Delegado de Protección de Datos.** No parece obligatorio por volumen ni
    tipo de datos; confirmarlo.
 5. **Evaluación de impacto.** No parece obligatoria (no hay gran escala ni

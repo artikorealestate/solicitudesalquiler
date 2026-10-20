@@ -34,8 +34,6 @@ export type ApplicationDraft = {
   /// Ha leido la informacion de proteccion de datos. No es un consentimiento:
   /// es la constancia de que se le informo (ver i18n consent.infoRows).
   privacyAcknowledged: boolean;
-  /// Consentimiento opcional para la bolsa de candidatos (12 meses).
-  candidatePool: boolean;
 };
 
 export const emptyDraft: ApplicationDraft = {
@@ -50,7 +48,6 @@ export const emptyDraft: ApplicationDraft = {
   comment: "",
   answers: {},
   privacyAcknowledged: false,
-  candidatePool: false,
 };
 
 /// Preguntas de alquiler, en el orden en que se muestran.

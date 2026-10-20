@@ -69,12 +69,14 @@ async function main() {
 
     console.log(
       `  ${name} ${ref} ${status} ${retention.deleteAfter.toLocaleDateString("es-ES").padEnd(11)} ` +
-        `(${retention.months} meses${application.candidatePool ? ", bolsa" : ""}) · ${label}`,
+        `(${retention.months} meses) · ${label}`,
     );
   }
 
   const due = rows.filter((r) => isDue(r.retention, now)).length;
-  const warning = rows.filter((r) => isInWarningWindow(r.retention, now)).length;
+  const warning = rows.filter((r) =>
+    isInWarningWindow(r.retention, now),
+  ).length;
   console.log(
     `\n${rows.length} solicitudes · ${due} vencidas · ${warning} en aviso`,
   );

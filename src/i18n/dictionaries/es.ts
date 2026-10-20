@@ -279,12 +279,6 @@ export const es = {
     moreInfo: "Información completa sobre protección de datos",
     acknowledgeText: "He leído la información sobre protección de datos.",
 
-    /// El unico consentimiento de verdad: opcional, sin marcar, y para algo
-    /// que no hace falta para tramitar la solicitud.
-    poolVersion: "2026-10-pool-v1-es",
-    poolText:
-      "Quiero que guardéis mis datos durante 12 meses para ofrecerme otros inmuebles que encajen conmigo. Es opcional y puedo retirarlo cuando quiera.",
-
     requiredError:
       "Confirma que has leído la información para poder enviar la solicitud.",
   },
@@ -335,8 +329,6 @@ export const es = {
     selfServiceCta: "Añadir documentación",
     privacyNote:
       "Si tu solicitud no sigue adelante, borraremos tus datos y documentos 3 meses después de la última gestión.",
-    privacyNotePool:
-      "Como nos lo has pedido, guardaremos tus datos 12 meses para ofrecerte otros inmuebles. Puedes retirarlo cuando quieras escribiendo a info@artikore.com.",
     privacyLink: "Información sobre protección de datos",
     visitWebsite: "Ver nuestras viviendas",
   },

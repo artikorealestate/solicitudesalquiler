@@ -40,8 +40,6 @@ export async function sendApplicationEmails(input: {
   /// Credencial del enlace personal del interesado, para que pueda volver a
   /// su solicitud y anadir lo que le falte.
   accessToken: string | null;
-  /// Acepto la bolsa de candidatos: cambia el plazo que se le recuerda.
-  candidatePool: boolean;
 }): Promise<{ applicantSent: boolean; internalSent: boolean }> {
   const result = { applicantSent: false, internalSent: false };
 
@@ -69,7 +67,6 @@ export async function sendApplicationEmails(input: {
       selfServiceUrl: input.accessToken
         ? `${appUrl}/solicitud/${input.accessToken}`
         : null,
-      candidatePool: input.candidatePool,
       privacyUrl: `${appUrl}/${input.locale}/privacidad`,
     });
 

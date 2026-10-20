@@ -103,13 +103,12 @@ export function ApplicationForm({
     try {
       const saved = window.localStorage.getItem(storageKey(locale));
       if (saved) {
-        // Las casillas de proteccion de datos no se recuperan: tienen que
+        // La casilla de proteccion de datos no se recupera: tiene que
         // marcarse en el momento de enviar, sobre el texto vigente ese dia.
         setDraft({
           ...emptyDraft,
           ...JSON.parse(saved),
           privacyAcknowledged: false,
-          candidatePool: false,
         });
       }
     } catch {
@@ -242,8 +241,7 @@ export function ApplicationForm({
       }
     }
 
-    // Solo se exige haber leido la informacion. La bolsa de candidatos es
-    // opcional de verdad: no marcarla no impide nada.
+    // Lo unico que se exige en este paso es haber leido la informacion.
     if (step === "consent" && !draft.privacyAcknowledged) {
       found.privacyAcknowledged = dictionary.consent.requiredError;
     }
@@ -292,7 +290,6 @@ export function ApplicationForm({
         comment: draft.comment || undefined,
         answers: draft.answers,
         privacyAcknowledged: draft.privacyAcknowledged,
-        candidatePool: draft.candidatePool,
         declaredDocumentCount: files.length,
         website: honeypot,
         // Un cero significa que el navegador no llego a ejecutar el efecto;
@@ -639,18 +636,6 @@ export function ApplicationForm({
                 error={errors.privacyAcknowledged}
               >
                 {dictionary.consent.acknowledgeText}
-              </CheckboxField>
-
-              {/* Opcional y sin marcar: si viniera marcada de serie, no seria
-                  un consentimiento valido. */}
-              <CheckboxField
-                checked={draft.candidatePool}
-                onChange={(checked) => update("candidatePool", checked)}
-              >
-                {dictionary.consent.poolText}{" "}
-                <span className="text-ink-muted">
-                  ({dictionary.common.optional})
-                </span>
               </CheckboxField>
             </div>
           </StepShell>

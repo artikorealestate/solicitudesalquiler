@@ -45,8 +45,6 @@ const submissionSchema = z.object({
   /// Ha leido la informacion de proteccion de datos. Imprescindible: sin
   /// informar no se pueden recoger datos.
   privacyAcknowledged: z.literal(true),
-  /// Bolsa de candidatos: opcional de verdad. Ausente cuenta como "no".
-  candidatePool: z.boolean().optional().default(false),
   /// Cuantos archivos va a subir el navegador despues. Solo informativo, para
   /// el aviso interno: la subida real ocurre cuando este endpoint ya ha
   /// respondido.
@@ -174,8 +172,8 @@ export async function submitApplication(input: unknown): Promise<SubmitResult> {
   if (!property) return { ok: false, error: "property-unavailable" };
 
   // Guardamos el texto legal exacto que se le mostro, en su idioma: si algun
-  // dia hay que demostrar que se le informo, o que acepto la bolsa, el texto
-  // de hoy puede no ser el que vio entonces.
+  // dia hay que demostrar que se le informo, el texto de hoy puede no ser el
+  // que vio entonces.
   const dictionary = await getDictionary(locale);
 
   const legalRecords = [
@@ -185,16 +183,6 @@ export async function submitApplication(input: unknown): Promise<SubmitResult> {
       textSnapshot: privacyNoticeSnapshot(dictionary),
       locale,
     },
-    ...(data.candidatePool
-      ? [
-          {
-            type: "CANDIDATE_POOL" as const,
-            textVersion: dictionary.consent.poolVersion,
-            textSnapshot: dictionary.consent.poolText,
-            locale,
-          },
-        ]
-      : []),
   ];
 
   const application = await prisma.application.create({
@@ -215,7 +203,6 @@ export async function submitApplication(input: unknown): Promise<SubmitResult> {
       // volver a SU solicitud para anadir lo que le falte, en lugar de
       // rellenar el formulario otra vez y generarnos un duplicado.
       accessToken: randomBytes(32).toString("base64url"),
-      candidatePool: data.candidatePool,
       consents: { create: legalRecords },
     },
     select: { id: true, submittedAt: true, accessToken: true },
@@ -294,10 +281,7 @@ export async function submitApplication(input: unknown): Promise<SubmitResult> {
           },
           answers: data.answers,
           consents: legalRecords.map((record) => ({
-            label:
-              record.type === "PRIVACY_NOTICE"
-                ? "Informacion de proteccion de datos mostrada y leida"
-                : "Bolsa de candidatos (consentimiento opcional, 12 meses)",
+            label: "Informacion de proteccion de datos mostrada y leida",
             version: record.textVersion,
             text: record.textSnapshot,
           })),
@@ -347,7 +331,6 @@ export async function submitApplication(input: unknown): Promise<SubmitResult> {
     documentCount: data.declaredDocumentCount ?? 0,
     driveUrl: driveFolderUrl,
     accessToken: application.accessToken,
-    candidatePool: data.candidatePool,
   });
 
   return {

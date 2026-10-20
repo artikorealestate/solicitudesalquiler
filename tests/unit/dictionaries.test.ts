@@ -93,7 +93,6 @@ describe("diccionarios de idiomas", () => {
       // compartieran version con textos distintos, no se podria saber cual
       // firmo la persona.
       expect(dictionary.consent.infoVersion.trim()).not.toBe("");
-      expect(dictionary.consent.poolVersion.trim()).not.toBe("");
     });
 
     it("muestra la misma informacion basica en todos los idiomas", () => {
@@ -111,7 +110,7 @@ describe("diccionarios de idiomas", () => {
   });
 
   it("las versiones de los textos legales no se repiten entre idiomas", () => {
-    for (const key of ["infoVersion", "poolVersion"] as const) {
+    for (const key of ["infoVersion"] as const) {
       const versions = Object.values(dictionaries).map(
         (dictionary) => dictionary.consent[key],
       );

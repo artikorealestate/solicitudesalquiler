@@ -256,10 +256,6 @@ export const pt: Dictionary = {
     moreInfo: "Informação completa sobre proteção de dados",
     acknowledgeText: "Li a informação sobre proteção de dados.",
 
-    poolVersion: "2026-10-pool-v1-pt",
-    poolText:
-      "Quero que guardem os meus dados durante 12 meses para me proporem outros imóveis adequados. É opcional e posso retirar este consentimento quando quiser.",
-
     requiredError:
       "Confirme que leu a informação para podermos enviar o seu pedido.",
   },
@@ -307,8 +303,6 @@ export const pt: Dictionary = {
     selfServiceCta: "Adicionar documentos",
     privacyNote:
       "Se o seu pedido não avançar, apagaremos os seus dados e documentos 3 meses após a última diligência.",
-    privacyNotePool:
-      "Conforme nos pediu, guardaremos os seus dados durante 12 meses para lhe propormos outros imóveis. Pode retirar este consentimento quando quiser, escrevendo para info@artikore.com.",
     privacyLink: "Informação sobre proteção de dados",
     visitWebsite: "Ver os nossos imóveis",
   },

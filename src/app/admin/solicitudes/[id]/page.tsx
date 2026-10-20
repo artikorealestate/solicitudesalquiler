@@ -45,7 +45,6 @@ const consentTitles: Record<string, string> = {
   OWNER_SHARING:
     "Compartir con la propiedad (texto anterior a octubre de 2026)",
   PRIVACY_NOTICE: "Información de protección de datos mostrada y leída",
-  CANDIDATE_POOL: "Bolsa de candidatos: consentimiento para 12 meses",
 };
 
 function Section({
@@ -470,7 +469,6 @@ export default async function ApplicationDetailPage({
           <RetentionPanel
             applicationId={application.id}
             retention={retention}
-            candidatePool={application.candidatePool}
           />
 
           {/* Al final del todo, separado del resto: lo destructivo no debe
