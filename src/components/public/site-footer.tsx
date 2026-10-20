@@ -10,7 +10,13 @@ import type { Dictionary } from "@/i18n";
 /// El canal de contacto es WhatsApp, no el correo, a propósito:
 /// info@artikore.com es la bandeja de trabajo diaria de Artiko. Si se le da
 /// esa dirección a cada interesado, en un mes queda inservible.
-export function SiteFooter({ dictionary }: { dictionary: Dictionary }) {
+export function SiteFooter({
+  dictionary,
+  locale,
+}: {
+  dictionary: Dictionary;
+  locale: string;
+}) {
   const website = process.env.NEXT_PUBLIC_WEBSITE_URL ?? "https://artikore.com";
   const whatsapp = (process.env.NEXT_PUBLIC_WHATSAPP ?? "").replace(/\D/g, "");
 
@@ -47,7 +53,15 @@ export function SiteFooter({ dictionary }: { dictionary: Dictionary }) {
           y el CIF, que ya identifican unívocamente a la sociedad en el
           registro; la dirección completa no aporta nada al interesado. */}
       <p className="mt-4 text-xs leading-relaxed text-ink-muted">
-        INMOARTIKO SL · B56527930 · Sagunto (Valencia)
+        INMOARTIKO SL · B56527930 · Sagunto (Valencia) ·{" "}
+        {/* La informacion completa tiene que estar a un clic desde cualquier
+            pagina donde se recojan o se vean datos. */}
+        <a
+          href={`/${locale}/privacidad`}
+          className="underline underline-offset-2 hover:text-ink"
+        >
+          {dictionary.footer.privacy}
+        </a>
       </p>
     </footer>
   );

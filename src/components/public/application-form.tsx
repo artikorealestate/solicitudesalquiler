@@ -9,6 +9,7 @@ import {
   TextField,
 } from "@/components/public/fields";
 import { DocumentsStep } from "@/components/public/documents-step";
+import { PrivacyNotice } from "@/components/public/privacy-notice";
 import { PropertyPicker } from "@/components/public/property-picker";
 import {
   RentQuestions,
@@ -101,7 +102,16 @@ export function ApplicationForm({
   useEffect(() => {
     try {
       const saved = window.localStorage.getItem(storageKey(locale));
-      if (saved) setDraft({ ...emptyDraft, ...JSON.parse(saved) });
+      if (saved) {
+        // Las casillas de proteccion de datos no se recuperan: tienen que
+        // marcarse en el momento de enviar, sobre el texto vigente ese dia.
+        setDraft({
+          ...emptyDraft,
+          ...JSON.parse(saved),
+          privacyAcknowledged: false,
+          candidatePool: false,
+        });
+      }
     } catch {
       // Un borrador corrupto no debe impedir usar el formulario.
     }
@@ -232,11 +242,10 @@ export function ApplicationForm({
       }
     }
 
-    if (step === "consent") {
-      if (!draft.consentGdpr)
-        found.consentGdpr = dictionary.consent.requiredError;
-      if (!draft.consentOwner)
-        found.consentOwner = dictionary.consent.requiredError;
+    // Solo se exige haber leido la informacion. La bolsa de candidatos es
+    // opcional de verdad: no marcarla no impide nada.
+    if (step === "consent" && !draft.privacyAcknowledged) {
+      found.privacyAcknowledged = dictionary.consent.requiredError;
     }
 
     return found;
@@ -282,8 +291,8 @@ export function ApplicationForm({
         idDocument: draft.idDocument || undefined,
         comment: draft.comment || undefined,
         answers: draft.answers,
-        consentGdpr: draft.consentGdpr,
-        consentOwner: draft.consentOwner,
+        privacyAcknowledged: draft.privacyAcknowledged,
+        candidatePool: draft.candidatePool,
         declaredDocumentCount: files.length,
         website: honeypot,
         // Un cero significa que el navegador no llego a ejecutar el efecto;
@@ -382,7 +391,7 @@ export function ApplicationForm({
             {dictionary.success.signature}
           </p>
         </div>
-        <SiteFooter dictionary={dictionary} />
+        <SiteFooter dictionary={dictionary} locale={locale} />
       </div>
     );
   }
@@ -622,19 +631,26 @@ export function ApplicationForm({
                 optionalLabel={dictionary.common.optional}
                 rows={3}
               />
+              <PrivacyNotice dictionary={dictionary} locale={locale} />
+
               <CheckboxField
-                checked={draft.consentGdpr}
-                onChange={(checked) => update("consentGdpr", checked)}
-                error={errors.consentGdpr}
+                checked={draft.privacyAcknowledged}
+                onChange={(checked) => update("privacyAcknowledged", checked)}
+                error={errors.privacyAcknowledged}
               >
-                {dictionary.consent.gdprText}
+                {dictionary.consent.acknowledgeText}
               </CheckboxField>
+
+              {/* Opcional y sin marcar: si viniera marcada de serie, no seria
+                  un consentimiento valido. */}
               <CheckboxField
-                checked={draft.consentOwner}
-                onChange={(checked) => update("consentOwner", checked)}
-                error={errors.consentOwner}
+                checked={draft.candidatePool}
+                onChange={(checked) => update("candidatePool", checked)}
               >
-                {dictionary.consent.ownerText}
+                {dictionary.consent.poolText}{" "}
+                <span className="text-ink-muted">
+                  ({dictionary.common.optional})
+                </span>
               </CheckboxField>
             </div>
           </StepShell>
@@ -761,7 +777,7 @@ export function ApplicationForm({
         )}
       </div>
 
-      <SiteFooter dictionary={dictionary} />
+      <SiteFooter dictionary={dictionary} locale={locale} />
     </div>
   );
 }

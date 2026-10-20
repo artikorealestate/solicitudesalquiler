@@ -31,8 +31,11 @@ export type ApplicationDraft = {
   idDocument: string;
   comment: string;
   answers: Record<string, string>;
-  consentGdpr: boolean;
-  consentOwner: boolean;
+  /// Ha leido la informacion de proteccion de datos. No es un consentimiento:
+  /// es la constancia de que se le informo (ver i18n consent.infoRows).
+  privacyAcknowledged: boolean;
+  /// Consentimiento opcional para la bolsa de candidatos (12 meses).
+  candidatePool: boolean;
 };
 
 export const emptyDraft: ApplicationDraft = {
@@ -46,8 +49,8 @@ export const emptyDraft: ApplicationDraft = {
   idDocument: "",
   comment: "",
   answers: {},
-  consentGdpr: false,
-  consentOwner: false,
+  privacyAcknowledged: false,
+  candidatePool: false,
 };
 
 /// Preguntas de alquiler, en el orden en que se muestran.

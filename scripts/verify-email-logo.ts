@@ -7,10 +7,15 @@
 /// imagen sea un PNG valido.
 import nodemailer from "nodemailer";
 import { es } from "../src/i18n/dictionaries/es";
-import { LOGO_ATTACHMENT, buildApplicantEmail } from "../src/lib/mail/templates";
+import {
+  LOGO_ATTACHMENT,
+  buildApplicantEmail,
+} from "../src/lib/mail/templates";
 
 function check(label: string, ok: boolean, detail = "") {
-  console.log(`  [${ok ? "OK  " : "FALLO"}] ${label}${detail ? ` — ${detail}` : ""}`);
+  console.log(
+    `  [${ok ? "OK  " : "FALLO"}] ${label}${detail ? ` — ${detail}` : ""}`,
+  );
   if (!ok) process.exitCode = 1;
 }
 
@@ -24,48 +29,69 @@ async function main() {
     property: { reference: "195", title: "Piso de prueba", zone: "Sagunto" },
     price: "1.600 €/mes",
     hadDocuments: true,
-    selfServiceUrl: "https://artiko-interesados.vercel.app/solicitud/token-de-ejemplo"
+    selfServiceUrl:
+      "https://artiko-interesados.vercel.app/solicitud/token-de-ejemplo",
+    candidatePool: false,
+    privacyUrl: "https://artiko-interesados.vercel.app/es/privacidad",
   });
 
   // Transporte que no envia: solo compone el mensaje y lo devuelve.
-  const transport = nodemailer.createTransport({ streamTransport: true, buffer: true });
+  const transport = nodemailer.createTransport({
+    streamTransport: true,
+    buffer: true,
+  });
   const info = await transport.sendMail({
     from: "Artiko <artiko@example.com>",
     to: "prueba@example.com",
     subject: mensaje.subject,
     html: mensaje.html,
     text: mensaje.text,
-    attachments: [LOGO_ATTACHMENT]
+    attachments: [LOGO_ATTACHMENT],
   });
 
   const mime = (info.message as Buffer).toString("utf8");
 
-  check("el HTML apunta al logo incrustado", mensaje.html.includes("cid:artiko-logo"));
-  check("el mensaje incluye el adjunto", mime.includes("Content-ID: <artiko-logo>"));
+  check(
+    "el HTML apunta al logo incrustado",
+    mensaje.html.includes("cid:artiko-logo"),
+  );
+  check(
+    "el mensaje incluye el adjunto",
+    mime.includes("Content-ID: <artiko-logo>"),
+  );
   check("va marcado como imagen PNG", /Content-Type: image\/png/i.test(mime));
   check(
     "se envia como contenido embebido, no como fichero suelto",
-    /Content-Disposition: inline/i.test(mime)
+    /Content-Disposition: inline/i.test(mime),
   );
 
   const bytes = Buffer.from(LOGO_ATTACHMENT.content, "base64");
   const esPng = bytes[0] === 0x89 && bytes.toString("ascii", 1, 4) === "PNG";
-  check("los datos son un PNG valido", esPng, `${Math.round(bytes.length / 1024)} KB`);
+  check(
+    "los datos son un PNG valido",
+    esPng,
+    `${Math.round(bytes.length / 1024)} KB`,
+  );
 
   check(
     "el correo completo pesa poco",
     mime.length < 60_000,
-    `${Math.round(mime.length / 1024)} KB`
+    `${Math.round(mime.length / 1024)} KB`,
   );
 
   check(
     "hay nombre en texto por si bloquean la imagen",
-    mensaje.html.includes("ARTIKO REAL ESTATE")
+    mensaje.html.includes("ARTIKO REAL ESTATE"),
   );
 
   console.log(
-    process.exitCode === 1 ? "\nHay comprobaciones fallidas.\n" : "\nTodo correcto.\n"
+    process.exitCode === 1
+      ? "\nHay comprobaciones fallidas.\n"
+      : "\nTodo correcto.\n",
   );
 }
 
-main().catch((e) => { console.error(e); process.exitCode = 1; });
+main().catch((e) => {
+  console.error(e);
+  process.exitCode = 1;
+});

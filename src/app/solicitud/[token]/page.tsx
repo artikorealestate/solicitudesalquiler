@@ -28,9 +28,11 @@ export const dynamic = "force-dynamic";
 function Shell({
   children,
   dictionary,
+  locale,
 }: {
   children: React.ReactNode;
   dictionary: Dictionary;
+  locale: string;
 }) {
   return (
     <main className="mx-auto max-w-form px-4 py-10">
@@ -38,7 +40,7 @@ function Shell({
         <ArtikoLogo height={44} />
       </div>
       <div className="mt-8">{children}</div>
-      <SiteFooter dictionary={dictionary} />
+      <SiteFooter dictionary={dictionary} locale={locale} />
     </main>
   );
 }
@@ -84,7 +86,7 @@ export default async function SelfServicePage({
 
   if (!application) {
     return (
-      <Shell dictionary={dictionary}>
+      <Shell dictionary={dictionary} locale={locale}>
         <div className="surface p-7 text-center sm:p-10">
           <h1 className="heading-lg">{t.unavailableTitle}</h1>
           <p className="mt-3 text-sm leading-relaxed text-ink">
@@ -104,7 +106,7 @@ export default async function SelfServicePage({
   const pendiente = application.documentRequests[0];
 
   return (
-    <Shell dictionary={dictionary}>
+    <Shell dictionary={dictionary} locale={locale}>
       <div className="mb-6">
         <p className="eyebrow">{t.eyebrow}</p>
         <h1 className="heading-xl mt-2">

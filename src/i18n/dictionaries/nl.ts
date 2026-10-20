@@ -224,18 +224,45 @@ export const nl: Dictionary = {
 
   consent: {
     title: "Gegevensbescherming",
-    subtitle: "Voordat u verstuurt hebben we uw bevestiging nodig.",
+    subtitle: "Lees voor het verzenden hoe wij met uw gegevens omgaan.",
 
-    gdprVersion: "2026-08-avg-nl-v3",
-    gdprText:
-      "Ik geef INMOARTIKO SL (fiscaal nummer B56527930), gevestigd in Sagunto (Valencia, Spanje), toestemming om mijn persoonsgegevens en de aangeleverde documenten te verwerken met als doel mijn aanvraag over de geselecteerde woning te behandelen. Ik kan mijn rechten op inzage, rectificatie, verwijdering, bezwaar, beperking en overdraagbaarheid uitoefenen door te schrijven naar info@artikore.com.",
+    infoVersion: "2026-10-info-v1-nl",
+    infoTitle: "Basisinformatie over gegevensbescherming",
+    infoRows: [
+      {
+        label: "Verwerkingsverantwoordelijke",
+        text: "INMOARTIKO SL (fiscaal nummer B56527930), Sagunto (Valencia, Spanje).",
+      },
+      {
+        label: "Doel",
+        text: "Uw aanvraag voor deze woning behandelen en uw kandidatuur beoordelen.",
+      },
+      {
+        label: "Rechtsgrond",
+        text: "Uw eigen verzoek: het gaat om stappen voorafgaand aan een mogelijk contract, waar u zelf om vraagt (art. 6, lid 1, onder b, AVG).",
+      },
+      {
+        label: "Ontvangers",
+        text: "De eigenaar van de woning, zodat die uw kandidatuur kan beoordelen. Onze technologieleveranciers (Google, Supabase en Vercel), waarvan sommige in de VS gevestigd zijn en gecertificeerd onder het EU-VS-kader voor gegevensbescherming.",
+      },
+      {
+        label: "Bewaartermijn",
+        text: "Gaat uw aanvraag niet door, dan verwijderen wij uw gegevens en documenten 3 maanden na de laatste handeling.",
+      },
+      {
+        label: "Uw rechten",
+        text: "Inzage, rectificatie, wissing, bezwaar, beperking en overdraagbaarheid, via info@artikore.com. U kunt ook een klacht indienen bij de Spaanse toezichthouder (AEPD).",
+      },
+    ],
+    moreInfo: "Volledige informatie over gegevensbescherming",
+    acknowledgeText: "Ik heb de informatie over gegevensbescherming gelezen.",
 
-    ownerVersion: "2026-08-eigenaar-nl-v2",
-    ownerText:
-      "Ik geef INMOARTIKO SL toestemming om mijn gegevens en de aangeleverde documenten te delen met de eigenaar van de woning, uitsluitend om mijn kandidatuur te beoordelen.",
+    poolVersion: "2026-10-pool-v1-nl",
+    poolText:
+      "Ik wil dat u mijn gegevens 12 maanden bewaart om mij andere passende woningen aan te bieden. Dit is vrijwillig en ik kan het op elk moment intrekken.",
 
     requiredError:
-      "We hebben uw toestemming nodig om de aanvraag te kunnen behandelen.",
+      "Bevestig dat u de informatie hebt gelezen, zodat wij uw aanvraag kunnen versturen.",
   },
 
   review: {
@@ -279,6 +306,11 @@ export const nl: Dictionary = {
     selfServiceIntro:
       "Mist u nog een document? U kunt het altijd via deze link toevoegen, zonder het formulier opnieuw in te vullen.",
     selfServiceCta: "Documenten toevoegen",
+    privacyNote:
+      "Gaat uw aanvraag niet door, dan verwijderen wij uw gegevens en documenten 3 maanden na de laatste handeling.",
+    privacyNotePool:
+      "Zoals u vroeg, bewaren wij uw gegevens 12 maanden om u andere woningen aan te bieden. U kunt dit op elk moment intrekken via info@artikore.com.",
+    privacyLink: "Informatie over gegevensbescherming",
     visitWebsite: "Bekijk onze woningen",
   },
 
@@ -349,6 +381,7 @@ export const nl: Dictionary = {
     questionsLabel: "Vragen voordat u verstuurt?",
     contact: "Schrijf ons op",
     whatsapp: "Stuur ons een WhatsApp",
+    privacy: "Privacy",
   },
 
   errors: {

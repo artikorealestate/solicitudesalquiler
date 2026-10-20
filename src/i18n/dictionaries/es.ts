@@ -241,18 +241,52 @@ export const es = {
 
   consent: {
     title: "Protección de datos",
-    subtitle: "Antes de enviar, necesitamos tu confirmación.",
+    subtitle: "Antes de enviar, lee cómo tratamos tus datos.",
 
-    gdprVersion: "2026-08-rgpd-v3",
-    gdprText:
-      "Acepto que INMOARTIKO SL (CIF B56527930), con domicilio social en Sagunto (Valencia), trate mis datos personales y la documentación aportada con la finalidad de gestionar mi solicitud de información sobre el inmueble seleccionado. Podré ejercer mis derechos de acceso, rectificación, supresión, oposición, limitación y portabilidad escribiendo a info@artikore.com.",
+    /// Primera capa de informacion (art. 13 RGPD, art. 11 LOPDGDD). NO es un
+    /// consentimiento: valorar una solicitud se basa en medidas
+    /// precontractuales a peticion del interesado (art. 6.1.b). Pedir que
+    /// "consienta" algo que no puede rechazar no seria un consentimiento
+    /// valido, y retirarlo obligaria a dejar de tramitar su solicitud.
+    infoVersion: "2026-10-info-v1-es",
+    infoTitle: "Información básica sobre protección de datos",
+    infoRows: [
+      {
+        label: "Responsable",
+        text: "INMOARTIKO SL (CIF B56527930), Sagunto (Valencia).",
+      },
+      {
+        label: "Finalidad",
+        text: "Gestionar tu solicitud para este inmueble y valorar tu candidatura.",
+      },
+      {
+        label: "Legitimación",
+        text: "Tu propia solicitud: son pasos previos a un posible contrato que nos pides tú (art. 6.1.b del RGPD).",
+      },
+      {
+        label: "Destinatarios",
+        text: "La propiedad del inmueble, para que valore tu candidatura. Nuestros proveedores tecnológicos (Google, Supabase y Vercel), algunos con sede en EE. UU. y acogidos al Marco de Privacidad de Datos UE-EE. UU.",
+      },
+      {
+        label: "Conservación",
+        text: "Si tu solicitud no sigue adelante, borramos tus datos y documentos 3 meses después de la última gestión.",
+      },
+      {
+        label: "Tus derechos",
+        text: "Acceso, rectificación, supresión, oposición, limitación y portabilidad, escribiendo a info@artikore.com. También puedes reclamar ante la Agencia Española de Protección de Datos (AEPD).",
+      },
+    ],
+    moreInfo: "Información completa sobre protección de datos",
+    acknowledgeText: "He leído la información sobre protección de datos.",
 
-    ownerVersion: "2026-08-propietario-v2",
-    ownerText:
-      "Autorizo a INMOARTIKO SL a compartir mis datos y la documentación aportada con la propiedad del inmueble, con el único fin de que valore mi candidatura.",
+    /// El unico consentimiento de verdad: opcional, sin marcar, y para algo
+    /// que no hace falta para tramitar la solicitud.
+    poolVersion: "2026-10-pool-v1-es",
+    poolText:
+      "Quiero que guardéis mis datos durante 12 meses para ofrecerme otros inmuebles que encajen conmigo. Es opcional y puedo retirarlo cuando quiera.",
 
     requiredError:
-      "Necesitamos tu consentimiento para poder tramitar la solicitud.",
+      "Confirma que has leído la información para poder enviar la solicitud.",
   },
 
   review: {
@@ -299,6 +333,11 @@ export const es = {
     selfServiceIntro:
       "¿Te falta algún documento por enviarnos? Puedes añadirlo cuando quieras desde este enlace, sin volver a rellenar el formulario.",
     selfServiceCta: "Añadir documentación",
+    privacyNote:
+      "Si tu solicitud no sigue adelante, borraremos tus datos y documentos 3 meses después de la última gestión.",
+    privacyNotePool:
+      "Como nos lo has pedido, guardaremos tus datos 12 meses para ofrecerte otros inmuebles. Puedes retirarlo cuando quieras escribiendo a info@artikore.com.",
+    privacyLink: "Información sobre protección de datos",
     visitWebsite: "Ver nuestras viviendas",
   },
 
@@ -387,6 +426,7 @@ export const es = {
     questionsLabel: "¿Tienes dudas antes de enviar?",
     contact: "Escríbenos a",
     whatsapp: "Escríbenos por WhatsApp",
+    privacy: "Privacidad",
   },
 
   errors: {

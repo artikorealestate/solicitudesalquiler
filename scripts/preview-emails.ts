@@ -9,26 +9,26 @@ import {
   LOGO_ATTACHMENT,
   buildApplicantEmail,
   buildDocumentRequestEmail,
-  buildInternalEmail
+  buildInternalEmail,
 } from "../src/lib/mail/templates";
 import { resolveDocumentItems } from "../src/lib/applications/document-catalog";
 import {
   getFromAddress,
   getInternalRecipients,
-  getMailer
+  getMailer,
 } from "../src/lib/mail/transport";
 
 const property = {
   reference: "195",
   title: "Piso en Calle de la Flor del Taronger, Canet d'En Berenguer",
-  zone: "Canet d'En Berenguer"
+  zone: "Canet d'En Berenguer",
 };
 
 const applicant = {
   firstName: "Ana",
   lastName: "García López",
   email: "ana.garcia@example.com",
-  phone: "600 123 456"
+  phone: "600 123 456",
 };
 
 const answers: Record<string, string> = {
@@ -42,7 +42,7 @@ const answers: Record<string, string> = {
   pets: "no",
   searchDuration: "oneToThree",
   visitedOthers: "yes",
-  documentsReady: "yes"
+  documentsReady: "yes",
 };
 
 async function main() {
@@ -60,7 +60,10 @@ async function main() {
     property,
     price: "1.600 €/mes",
     hadDocuments: true,
-    selfServiceUrl: "https://artiko-interesados.vercel.app/solicitud/token-de-ejemplo"
+    selfServiceUrl:
+      "https://artiko-interesados.vercel.app/solicitud/token-de-ejemplo",
+    candidatePool: false,
+    privacyUrl: "https://artiko-interesados.vercel.app/es/privacidad",
   });
 
   const internalEmail = buildInternalEmail({
@@ -73,7 +76,7 @@ async function main() {
     answers,
     documentCount: 3,
     adminUrl: `${process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"}/admin/solicitudes/muestra-1234`,
-    driveUrl: "https://drive.google.com/drive/folders/ejemplo"
+    driveUrl: "https://drive.google.com/drive/folders/ejemplo",
   });
 
   const documentEmail = buildDocumentRequestEmail({
@@ -82,18 +85,18 @@ async function main() {
     property,
     items: resolveDocumentItems(
       ["id", "incomeProof", "employmentContract", "workHistory"],
-      es.docs.items
+      es.docs.items,
     ),
     message: "Con la vida laboral nos vale la que descargues hoy mismo.",
     link: "https://ejemplo.artikore.com/documentos/muestra",
     expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-    locale: "es"
+    locale: "es",
   });
 
   for (const [label, message] of [
     ["confirmacion al interesado", applicantEmail],
     ["aviso interno a Artiko", internalEmail],
-    ["peticion de documentacion", documentEmail]
+    ["peticion de documentacion", documentEmail],
   ] as const) {
     await mailer.sendMail({
       from: getFromAddress(),
@@ -101,7 +104,7 @@ async function main() {
       subject: `[MUESTRA] ${message.subject}`,
       html: message.html,
       text: message.text,
-      attachments: [LOGO_ATTACHMENT]
+      attachments: [LOGO_ATTACHMENT],
     });
     console.log(`Enviada la muestra de ${label}`);
   }

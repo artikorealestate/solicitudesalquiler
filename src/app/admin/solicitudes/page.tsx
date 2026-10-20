@@ -17,6 +17,8 @@ import { describeStay, stayKind, stayKindLabel } from "@/lib/applications/stay";
 import { BuyerBadge } from "@/components/admin/buyer-badge";
 import { assessSolvency } from "@/lib/applications/types";
 import { assessBuyerReadiness } from "@/lib/applications/buyer-readiness";
+import { applicationRetention } from "@/lib/privacy/application-retention";
+import { daysUntilDeletion, isInWarningWindow } from "@/lib/privacy/retention";
 
 export const dynamic = "force-dynamic";
 
@@ -38,6 +40,22 @@ export default async function ApplicationsPage({
           select: { id: true, reference: true, title: true, rentPrice: true },
         },
         _count: { select: { documents: true } },
+        // Lo que necesita el calculo del borrado: la ultima de cada cosa.
+        documents: {
+          select: { uploadedAt: true },
+          orderBy: { uploadedAt: "desc" },
+          take: 1,
+        },
+        notes: {
+          select: { createdAt: true },
+          orderBy: { createdAt: "desc" },
+          take: 1,
+        },
+        documentRequests: {
+          select: { createdAt: true },
+          orderBy: { createdAt: "desc" },
+          take: 1,
+        },
       },
     }),
     prisma.property.findMany({
@@ -298,6 +316,19 @@ export default async function ApplicationsPage({
                       </td>
                       <td className="px-5 py-3 whitespace-nowrap text-ink-muted">
                         {application.submittedAt.toLocaleDateString("es-ES")}
+                        {(() => {
+                          // Solo se señala lo que se borra en las proximas dos
+                          // semanas: una fecha en cada fila no se leeria.
+                          const retention = applicationRetention(application);
+                          if (!isInWarningWindow(retention)) return null;
+                          const days = daysUntilDeletion(retention);
+                          return (
+                            <span className="mt-0.5 block text-xs font-bold text-danger">
+                              Se borra{" "}
+                              {days === 1 ? "mañana" : `en ${days} días`}
+                            </span>
+                          );
+                        })()}
                       </td>
                     </tr>
                   );

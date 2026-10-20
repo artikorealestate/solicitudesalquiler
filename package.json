@@ -23,7 +23,8 @@
     "test:e2e": "playwright test",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
-    "audit": "tsx --env-file=.env scripts/audit-produccion.ts"
+    "audit": "tsx --env-file=.env scripts/audit-produccion.ts",
+    "retention:preview": "tsx --env-file=.env scripts/retention-preview.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.10.0",

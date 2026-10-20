@@ -46,11 +46,30 @@ enum ApplicationStatus {
   CLOSED
 }
 
-/// Tipos de consentimiento que guardamos con su texto exacto para poder
-/// demostrar despues que se acepto, cuando y en que idioma.
+/// Registros legales que guardamos con su texto exacto para poder demostrar
+/// despues que se mostro o se acepto, cuando y en que idioma.
 enum ConsentType {
+  /// Historicos (hasta octubre de 2026): el formulario pedia "consentir" el
+  /// tratamiento y la comunicacion al propietario como casillas obligatorias.
+  /// Un consentimiento que no se puede rechazar no es valido, asi que se
+  /// sustituyeron. Se conservan para las solicitudes que los tienen.
   GDPR
   OWNER_SHARING
+  /// Constancia de que se le mostro la informacion basica de proteccion de
+  /// datos. NO es un consentimiento: valorar una solicitud se basa en
+  /// medidas precontractuales a peticion del interesado (art. 6.1.b RGPD).
+  PRIVACY_NOTICE
+  /// Consentimiento opcional, de verdad: guardar sus datos para ofrecerle
+  /// otros inmuebles cuando esta solicitud ya no siga adelante.
+  CANDIDATE_POOL
+}
+
+/// Por que se borro una solicitud.
+enum DeletionReason {
+  /// Vencio el plazo de conservacion y la borro el proceso automatico.
+  RETENTION
+  /// La borro un administrador desde el panel (p.ej. derecho de supresion).
+  MANUAL
 }
 
 model Property {
@@ -132,14 +151,30 @@ model Application {
   driveFolderId  String?
   driveFolderUrl String?
 
+  /// Ultima vez que Artiko hizo algo con la solicitud a mano: cambiarle el
+  /// estado o pedir que se conserve. Es el punto de partida del plazo de
+  /// conservacion (ver lib/privacy/retention).
+  ///
+  /// Los documentos, notas y peticiones tambien cuentan como actividad, pero
+  /// esos se leen de sus propias fechas: asi un sitio que olvide actualizar
+  /// este campo no puede provocar un borrado antes de tiempo.
+  lastActivityAt DateTime @default(now())
+
+  /// El interesado acepto que guardemos sus datos para ofrecerle otros
+  /// inmuebles. Alarga el plazo de conservacion; la prueba (texto, version,
+  /// fecha) esta en su Consent de tipo CANDIDATE_POOL.
+  candidatePool Boolean @default(false)
+
   documents        Document[]
   consents         Consent[]
   notes            Note[]
   documentRequests DocumentRequest[]
+  retentionWarning RetentionWarning?
 
   submittedAt DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
+  @@index([lastActivityAt])
   @@index([status])
   @@index([operation])
   @@index([propertyId])
@@ -229,6 +264,46 @@ model DocumentRequest {
 
   @@index([applicationId])
   @@index([status])
+}
+
+/// Aviso de borrado proximo ya enviado a Artiko.
+///
+/// Se guarda la fecha de borrado sobre la que se aviso: si alguien pide
+/// conservar la solicitud y el plazo se mueve, la fecha deja de coincidir y
+/// se volvera a avisar cuando toque. Sin esto el aviso se repetiria a diario.
+///
+/// Va en tabla aparte a proposito: escribirlo en la propia solicitud tocaria
+/// su fecha de modificacion, y no debe parecer actividad.
+model RetentionWarning {
+  applicationId String      @id
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  deleteAfter DateTime
+  sentAt      DateTime @default(now())
+}
+
+/// Constancia de cada borrado, SIN datos personales.
+///
+/// Sirve para poder demostrar que se borra (el RGPD obliga a poder
+/// acreditarlo) sin conservar justo lo que se ha borrado: ni nombre, ni
+/// correo, ni documento de identidad. Solo cuando, por que y de que
+/// inmueble.
+model DeletionLog {
+  id String @id @default(cuid())
+
+  reason            DeletionReason
+  operation         ApplicationOperation
+  propertyReference String
+  submittedAt       DateTime
+  lastActivityAt    DateTime?
+  documentCount     Int
+  /// Correo del administrador en los borrados manuales; vacio en los
+  /// automaticos.
+  deletedBy         String?
+
+  deletedAt DateTime @default(now())
+
+  @@index([deletedAt])
 }
 
 model Note {

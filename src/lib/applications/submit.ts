@@ -20,6 +20,7 @@ import {
   uploadSummaryDocument,
 } from "@/lib/google/drive";
 import { buildSummaryHtml } from "@/lib/applications/summary-html";
+import { privacyNoticeSnapshot } from "@/components/public/privacy-notice";
 import { issueUploadTicket } from "@/lib/applications/upload-ticket";
 import { sendApplicationEmails } from "@/lib/mail/send-application-emails";
 
@@ -41,8 +42,11 @@ const submissionSchema = z.object({
   idDocument: z.string().trim().min(4).max(60),
   comment: z.string().trim().max(4000).optional(),
   answers: z.record(z.string(), z.string().max(2000)),
-  consentGdpr: z.literal(true),
-  consentOwner: z.literal(true),
+  /// Ha leido la informacion de proteccion de datos. Imprescindible: sin
+  /// informar no se pueden recoger datos.
+  privacyAcknowledged: z.literal(true),
+  /// Bolsa de candidatos: opcional de verdad. Ausente cuenta como "no".
+  candidatePool: z.boolean().optional().default(false),
   /// Cuantos archivos va a subir el navegador despues. Solo informativo, para
   /// el aviso interno: la subida real ocurre cuando este endpoint ya ha
   /// respondido.
@@ -170,9 +174,28 @@ export async function submitApplication(input: unknown): Promise<SubmitResult> {
   if (!property) return { ok: false, error: "property-unavailable" };
 
   // Guardamos el texto legal exacto que se le mostro, en su idioma: si algun
-  // dia hay que demostrar que consintio, el texto de hoy puede no ser el que
-  // vio entonces.
+  // dia hay que demostrar que se le informo, o que acepto la bolsa, el texto
+  // de hoy puede no ser el que vio entonces.
   const dictionary = await getDictionary(locale);
+
+  const legalRecords = [
+    {
+      type: "PRIVACY_NOTICE" as const,
+      textVersion: dictionary.consent.infoVersion,
+      textSnapshot: privacyNoticeSnapshot(dictionary),
+      locale,
+    },
+    ...(data.candidatePool
+      ? [
+          {
+            type: "CANDIDATE_POOL" as const,
+            textVersion: dictionary.consent.poolVersion,
+            textSnapshot: dictionary.consent.poolText,
+            locale,
+          },
+        ]
+      : []),
+  ];
 
   const application = await prisma.application.create({
     data: {
@@ -192,22 +215,8 @@ export async function submitApplication(input: unknown): Promise<SubmitResult> {
       // volver a SU solicitud para anadir lo que le falte, en lugar de
       // rellenar el formulario otra vez y generarnos un duplicado.
       accessToken: randomBytes(32).toString("base64url"),
-      consents: {
-        create: [
-          {
-            type: "GDPR",
-            textVersion: dictionary.consent.gdprVersion,
-            textSnapshot: dictionary.consent.gdprText,
-            locale,
-          },
-          {
-            type: "OWNER_SHARING",
-            textVersion: dictionary.consent.ownerVersion,
-            textSnapshot: dictionary.consent.ownerText,
-            locale,
-          },
-        ],
-      },
+      candidatePool: data.candidatePool,
+      consents: { create: legalRecords },
     },
     select: { id: true, submittedAt: true, accessToken: true },
   });
@@ -284,18 +293,14 @@ export async function submitApplication(input: unknown): Promise<SubmitResult> {
             comment: data.comment,
           },
           answers: data.answers,
-          consents: [
-            {
-              label: "Proteccion de datos (RGPD)",
-              version: dictionary.consent.gdprVersion,
-              text: dictionary.consent.gdprText,
-            },
-            {
-              label: "Autorizacion para compartir con la propiedad",
-              version: dictionary.consent.ownerVersion,
-              text: dictionary.consent.ownerText,
-            },
-          ],
+          consents: legalRecords.map((record) => ({
+            label:
+              record.type === "PRIVACY_NOTICE"
+                ? "Informacion de proteccion de datos mostrada y leida"
+                : "Bolsa de candidatos (consentimiento opcional, 12 meses)",
+            version: record.textVersion,
+            text: record.textSnapshot,
+          })),
         }),
       });
 
@@ -342,6 +347,7 @@ export async function submitApplication(input: unknown): Promise<SubmitResult> {
     documentCount: data.declaredDocumentCount ?? 0,
     driveUrl: driveFolderUrl,
     accessToken: application.accessToken,
+    candidatePool: data.candidatePool,
   });
 
   return {

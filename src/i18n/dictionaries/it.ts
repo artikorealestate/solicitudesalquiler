@@ -223,17 +223,45 @@ export const it: Dictionary = {
 
   consent: {
     title: "Protezione dei dati",
-    subtitle: "Prima di inviare abbiamo bisogno della tua conferma.",
+    subtitle: "Prima di inviare, leggi come trattiamo i tuoi dati.",
 
-    gdprVersion: "2026-08-gdpr-it-v3",
-    gdprText:
-      "Acconsento al trattamento da parte di INMOARTIKO SL (codice fiscale B56527930), con sede a Sagunto (Valencia, Spagna), dei miei dati personali e della documentazione fornita, allo scopo di gestire la mia richiesta di informazioni sull'immobile selezionato. Potrò esercitare i diritti di accesso, rettifica, cancellazione, opposizione, limitazione e portabilità scrivendo a info@artikore.com.",
+    infoVersion: "2026-10-info-v1-it",
+    infoTitle: "Informazioni di base sulla protezione dei dati",
+    infoRows: [
+      {
+        label: "Titolare",
+        text: "INMOARTIKO SL (CF B56527930), Sagunto (Valencia, Spagna).",
+      },
+      {
+        label: "Finalità",
+        text: "Gestire la tua richiesta per questo immobile e valutare la tua candidatura.",
+      },
+      {
+        label: "Base giuridica",
+        text: "La tua stessa richiesta: si tratta di passaggi preliminari a un possibile contratto che ci chiedi tu (art. 6.1.b del GDPR).",
+      },
+      {
+        label: "Destinatari",
+        text: "La proprietà dell'immobile, perché valuti la tua candidatura. I nostri fornitori tecnologici (Google, Supabase e Vercel), alcuni con sede negli USA e aderenti al Data Privacy Framework UE-USA.",
+      },
+      {
+        label: "Conservazione",
+        text: "Se la tua richiesta non va avanti, cancelliamo i tuoi dati e documenti 3 mesi dopo l'ultima gestione.",
+      },
+      {
+        label: "I tuoi diritti",
+        text: "Accesso, rettifica, cancellazione, opposizione, limitazione e portabilità, scrivendo a info@artikore.com. Puoi anche presentare reclamo all'Agenzia spagnola per la protezione dei dati (AEPD).",
+      },
+    ],
+    moreInfo: "Informazioni complete sulla protezione dei dati",
+    acknowledgeText: "Ho letto le informazioni sulla protezione dei dati.",
 
-    ownerVersion: "2026-08-proprietario-v2",
-    ownerText:
-      "Autorizzo INMOARTIKO SL a condividere i miei dati e la documentazione fornita con la proprietà dell'immobile, al solo fine di valutare la mia candidatura.",
+    poolVersion: "2026-10-pool-v1-it",
+    poolText:
+      "Voglio che conserviate i miei dati per 12 mesi per propormi altri immobili adatti a me. È facoltativo e posso revocarlo quando voglio.",
 
-    requiredError: "Ci serve il tuo consenso per poter gestire la richiesta.",
+    requiredError:
+      "Conferma di aver letto le informazioni per poter inviare la richiesta.",
   },
 
   review: {
@@ -277,6 +305,11 @@ export const it: Dictionary = {
     selfServiceIntro:
       "Ti manca qualche documento? Puoi aggiungerlo quando vuoi da questo link, senza compilare di nuovo il modulo.",
     selfServiceCta: "Aggiungi documenti",
+    privacyNote:
+      "Se la tua richiesta non va avanti, cancelleremo i tuoi dati e documenti 3 mesi dopo l'ultima gestione.",
+    privacyNotePool:
+      "Come ci hai chiesto, conserveremo i tuoi dati per 12 mesi per proporti altri immobili. Puoi revocarlo quando vuoi scrivendo a info@artikore.com.",
+    privacyLink: "Informazioni sulla protezione dei dati",
     visitWebsite: "Vedi i nostri immobili",
   },
 
@@ -347,6 +380,7 @@ export const it: Dictionary = {
     questionsLabel: "Hai dubbi prima di inviare?",
     contact: "Scrivici a",
     whatsapp: "Scrivici su WhatsApp",
+    privacy: "Privacy",
   },
 
   errors: {

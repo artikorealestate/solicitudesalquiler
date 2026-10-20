@@ -196,10 +196,18 @@ export function buildApplicantEmail(input: {
   /// Enlace personal para volver a esta misma solicitud y anadir lo que
   /// falte, sin rellenar el formulario otra vez.
   selfServiceUrl: string | null;
+  /// Acepto la bolsa de candidatos: el plazo que se le recuerda es otro.
+  candidatePool: boolean;
+  /// Informacion completa de proteccion de datos, en su idioma.
+  privacyUrl: string;
 }): { subject: string; html: string; text: string } {
   const t = input.dictionary.email;
   const operationWord =
     input.operation === "RENT" ? t.operationRent : t.operationSale;
+
+  // Recordatorio del plazo de conservacion: es la parte de la informacion
+  // que mas le importa a quien acaba de mandar su DNI y sus nominas.
+  const privacyNote = input.candidatePool ? t.privacyNotePool : t.privacyNote;
 
   const content = `
     <p style="margin:0 0 14px;">
@@ -239,7 +247,11 @@ export function buildApplicantEmail(input: {
     <p style="margin:22px 0 0;font:400 17px Georgia,serif;color:${INK};">
       ${escapeHtml(t.signature)}
     </p>
-    ${personalContactBlock(t)}`;
+    ${personalContactBlock(t)}
+    <p style="margin:22px 0 0;font:400 12px/1.6 Arial,sans-serif;color:#8a8a8a;">
+      ${escapeHtml(privacyNote)}
+      <a href="${escapeHtml(input.privacyUrl)}" style="color:#A8914F;">${escapeHtml(t.privacyLink)}</a>
+    </p>`;
 
   const wa = whatsappUrl();
 
@@ -260,6 +272,9 @@ export function buildApplicantEmail(input: {
     "",
     t.signature,
     t.signatureTagline,
+    "",
+    privacyNote,
+    `${t.privacyLink}: ${input.privacyUrl}`,
   ]
     .filter(Boolean)
     .join("\n");

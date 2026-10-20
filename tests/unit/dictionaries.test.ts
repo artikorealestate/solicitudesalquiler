@@ -92,16 +92,31 @@ describe("diccionarios de idiomas", () => {
       // Guardamos el texto aceptado junto a su version. Si dos idiomas
       // compartieran version con textos distintos, no se podria saber cual
       // firmo la persona.
-      expect(dictionary.consent.gdprVersion.trim()).not.toBe("");
-      expect(dictionary.consent.ownerVersion.trim()).not.toBe("");
+      expect(dictionary.consent.infoVersion.trim()).not.toBe("");
+      expect(dictionary.consent.poolVersion.trim()).not.toBe("");
+    });
+
+    it("muestra la misma informacion basica en todos los idiomas", () => {
+      // Responsable, finalidad, legitimacion, destinatarios, conservacion y
+      // derechos: si a un idioma le faltara una fila, esa persona no estaria
+      // informada de algo que la ley obliga a decir.
+      expect(dictionary.consent.infoRows).toHaveLength(
+        es.consent.infoRows.length,
+      );
+      for (const row of dictionary.consent.infoRows) {
+        expect(row.label.trim()).not.toBe("");
+        expect(row.text.trim()).not.toBe("");
+      }
     });
   });
 
-  it("las versiones de consentimiento no se repiten entre idiomas", () => {
-    const versions = Object.values(dictionaries).map(
-      (dictionary) => dictionary.consent.gdprVersion,
-    );
-    expect(new Set(versions).size).toBe(versions.length);
+  it("las versiones de los textos legales no se repiten entre idiomas", () => {
+    for (const key of ["infoVersion", "poolVersion"] as const) {
+      const versions = Object.values(dictionaries).map(
+        (dictionary) => dictionary.consent[key],
+      );
+      expect(new Set(versions).size).toBe(versions.length);
+    }
   });
 
   it("interpolate rellena los marcadores de cualquier idioma", () => {

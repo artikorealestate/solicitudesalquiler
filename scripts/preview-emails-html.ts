@@ -52,6 +52,8 @@ const correos = [
       hadDocuments: true,
       selfServiceUrl:
         "https://artiko-interesados.vercel.app/solicitud/token-de-ejemplo",
+      candidatePool: false,
+      privacyUrl: "https://artiko-interesados.vercel.app/es/privacidad",
     }),
   },
   {

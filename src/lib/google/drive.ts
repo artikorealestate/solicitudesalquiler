@@ -270,6 +270,24 @@ export async function trashFolder(folderId: string): Promise<void> {
   });
 }
 
+/// Borra una carpeta de verdad, con todo su contenido, sin pasar por la
+/// papelera.
+///
+/// Es lo que usa el borrado automatico por plazo. Ahi no hace falta la red de
+/// seguridad de la papelera: el borrado esta anunciado con dos semanas de
+/// antelacion y es exactamente lo que se le ha prometido al interesado.
+///
+/// Si la carpeta ya no existe (alguien la borro a mano en Drive), cuenta como
+/// hecho: el objetivo era que no estuviera.
+export async function deleteFolderPermanently(folderId: string): Promise<void> {
+  try {
+    await driveFetch(`${DRIVE_API}/files/${folderId}`, { method: "DELETE" });
+  } catch (error) {
+    if (String(error).includes("respondio 404")) return;
+    throw error;
+  }
+}
+
 /// Datos publicos de un archivo ya subido, para guardar su enlace.
 export async function getFileLink(fileId: string): Promise<string> {
   const response = await driveFetch(

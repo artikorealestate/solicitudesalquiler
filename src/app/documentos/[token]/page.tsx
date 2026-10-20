@@ -1,4 +1,5 @@
 import { ArtikoLogo } from "@/components/brand/logo";
+import { SiteFooter } from "@/components/public/site-footer";
 import { DocumentRequestForm } from "@/components/public/document-request-form";
 import { prisma } from "@/lib/db";
 import { resolveDocumentItems } from "@/lib/applications/document-catalog";
@@ -16,31 +17,41 @@ export const dynamic = "force-dynamic";
 ///
 /// Va en el idioma en que la persona relleno el formulario.
 
-function Shell({ children }: { children: React.ReactNode }) {
-  const contact = process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "info@artikore.com";
-
+function Shell({
+  children,
+  dictionary,
+  locale,
+}: {
+  children: React.ReactNode;
+  dictionary: Dictionary;
+  locale: string;
+}) {
+  // El mismo pie que el resto de paginas publicas: WhatsApp y la web para
+  // hablar con Artiko, e informacion de privacidad a un clic.
   return (
     <main className="mx-auto max-w-form px-4 py-10">
       <div className="flex justify-center">
         <ArtikoLogo height={44} />
       </div>
       <div className="mt-8">{children}</div>
-      <p className="mt-8 text-center text-xs text-ink-muted">
-        Artiko Real Estate ·{" "}
-        <a
-          href={`mailto:${contact}`}
-          className="text-gold-dark underline-offset-4 hover:underline"
-        >
-          {contact}
-        </a>
-      </p>
+      <SiteFooter dictionary={dictionary} locale={locale} />
     </main>
   );
 }
 
-function Unavailable({ title, body }: { title: string; body: string }) {
+function Unavailable({
+  title,
+  body,
+  dictionary,
+  locale,
+}: {
+  title: string;
+  body: string;
+  dictionary: Dictionary;
+  locale: string;
+}) {
   return (
-    <Shell>
+    <Shell dictionary={dictionary} locale={locale}>
       <div className="surface p-7 text-center sm:p-10">
         <h1 className="heading-lg">{title}</h1>
         <p className="mt-3 text-sm leading-relaxed text-ink">{body}</p>
@@ -84,25 +95,53 @@ export default async function DocumentRequestPage({
   // Mismo mensaje para enlace inexistente y cancelado: no hay motivo para que
   // un enlace al azar revele si existe o no.
   if (!request || request.status === "CANCELLED") {
-    return <Unavailable title={t.unavailableTitle} body={t.unavailableBody} />;
+    return (
+      <Unavailable
+        title={t.unavailableTitle}
+        body={t.unavailableBody}
+        dictionary={dictionary}
+        locale={locale}
+      />
+    );
   }
 
   if (request.expiresAt < new Date()) {
-    return <Unavailable title={t.expiredTitle} body={t.expiredBody} />;
+    return (
+      <Unavailable
+        title={t.expiredTitle}
+        body={t.expiredBody}
+        dictionary={dictionary}
+        locale={locale}
+      />
+    );
   }
 
   if (request.status === "COMPLETED") {
-    return <Unavailable title={t.completedTitle} body={t.completedBody} />;
+    return (
+      <Unavailable
+        title={t.completedTitle}
+        body={t.completedBody}
+        dictionary={dictionary}
+        locale={locale}
+      />
+    );
   }
 
   if (!request.application.driveFolderId) {
-    return <Unavailable title={t.unavailableTitle} body={t.unavailableBody} />;
+    return (
+      <Unavailable
+        title={t.unavailableTitle}
+        body={t.unavailableBody}
+        dictionary={dictionary}
+        locale={locale}
+      />
+    );
   }
 
   const { application } = request;
 
   return (
-    <Shell>
+    <Shell dictionary={dictionary} locale={locale}>
       <div className="mb-6">
         <p className="eyebrow">{t.eyebrow}</p>
         <h1 className="heading-xl mt-2">

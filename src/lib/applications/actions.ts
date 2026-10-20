@@ -26,9 +26,10 @@ export async function changeApplicationStatus(
     throw new Error("Estado desconocido");
   }
 
+  // Cambiar el estado es una gestion: reinicia el plazo de conservacion.
   await prisma.application.update({
     where: { id: applicationId },
-    data: { status: status as never },
+    data: { status: status as never, lastActivityAt: new Date() },
   });
 
   console.info(
@@ -56,7 +57,11 @@ export async function deleteApplication(applicationId: string) {
     select: {
       firstName: true,
       lastName: true,
+      operation: true,
+      submittedAt: true,
+      lastActivityAt: true,
       driveFolderId: true,
+      property: { select: { reference: true } },
       _count: { select: { documents: true } },
     },
   });
@@ -77,7 +82,22 @@ export async function deleteApplication(applicationId: string) {
     }
   }
 
-  await prisma.application.delete({ where: { id: applicationId } });
+  // Constancia del borrado sin datos personales: permite acreditar que se
+  // atendio una supresion sin conservar lo suprimido.
+  await prisma.$transaction([
+    prisma.deletionLog.create({
+      data: {
+        reason: "MANUAL",
+        operation: application.operation,
+        propertyReference: application.property.reference,
+        submittedAt: application.submittedAt,
+        lastActivityAt: application.lastActivityAt,
+        documentCount: application._count.documents,
+        deletedBy: email,
+      },
+    }),
+    prisma.application.delete({ where: { id: applicationId } }),
+  ]);
 
   console.info(
     `[solicitudes] ${email} elimino la solicitud de ${application.firstName} ` +
@@ -87,6 +107,61 @@ export async function deleteApplication(applicationId: string) {
   revalidatePath("/admin/solicitudes");
   revalidatePath("/admin");
   redirect("/admin/solicitudes");
+}
+
+/// "Conservar 3 meses mas": reinicia el plazo de conservacion.
+///
+/// Para el candidato que encaja pero con el que no se ha avanzado todavia.
+/// Es una decision consciente de alguien de Artiko, y queda anotada en la
+/// ficha con quien y cuando: si se usara para guardar datos sin motivo, que
+/// se vea.
+export async function keepApplication(applicationId: string) {
+  const email = await requireAdminEmail();
+
+  await prisma.$transaction([
+    prisma.application.update({
+      where: { id: applicationId },
+      data: { lastActivityAt: new Date() },
+    }),
+    prisma.note.create({
+      data: {
+        applicationId,
+        authorEmail: email,
+        body: "Conservada 3 meses más desde el panel.",
+      },
+    }),
+    // El aviso anterior ya no vale: la fecha de borrado ha cambiado.
+    prisma.retentionWarning.deleteMany({ where: { applicationId } }),
+  ]);
+
+  revalidatePath(`/admin/solicitudes/${applicationId}`);
+  revalidatePath("/admin/solicitudes");
+}
+
+/// Saca al interesado de la bolsa de candidatos.
+///
+/// Es la forma de atender a quien retira ese consentimiento: retirarlo tiene
+/// que ser tan facil como darlo. Su plazo vuelve a ser el normal de 3 meses.
+export async function leaveCandidatePool(applicationId: string) {
+  const email = await requireAdminEmail();
+
+  await prisma.$transaction([
+    prisma.application.update({
+      where: { id: applicationId },
+      data: { candidatePool: false },
+    }),
+    prisma.note.create({
+      data: {
+        applicationId,
+        authorEmail: email,
+        body: "Retirada de la bolsa de candidatos (el interesado retira su consentimiento).",
+      },
+    }),
+    prisma.retentionWarning.deleteMany({ where: { applicationId } }),
+  ]);
+
+  revalidatePath(`/admin/solicitudes/${applicationId}`);
+  revalidatePath("/admin/solicitudes");
 }
 
 export async function addApplicationNote(

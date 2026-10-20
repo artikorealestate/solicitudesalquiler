@@ -18,6 +18,11 @@ import {
 import { DocumentRequestPanel } from "@/components/admin/document-request-panel";
 import { SelfServiceLink } from "@/components/admin/self-service-link";
 import { DeleteApplication } from "@/components/admin/delete-application";
+import { RetentionPanel } from "@/components/admin/retention-panel";
+import {
+  applicationRetention,
+  retentionSelect,
+} from "@/lib/privacy/application-retention";
 import { assessSolvency } from "@/lib/applications/types";
 import { guessProfile } from "@/lib/applications/document-catalog";
 import {
@@ -32,6 +37,16 @@ import {
 } from "@/lib/applications/labels";
 
 export const dynamic = "force-dynamic";
+
+/// Las solicitudes anteriores a octubre de 2026 tienen los dos registros
+/// antiguos; las nuevas, la informacion mostrada y, si lo acepto, la bolsa.
+const consentTitles: Record<string, string> = {
+  GDPR: "Protección de datos (texto anterior a octubre de 2026)",
+  OWNER_SHARING:
+    "Compartir con la propiedad (texto anterior a octubre de 2026)",
+  PRIVACY_NOTICE: "Información de protección de datos mostrada y leída",
+  CANDIDATE_POOL: "Bolsa de candidatos: consentimiento para 12 meses",
+};
 
 function Section({
   title,
@@ -91,6 +106,14 @@ export default async function ApplicationDetailPage({
   });
 
   if (!application) notFound();
+
+  // Consulta aparte, la misma que usa el borrado diario: la fecha que se
+  // enseña aqui tiene que ser exactamente la del borrado.
+  const retentionFields = await prisma.application.findUniqueOrThrow({
+    where: { id },
+    select: retentionSelect,
+  });
+  const retention = applicationRetention(retentionFields);
 
   const status = application.status as ApplicationStatus;
   const temporada =
@@ -294,18 +317,19 @@ export default async function ApplicationDetailPage({
             )}
           </Section>
 
-          <Section title="Consentimientos">
+          <Section title="Protección de datos">
             <ul className="space-y-3">
               {application.consents.map((consent) => (
                 <li key={consent.id} className="rounded-md bg-cream p-4">
                   <p className="text-sm font-bold text-ink-strong">
-                    {consent.type === "GDPR"
-                      ? "Proteccion de datos (RGPD)"
-                      : "Autorizacion para compartir con la propiedad"}
+                    {consentTitles[consent.type] ?? consent.type}
                   </p>
                   <p className="mt-0.5 text-xs text-ink-muted">
-                    Aceptado el {consent.acceptedAt.toLocaleString("es-ES")} ·
-                    version {consent.textVersion} · idioma {consent.locale}
+                    {consent.type === "PRIVACY_NOTICE"
+                      ? "Mostrada"
+                      : "Aceptado"}{" "}
+                    el {consent.acceptedAt.toLocaleString("es-ES")} · version{" "}
+                    {consent.textVersion} · idioma {consent.locale}
                   </p>
                   <p className="mt-2 text-xs leading-relaxed text-ink">
                     {consent.textSnapshot}
@@ -442,6 +466,12 @@ export default async function ApplicationDetailPage({
               </ul>
             ) : null}
           </section>
+
+          <RetentionPanel
+            applicationId={application.id}
+            retention={retention}
+            candidatePool={application.candidatePool}
+          />
 
           {/* Al final del todo, separado del resto: lo destructivo no debe
               quedar al lado de lo que se usa a diario. */}
