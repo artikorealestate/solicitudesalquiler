@@ -32,8 +32,16 @@ compra es la actividad diaria de Artiko, así que **hay que tenerlo**.
    @gmail.com, no de Google Workspace. Con una cuenta personal, Google no firma
    el contrato de encargado del tratamiento del artículo 28. Artiko ha decidido
    no pasar a Workspace; conviene que el asesor valore ese riesgo.
-2. **Contratos de encargado con Supabase y Vercel.** Ambos ofrecen un DPA;
-   hay que comprobar que está aceptado o firmado desde sus paneles.
+2. **Contratos de encargado con Supabase y Vercel** (comprobado en octubre de 2026):
+   - **Vercel:** su DPA solo cubre los planes Pro y Enterprise, y entra en
+     vigor al contratarlos. Además, el plan gratuito (Hobby) está restringido
+     a uso personal no comercial: una aplicación de una inmobiliaria necesita
+     Pro (20 $/mes por puesto de desarrollador). Sin Pro no hay DPA y Vercel
+     puede pausar el proyecto por incumplir sus condiciones.
+   - **Supabase:** su DPA "forma parte" de sus Términos de Servicio, así que
+     rige desde que se aceptaron. Para tener una copia firmada en el
+     expediente, se solicita desde el apartado de documentos legales del
+     panel de la organización o escribiendo a privacy@supabase.io.
 3. **Textos legales en nueve idiomas.** Redactados con cuidado pero no revisados
    por un jurista ni por nativos (sobre todo alemán, ruso y ucraniano).
 4. **Delegado de Protección de Datos.** No parece obligatorio por volumen ni
