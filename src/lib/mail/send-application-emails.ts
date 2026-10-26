@@ -40,6 +40,8 @@ export async function sendApplicationEmails(input: {
   /// Credencial del enlace personal del interesado, para que pueda volver a
   /// su solicitud y anadir lo que le falte.
   accessToken: string | null;
+  /// Motivo si no se pudo crear la carpeta de Drive (ver buildInternalEmail).
+  driveError?: string | null;
 }): Promise<{ applicantSent: boolean; internalSent: boolean }> {
   const result = { applicantSent: false, internalSent: false };
 
@@ -107,6 +109,10 @@ export async function sendApplicationEmails(input: {
       documentCount: input.documentCount,
       adminUrl,
       driveUrl: input.driveUrl,
+      driveError: input.driveError,
+      selfServiceUrl: input.accessToken
+        ? `${appUrl}/solicitud/${input.accessToken}`
+        : null,
     });
 
     await mailer.sendMail({

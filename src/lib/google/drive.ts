@@ -91,6 +91,24 @@ export function applicantFolderName(
   return sanitizeFolderName(`${date} - ${firstName} ${lastName}`);
 }
 
+/// Si una carpeta existe y no esta en la papelera.
+///
+/// Un 404 es la respuesta normal cuando alguien la borro: no es un error,
+/// es la senal para rehacerla. Cualquier otro fallo si se propaga, porque
+/// entonces el problema es Google o la conexion, no la carpeta.
+export async function isUsableFolder(folderId: string): Promise<boolean> {
+  try {
+    const response = await driveFetch(
+      `${DRIVE_API}/files/${folderId}?fields=trashed`,
+    );
+    const file = (await response.json()) as { trashed?: boolean };
+    return !file.trashed;
+  } catch (error) {
+    if (String(error).includes("respondio 404")) return false;
+    throw error;
+  }
+}
+
 /// Crea (o reutiliza) toda la ruta hasta la carpeta del interesado:
 ///
 ///   Clientes interesados / Alquiler / REF-01 - Piso... / 2026-08-14 - Ana Garcia
@@ -108,7 +126,18 @@ export async function ensureApplicantFolder(input: {
 }): Promise<{ applicantFolderId: string; propertyFolderId: string }> {
   const parentRoot = process.env.GOOGLE_DRIVE_ROOT_FOLDER_ID || "root";
 
+  // La carpeta del inmueble se guarda para no repetir tres busquedas en cada
+  // solicitud, pero NO se da por buena sin mirar: si alguien la borra o la
+  // manda a la papelera en Drive, crear dentro de ella falla y la solicitud
+  // se queda sin carpeta ni documentos. Paso en octubre de 2026 con tres
+  // inmuebles a la vez. Si ya no sirve, se rehace la ruta por su nombre.
   let propertyFolderId = input.cachedPropertyFolderId ?? null;
+  if (propertyFolderId && !(await isUsableFolder(propertyFolderId))) {
+    console.warn(
+      `[drive] La carpeta guardada del inmueble ${input.propertyReference} ya no existe; se rehace`,
+    );
+    propertyFolderId = null;
+  }
 
   if (!propertyFolderId) {
     const rootId = await getOrCreateFolder(ROOT_FOLDER_NAME, parentRoot);

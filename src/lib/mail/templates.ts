@@ -405,8 +405,36 @@ export function buildInternalEmail(input: {
   documentCount: number;
   adminUrl: string;
   driveUrl: string | null;
+  /// Si no se pudo crear la carpeta de Drive, el motivo. Sin carpeta el
+  /// navegador no sube los documentos: hay que pedirselos al interesado.
+  driveError?: string | null;
+  /// Enlace personal del interesado, para poder reenviarselo.
+  selfServiceUrl?: string | null;
 }): { subject: string; html: string; text: string } {
   const fullName = `${input.applicant.firstName} ${input.applicant.lastName}`;
+
+  // Aviso de carpeta fallida. Va arriba del todo y en rojo: el resumen dice
+  // "N documentos adjuntos", pero en este caso NO han llegado, y si nadie lo
+  // dice se da por hecho que estan en Drive.
+  const driveWarning = input.driveError
+    ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+         style="margin:0 0 20px;background:#FBEAE8;border-radius:8px;">
+         <tr><td style="padding:14px 16px;font:400 14px/1.6 Arial,sans-serif;color:#8A2E25;">
+           <b>No se ha podido crear la carpeta en Drive.</b>
+           ${
+             input.documentCount > 0
+               ? `Los ${input.documentCount} documento(s) que eligió el interesado <b>no se han subido</b>: siguen en su dispositivo.`
+               : ""
+           }
+           Pídeselos con su enlace personal; al abrirlo se vuelve a crear la carpeta.
+           ${
+             input.selfServiceUrl
+               ? `<br><a href="${escapeHtml(input.selfServiceUrl)}" style="color:#8A2E25;">${escapeHtml(input.selfServiceUrl)}</a>`
+               : ""
+           }
+         </td></tr>
+       </table>`
+    : "";
   const subject = `Nueva solicitud de ${operationLabels[
     input.operation
   ].toLowerCase()}: ${fullName} — ${input.property.reference}`;
@@ -449,6 +477,7 @@ export function buildInternalEmail(input: {
     .join("");
 
   const content = `
+    ${driveWarning}
     <p style="margin:0 0 4px;font:400 11px Arial,sans-serif;letter-spacing:.18em;
               text-transform:uppercase;color:${GOLD};">
       Nueva solicitud de ${escapeHtml(operationLabels[input.operation])}
@@ -501,6 +530,11 @@ export function buildInternalEmail(input: {
     </tr></table>`;
 
   const text = [
+    input.driveError
+      ? "ATENCION: no se ha podido crear la carpeta en Drive. Los documentos no se han subido; pideselos con su enlace personal" +
+        (input.selfServiceUrl ? `: ${input.selfServiceUrl}` : ".") +
+        "\n"
+      : "",
     `Nueva solicitud de ${operationLabels[input.operation].toLowerCase()}`,
     fullName,
     `${input.applicant.email} · ${input.applicant.phone}`,
@@ -515,7 +549,8 @@ export function buildInternalEmail(input: {
     .join("\n");
 
   return {
-    subject,
+    // El asunto tambien lo dice: es lo unico que se ve en la bandeja.
+    subject: input.driveError ? `[SIN DOCUMENTOS] ${subject}` : subject,
     html: shell(content, "Aviso automatico de Artiko Interesados."),
     text,
   };

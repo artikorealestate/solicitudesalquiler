@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db";
 import {
   addApplicationNote,
   changeApplicationStatus,
+  createApplicationFolder,
 } from "@/lib/applications/actions";
 import { SolvencyBadge } from "@/components/admin/solvency-badge";
 import { SeasonalNote } from "@/components/admin/seasonal-note";
@@ -283,11 +284,35 @@ export default async function ApplicationDetailPage({
               ) : null
             }
           >
+            {/* Sin carpeta, el navegador del interesado no subio nada: lo que
+                adjunto se quedo en su dispositivo. Tiene que verse y poder
+                arreglarse desde aqui. */}
+            {!application.driveFolderId ? (
+              <div className="mb-4 rounded-md bg-danger/10 p-4 text-sm leading-relaxed text-danger">
+                <p className="font-bold">
+                  Esta solicitud no tiene carpeta en Drive.
+                </p>
+                <p className="mt-1">
+                  Falló Google al enviarla, así que los documentos que eligió el
+                  interesado no se subieron. Crea la carpeta y pásale su enlace
+                  personal (más abajo) para que los suba.
+                </p>
+                <form
+                  action={createApplicationFolder.bind(null, application.id)}
+                  className="mt-3"
+                >
+                  <button type="submit" className="btn-secondary py-2 text-sm">
+                    Crear carpeta ahora
+                  </button>
+                </form>
+              </div>
+            ) : null}
+
             {application.documents.length === 0 ? (
               <p className="text-sm text-ink-muted">
                 {application.driveFolderId
                   ? "El interesado no adjunto ningun documento."
-                  : "No se creo carpeta en Drive para esta solicitud."}
+                  : "Sin documentos."}
               </p>
             ) : (
               <ul className="space-y-2">

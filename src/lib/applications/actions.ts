@@ -8,6 +8,7 @@ import { prisma } from "@/lib/db";
 import { applicationStatuses } from "@/lib/applications/labels";
 import { isDriveConfigured } from "@/lib/google/auth";
 import { trashFolder } from "@/lib/google/drive";
+import { ensureApplicationFolder } from "@/lib/applications/drive-folder";
 
 async function requireAdminEmail(): Promise<string> {
   const session = await getServerSession(authOptions);
@@ -136,6 +137,22 @@ export async function keepApplication(applicationId: string) {
 
   revalidatePath(`/admin/solicitudes/${applicationId}`);
   revalidatePath("/admin/solicitudes");
+}
+
+/// Crea la carpeta de Drive de una solicitud que se quedo sin ella.
+///
+/// Si falla, lanza: el panel muestra entonces su pantalla de error con el
+/// motivo, que es mejor que un boton que no hace nada sin explicar por que.
+export async function createApplicationFolder(applicationId: string) {
+  const email = await requireAdminEmail();
+
+  await ensureApplicationFolder(applicationId);
+
+  console.info(
+    `[drive] ${email} creo la carpeta de la solicitud ${applicationId}`,
+  );
+
+  revalidatePath(`/admin/solicitudes/${applicationId}`);
 }
 
 export async function addApplicationNote(

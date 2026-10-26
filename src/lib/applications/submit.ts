@@ -14,12 +14,7 @@ import {
 import { getDictionary } from "@/i18n";
 import { isLocale, type Locale } from "@/i18n/config";
 import { isDriveConfigured } from "@/lib/google/auth";
-import {
-  ensureApplicantFolder,
-  folderUrl,
-  uploadSummaryDocument,
-} from "@/lib/google/drive";
-import { buildSummaryHtml } from "@/lib/applications/summary-html";
+import { ensureApplicationFolder } from "@/lib/applications/drive-folder";
 import { privacyNoticeSnapshot } from "@/components/public/privacy-notice";
 import { issueUploadTicket } from "@/lib/applications/upload-ticket";
 import { sendApplicationEmails } from "@/lib/mail/send-application-emails";
@@ -210,91 +205,31 @@ export async function submitApplication(input: unknown): Promise<SubmitResult> {
 
   // --- Drive -------------------------------------------------------------
   // A partir de aqui la solicitud YA esta guardada. Si Drive falla no se
-  // pierde nada: se registra el fallo y el administrador puede crear la
-  // carpeta despues. Perder la solicitud de un cliente porque Google tenga
-  // un mal dia seria mucho peor.
+  // pierde nada: se registra el fallo, se avisa a Artiko y la carpeta se
+  // vuelve a intentar cuando el interesado abra su enlace personal. Perder la
+  // solicitud de un cliente porque Google tenga un mal dia seria mucho peor.
   let canUploadDocuments = false;
   let driveFolderUrl: string | null = null;
+  let driveError: string | null = null;
 
   if (isDriveConfigured()) {
-    try {
-      const cached =
-        data.operation === "RENT"
-          ? property.driveRentFolderId
-          : property.driveSaleFolderId;
-
-      const { applicantFolderId, propertyFolderId } =
-        await ensureApplicantFolder({
-          operation: data.operation,
-          propertyReference: property.reference,
-          propertyTitle: property.title,
-          cachedPropertyFolderId: cached,
-          submittedAt: application.submittedAt,
-          firstName: data.firstName,
-          lastName: data.lastName,
-        });
-
-      driveFolderUrl = folderUrl(applicantFolderId);
-
-      await prisma.application.update({
-        where: { id: application.id },
-        data: { driveFolderId: applicantFolderId, driveFolderUrl },
-      });
-
-      // Cacheamos la carpeta del inmueble para que las siguientes solicitudes
-      // no repitan las tres busquedas del arbol.
-      if (!cached) {
-        await prisma.property.update({
-          where: { id: property.id },
-          data:
-            data.operation === "RENT"
-              ? { driveRentFolderId: propertyFolderId }
-              : { driveSaleFolderId: propertyFolderId },
-        });
+    // Un segundo intento: la mayoria de fallos de Google son momentaneos, y
+    // sin carpeta el navegador no sube los documentos que la persona eligio.
+    for (let attempt = 1; attempt <= 2 && !driveFolderUrl; attempt += 1) {
+      try {
+        driveFolderUrl = (await ensureApplicationFolder(application.id))
+          .folderUrl;
+        canUploadDocuments = true;
+      } catch (error) {
+        driveError = error instanceof Error ? error.message : String(error);
+        console.error(
+          `[drive] Fallo preparando la carpeta de la solicitud ${application.id} (intento ${attempt}):`,
+          driveError,
+        );
       }
-
-      await uploadSummaryDocument({
-        name: `Resumen - ${data.firstName} ${data.lastName}`,
-        parentFolderId: applicantFolderId,
-        html: buildSummaryHtml({
-          operation: data.operation,
-          locale,
-          submittedAt: application.submittedAt,
-          property: {
-            reference: property.reference,
-            title: property.title,
-            zone: property.zone,
-            price:
-              data.operation === "RENT"
-                ? property.rentPrice
-                : property.salePrice,
-            idealistaUrl: property.idealistaUrl,
-          },
-          applicant: {
-            firstName: data.firstName,
-            lastName: data.lastName,
-            email: data.email,
-            phone: data.phone,
-            nationality: data.nationality,
-            idDocument: data.idDocument,
-            comment: data.comment,
-          },
-          answers: data.answers,
-          consents: legalRecords.map((record) => ({
-            label: "Informacion de proteccion de datos mostrada y leida",
-            version: record.textVersion,
-            text: record.textSnapshot,
-          })),
-        }),
-      });
-
-      canUploadDocuments = true;
-    } catch (error) {
-      console.error(
-        `[drive] Fallo preparando la carpeta de la solicitud ${application.id}:`,
-        error instanceof Error ? error.message : error,
-      );
     }
+  } else {
+    driveError = "Google Drive no esta conectado.";
   }
 
   // --- Correos --------------------------------------------------------
@@ -331,6 +266,7 @@ export async function submitApplication(input: unknown): Promise<SubmitResult> {
     documentCount: data.declaredDocumentCount ?? 0,
     driveUrl: driveFolderUrl,
     accessToken: application.accessToken,
+    driveError,
   });
 
   return {

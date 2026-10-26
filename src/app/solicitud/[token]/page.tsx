@@ -4,6 +4,7 @@ import { SiteFooter } from "@/components/public/site-footer";
 import { prisma } from "@/lib/db";
 import { resolveDocumentItems } from "@/lib/applications/document-catalog";
 import { issueUploadTicket } from "@/lib/applications/upload-ticket";
+import { tryEnsureApplicationFolder } from "@/lib/applications/drive-folder";
 import { getDictionary, interpolate, type Dictionary } from "@/i18n";
 import { defaultLocale, isLocale } from "@/i18n/config";
 
@@ -105,6 +106,14 @@ export default async function SelfServicePage({
 
   const pendiente = application.documentRequests[0];
 
+  // Si al enviar fallo Drive, la solicitud se quedo sin carpeta y sus
+  // documentos no llegaron a subirse. Este es el momento de arreglarlo: se
+  // crea ahora, y la persona puede subir lo que no llego. Tambien rehace la
+  // carpeta si alguien la borro en Drive.
+  const folderId = terminada
+    ? null
+    : await tryEnsureApplicationFolder(application.id);
+
   return (
     <Shell dictionary={dictionary} locale={locale}>
       <div className="mb-6">
@@ -120,11 +129,20 @@ export default async function SelfServicePage({
         </p>
       </div>
 
-      {terminada || !application.driveFolderId ? (
+      {terminada ? (
         <div className="surface p-7 text-center">
           <h2 className="heading-lg">{t.completedTitle}</h2>
           <p className="mt-3 text-sm leading-relaxed text-ink">
             {t.completedBody}
+          </p>
+        </div>
+      ) : !folderId ? (
+        // Drive sigue sin responder: no se le dice que ya tenemos sus
+        // documentos, porque no es verdad.
+        <div className="surface p-7 text-center">
+          <h2 className="heading-lg">{t.unavailableTitle}</h2>
+          <p className="mt-3 text-sm leading-relaxed text-ink">
+            {t.unavailableBody}
           </p>
         </div>
       ) : (

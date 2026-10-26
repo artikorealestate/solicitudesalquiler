@@ -4,6 +4,7 @@ import { DocumentRequestForm } from "@/components/public/document-request-form";
 import { prisma } from "@/lib/db";
 import { resolveDocumentItems } from "@/lib/applications/document-catalog";
 import { issueUploadTicket } from "@/lib/applications/upload-ticket";
+import { tryEnsureApplicationFolder } from "@/lib/applications/drive-folder";
 import { getDictionary, interpolate, type Dictionary } from "@/i18n";
 import { defaultLocale, isLocale } from "@/i18n/config";
 
@@ -127,7 +128,11 @@ export default async function DocumentRequestPage({
     );
   }
 
-  if (!request.application.driveFolderId) {
+  // Se crea (o rehace) aqui si falta: si al enviar la solicitud fallo Drive,
+  // esta es la ocasion de que los documentos lleguen por fin.
+  const folderId = await tryEnsureApplicationFolder(request.application.id);
+
+  if (!folderId) {
     return (
       <Unavailable
         title={t.unavailableTitle}
