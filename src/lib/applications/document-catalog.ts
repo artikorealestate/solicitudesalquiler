@@ -316,9 +316,18 @@ export function resolveDocumentItems(
   keys: string[],
   labels: Record<string, string>,
 ): ResolvedDocumentItem[] {
-  return keys.filter(isDocumentKey).map((key) => ({
-    key,
-    label: labels[key] ?? key,
-    spanishName: spanishOfficialName[key],
-  }));
+  return keys.filter(isDocumentKey).map((key) => {
+    const label = labels[key] ?? key;
+    const spanishName = spanishOfficialName[key];
+    return {
+      key,
+      label,
+      // En castellano la etiqueta ya suele llevar el nombre oficial:
+      // "nóminas (en España: nóminas)" sobra.
+      spanishName:
+        spanishName && !label.toLowerCase().includes(spanishName.toLowerCase())
+          ? spanishName
+          : undefined,
+    };
+  });
 }
