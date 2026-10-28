@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import {
   addApplicationNote,
+  changeApplicationProperty,
   changeApplicationStatus,
   createApplicationFolder,
 } from "@/lib/applications/actions";
@@ -114,6 +115,22 @@ export default async function ApplicationDetailPage({
     select: retentionSelect,
   });
   const retention = applicationRetention(retentionFields);
+
+  // Inmuebles a los que se puede pasar la solicitud: de la misma operacion.
+  // Tambien los pausados, por si el interesado eligio uno que ya no se
+  // anuncia pero sigue disponible.
+  const otherProperties = await prisma.property.findMany({
+    where: {
+      id: { not: application.propertyId },
+      status: { not: "ARCHIVED" },
+      operationType:
+        application.operation === "RENT"
+          ? { in: ["RENT", "BOTH"] }
+          : { in: ["SALE", "BOTH"] },
+    },
+    orderBy: { reference: "asc" },
+    select: { id: true, reference: true, title: true },
+  });
 
   const status = application.status as ApplicationStatus;
   const temporada =
@@ -443,6 +460,49 @@ export default async function ApplicationDetailPage({
               </button>
             </form>
           </section>
+
+          {otherProperties.length > 0 ? (
+            <section className="surface p-5">
+              <h2 className="font-serif text-lg text-ink-strong">
+                Cambiar de inmueble
+              </h2>
+              <p className="mt-1 text-xs leading-relaxed text-ink-muted">
+                Para cuando eligió el que no era. Su carpeta de Drive, con todos
+                sus documentos, se mueve a la del inmueble nuevo y el resumen se
+                rehace.
+              </p>
+              <form
+                action={changeApplicationProperty.bind(null, application.id)}
+                className="mt-3 space-y-3"
+              >
+                <label htmlFor="propertyId" className="sr-only">
+                  Inmueble nuevo
+                </label>
+                <select
+                  id="propertyId"
+                  name="propertyId"
+                  required
+                  defaultValue=""
+                  className="field-input"
+                >
+                  <option value="" disabled>
+                    Elige el inmueble…
+                  </option>
+                  {otherProperties.map((property) => (
+                    <option key={property.id} value={property.id}>
+                      {property.reference} · {property.title}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  type="submit"
+                  className="btn-secondary w-full py-2.5 text-sm"
+                >
+                  Cambiar de inmueble
+                </button>
+              </form>
+            </section>
+          ) : null}
 
           <section className="surface p-5">
             <h2 className="font-serif text-lg text-ink-strong">

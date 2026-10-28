@@ -8,7 +8,10 @@ import { prisma } from "@/lib/db";
 import { applicationStatuses } from "@/lib/applications/labels";
 import { isDriveConfigured } from "@/lib/google/auth";
 import { trashFolder } from "@/lib/google/drive";
-import { ensureApplicationFolder } from "@/lib/applications/drive-folder";
+import {
+  ensureApplicationFolder,
+  moveApplicationToProperty,
+} from "@/lib/applications/drive-folder";
 
 async function requireAdminEmail(): Promise<string> {
   const session = await getServerSession(authOptions);
@@ -134,6 +137,30 @@ export async function keepApplication(applicationId: string) {
     // El aviso anterior ya no vale: la fecha de borrado ha cambiado.
     prisma.retentionWarning.deleteMany({ where: { applicationId } }),
   ]);
+
+  revalidatePath(`/admin/solicitudes/${applicationId}`);
+  revalidatePath("/admin/solicitudes");
+}
+
+/// Pasa una solicitud a otro inmueble, con su carpeta y documentos (ver
+/// moveApplicationToProperty).
+export async function changeApplicationProperty(
+  applicationId: string,
+  formData: FormData,
+) {
+  const email = await requireAdminEmail();
+  const propertyId = String(formData.get("propertyId") ?? "");
+  if (!propertyId) return;
+
+  const { from, to } = await moveApplicationToProperty(
+    applicationId,
+    propertyId,
+    email,
+  );
+
+  console.info(
+    `[solicitudes] ${email} cambio la solicitud ${applicationId} del inmueble ${from} al ${to}`,
+  );
 
   revalidatePath(`/admin/solicitudes/${applicationId}`);
   revalidatePath("/admin/solicitudes");

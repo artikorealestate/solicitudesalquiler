@@ -124,6 +124,25 @@ export async function ensureApplicantFolder(input: {
   firstName: string;
   lastName: string;
 }): Promise<{ applicantFolderId: string; propertyFolderId: string }> {
+  const propertyFolderId = await ensurePropertyFolder(input);
+
+  const applicantFolderId = await getOrCreateFolder(
+    applicantFolderName(input.submittedAt, input.firstName, input.lastName),
+    propertyFolderId,
+  );
+
+  return { applicantFolderId, propertyFolderId };
+}
+
+/// La carpeta de un inmueble dentro de su operacion:
+///
+///   Clientes interesados / Alquiler / REF-01 - Piso...
+export async function ensurePropertyFolder(input: {
+  operation: "RENT" | "SALE";
+  propertyReference: string;
+  propertyTitle: string;
+  cachedPropertyFolderId?: string | null;
+}): Promise<string> {
   const parentRoot = process.env.GOOGLE_DRIVE_ROOT_FOLDER_ID || "root";
 
   // La carpeta del inmueble se guarda para no repetir tres busquedas en cada
@@ -151,12 +170,33 @@ export async function ensureApplicantFolder(input: {
     );
   }
 
-  const applicantFolderId = await getOrCreateFolder(
-    applicantFolderName(input.submittedAt, input.firstName, input.lastName),
-    propertyFolderId,
-  );
+  return propertyFolderId;
+}
 
-  return { applicantFolderId, propertyFolderId };
+/// Mueve un archivo o carpeta a otra carpeta, con todo lo que contenga.
+///
+/// Es un cambio de ubicacion, no una copia: los documentos conservan su
+/// identificador, asi que los enlaces guardados en el panel siguen
+/// funcionando.
+export async function moveToFolder(
+  fileId: string,
+  newParentId: string,
+): Promise<void> {
+  const current = await driveFetch(
+    `${DRIVE_API}/files/${fileId}?fields=parents`,
+  );
+  const { parents = [] } = (await current.json()) as { parents?: string[] };
+  if (parents.length === 1 && parents[0] === newParentId) return;
+
+  const params = new URLSearchParams({
+    addParents: newParentId,
+    removeParents: parents.join(","),
+  });
+  await driveFetch(`${DRIVE_API}/files/${fileId}?${params}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: "{}",
+  });
 }
 
 /// Abre una sesion de subida reanudable y devuelve su direccion.

@@ -1,8 +1,13 @@
+import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import {
   ensureApplicantFolder,
+  ensurePropertyFolder,
   folderUrl,
   isUsableFolder,
+  listFolderFiles,
+  moveToFolder,
+  trashFolder,
   uploadSummaryDocument,
 } from "@/lib/google/drive";
 import { buildSummaryHtml } from "@/lib/applications/summary-html";
@@ -25,42 +30,7 @@ import { buildSummaryHtml } from "@/lib/applications/summary-html";
 export async function ensureApplicationFolder(
   applicationId: string,
 ): Promise<{ folderId: string; folderUrl: string }> {
-  const application = await prisma.application.findUniqueOrThrow({
-    where: { id: applicationId },
-    select: {
-      id: true,
-      operation: true,
-      locale: true,
-      submittedAt: true,
-      firstName: true,
-      lastName: true,
-      email: true,
-      phone: true,
-      nationality: true,
-      idDocument: true,
-      comment: true,
-      answers: true,
-      driveFolderId: true,
-      driveFolderUrl: true,
-      consents: {
-        select: { type: true, textVersion: true, textSnapshot: true },
-        orderBy: { acceptedAt: "asc" },
-      },
-      property: {
-        select: {
-          id: true,
-          reference: true,
-          title: true,
-          zone: true,
-          rentPrice: true,
-          salePrice: true,
-          idealistaUrl: true,
-          driveRentFolderId: true,
-          driveSaleFolderId: true,
-        },
-      },
-    },
-  });
+  const application = await loadApplication(applicationId);
 
   if (
     application.driveFolderId &&
@@ -107,9 +77,68 @@ export async function ensureApplicationFolder(
     });
   }
 
+  await writeSummary(application, applicantFolderId);
+
+  return { folderId: applicantFolderId, folderUrl: url };
+}
+
+const applicationSelect = {
+  id: true,
+  operation: true,
+  locale: true,
+  submittedAt: true,
+  firstName: true,
+  lastName: true,
+  email: true,
+  phone: true,
+  nationality: true,
+  idDocument: true,
+  comment: true,
+  answers: true,
+  driveFolderId: true,
+  driveFolderUrl: true,
+  consents: {
+    select: { type: true, textVersion: true, textSnapshot: true },
+    orderBy: { acceptedAt: "asc" },
+  },
+  property: {
+    select: {
+      id: true,
+      reference: true,
+      title: true,
+      zone: true,
+      rentPrice: true,
+      salePrice: true,
+      idealistaUrl: true,
+      driveRentFolderId: true,
+      driveSaleFolderId: true,
+    },
+  },
+} satisfies Prisma.ApplicationSelect;
+
+type LoadedApplication = Prisma.ApplicationGetPayload<{
+  select: typeof applicationSelect;
+}>;
+
+function loadApplication(applicationId: string): Promise<LoadedApplication> {
+  return prisma.application.findUniqueOrThrow({
+    where: { id: applicationId },
+    select: applicationSelect,
+  });
+}
+
+/// Escribe el documento "Resumen - Nombre" en la carpeta del interesado, con
+/// los datos que hay ahora en la base de datos.
+async function writeSummary(
+  application: LoadedApplication,
+  folderId: string,
+): Promise<void> {
+  const { property } = application;
+  const isRent = application.operation === "RENT";
+
   await uploadSummaryDocument({
     name: `Resumen - ${application.firstName} ${application.lastName}`,
-    parentFolderId: applicantFolderId,
+    parentFolderId: folderId,
     html: buildSummaryHtml({
       operation: application.operation,
       locale: application.locale,
@@ -141,8 +170,111 @@ export async function ensureApplicationFolder(
       })),
     }),
   });
+}
 
-  return { folderId: applicantFolderId, folderUrl: url };
+/// Pasa una solicitud a otro inmueble: cuando el interesado eligio el que no
+/// era, o Artiko le ofrece otro que le encaja mejor.
+///
+/// Hace las tres cosas que tienen que ir juntas, o el panel y Drive dejarian
+/// de coincidir:
+///   1. Cambia el inmueble en la base de datos (y lo anota en la ficha).
+///   2. Mueve su carpeta de Drive, con todos sus documentos, a la del
+///      inmueble nuevo. Mover y no copiar: los enlaces siguen valiendo.
+///   3. Rehace el resumen, que nombraba el inmueble anterior. El viejo va a
+///      la papelera, no se borra.
+///
+/// Solo entre inmuebles de la misma operacion: una solicitud de alquiler
+/// lleva preguntas y documentos de alquiler, y no sirve para una compra.
+export async function moveApplicationToProperty(
+  applicationId: string,
+  propertyId: string,
+  adminEmail: string,
+): Promise<{ from: string; to: string }> {
+  const before = await loadApplication(applicationId);
+  if (before.property.id === propertyId) {
+    return { from: before.property.reference, to: before.property.reference };
+  }
+
+  const target = await prisma.property.findUniqueOrThrow({
+    where: { id: propertyId },
+    select: {
+      id: true,
+      reference: true,
+      title: true,
+      operationType: true,
+      driveRentFolderId: true,
+      driveSaleFolderId: true,
+    },
+  });
+
+  const isRent = before.operation === "RENT";
+  const sameOperation =
+    target.operationType === "BOTH" ||
+    target.operationType === (isRent ? "RENT" : "SALE");
+  if (!sameOperation) {
+    throw new Error(
+      `El inmueble ${target.reference} no admite solicitudes de ${isRent ? "alquiler" : "compra"}.`,
+    );
+  }
+
+  // Drive primero: si falla, la solicitud sigue entera donde estaba y se
+  // puede reintentar. Al reves, el panel diria un inmueble y Drive otro.
+  if (before.driveFolderId && (await isUsableFolder(before.driveFolderId))) {
+    const cached = isRent ? target.driveRentFolderId : target.driveSaleFolderId;
+    const targetFolderId = await ensurePropertyFolder({
+      operation: before.operation,
+      propertyReference: target.reference,
+      propertyTitle: target.title,
+      cachedPropertyFolderId: cached,
+    });
+
+    await moveToFolder(before.driveFolderId, targetFolderId);
+
+    if (targetFolderId !== cached) {
+      await prisma.property.update({
+        where: { id: target.id },
+        data: isRent
+          ? { driveRentFolderId: targetFolderId }
+          : { driveSaleFolderId: targetFolderId },
+      });
+    }
+  }
+
+  await prisma.$transaction([
+    prisma.application.update({
+      where: { id: applicationId },
+      data: { propertyId: target.id, lastActivityAt: new Date() },
+    }),
+    prisma.note.create({
+      data: {
+        applicationId,
+        authorEmail: adminEmail,
+        body: `Cambiada de inmueble: de ${before.property.reference} (${before.property.title}) a ${target.reference} (${target.title}).`,
+      },
+    }),
+  ]);
+
+  // El resumen al final, ya con el inmueble nuevo. Si esto fallase, el
+  // cambio ya esta hecho y solo quedaria un resumen desactualizado.
+  if (before.driveFolderId) {
+    try {
+      const files = await listFolderFiles(before.driveFolderId);
+      for (const file of files) {
+        if (file.name.startsWith("Resumen - ")) await trashFolder(file.id);
+      }
+      await writeSummary(
+        await loadApplication(applicationId),
+        before.driveFolderId,
+      );
+    } catch (error) {
+      console.error(
+        `[drive] Cambio de inmueble hecho, pero no se pudo rehacer el resumen de ${applicationId}:`,
+        error,
+      );
+    }
+  }
+
+  return { from: before.property.reference, to: target.reference };
 }
 
 /// Igual, pero sin lanzar: para las paginas publicas, donde un fallo de
