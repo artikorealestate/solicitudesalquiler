@@ -2,7 +2,10 @@ import { ArtikoLogo } from "@/components/brand/logo";
 import { SiteFooter } from "@/components/public/site-footer";
 import { DocumentRequestForm } from "@/components/public/document-request-form";
 import { prisma } from "@/lib/db";
-import { resolveDocumentItems } from "@/lib/applications/document-catalog";
+import {
+  requestPeople,
+  resolvePeopleGroups,
+} from "@/lib/applications/document-catalog";
 import { issueUploadTicket } from "@/lib/applications/upload-ticket";
 import { tryEnsureApplicationFolder } from "@/lib/applications/drive-folder";
 import { getDictionary, interpolate, type Dictionary } from "@/i18n";
@@ -165,7 +168,7 @@ export default async function DocumentRequestPage({
       <DocumentRequestForm
         applicationId={application.id}
         uploadTicket={issueUploadTicket(application.id)}
-        items={resolveDocumentItems(request.requestedItems, t.items)}
+        groups={resolvePeopleGroups(requestPeople(request), t.items)}
         alreadyUploaded={application.documents.map((doc) => doc.fileName)}
         dictionary={dictionary}
       />

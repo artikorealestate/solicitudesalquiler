@@ -187,10 +187,10 @@ export const en: Dictionary = {
     remove: "Remove",
     suggestionsRent: "Documents usually requested for a rental:",
     suggestionsRentList: [
-      "Recent payslips or proof of income",
-      "Employment contract",
-      "ID card, NIE or passport",
-      "Latest tax return (if self-employed)",
+      "ID card, NIE or passport for each person signing the contract",
+      "Employees: employment contract, last three payslips and three months of bank statements",
+      "Self-employed: latest tax return, quarterly filings and six months of bank statements",
+      "Pensioners: pension certificate and three months of bank statements",
     ],
     suggestionsSeasonList: [
       "Identity document (passport, national ID or equivalent)",
@@ -305,6 +305,10 @@ export const en: Dictionary = {
     intro:
       "Your enquiry about {property} is moving forward. We just need to review a few documents.",
     weNeed: "What we need",
+    personHeading: "Documents for {name}",
+    guarantorTag: "guarantor",
+    everyoneNote:
+      "Each person who will sign the contract, and the guarantor if there is one, needs to provide their own documents. Upload each document under the right person.",
     abroadNote:
       "If you work or have lived outside Spain, send us the equivalent document from your country. It's fine if it's in another language — if we need a translation, we'll ask.",
     spanishNameLabel: "in Spain:",
@@ -345,16 +349,25 @@ export const en: Dictionary = {
       id: "Identity document (passport, national ID or equivalent)",
       nie: "Spanish foreigner identity number (NIE)",
       residencePermit: "Residence or work permit",
-      incomeProof: "Proof of your income for the last three months",
-      employmentContract: "Employment contract or a letter from your employer",
+      incomeProof: "The last three payslips or proof of payments received",
+      employmentContract:
+        "Current employment contract, employer's certificate or a letter from the payer",
       workHistory: "Employment history or proof of length of service",
-      taxReturn: "Your latest tax return",
-      selfEmployedProof: "Proof that you are registered as self-employed",
-      quarterlyTax: "Your most recent quarterly tax filings",
-      pensionProof: "Pension certificate or statement",
+      taxReturn: "Latest full income tax return",
+      selfEmployedProof:
+        "Proof that the business is still active (registration, recent invoices…)",
+      quarterlyTax: "Quarterly tax returns filed this year",
+      pensionProof: "Up-to-date pension certificate",
       companyDocs: "Certificate of incorporation and signing authority",
       representativeId: "Identity document of the person signing",
-      companyAccounts: "Latest annual accounts or corporate tax return",
+      companyAccounts: "Latest annual accounts of the company",
+      bankStatements3:
+        "Full bank statements for the last three months, showing the income received",
+      bankStatements6: "Full bank statements for the last six months",
+      ownerPayProof:
+        "Proof of what is drawn from the company (payslips, tax withholding certificate…)",
+      fundsInSpain:
+        "Proof that the money is available in Spain (for example, a statement from a Spanish account)",
       guarantorDocuments: "Guarantor's documents",
       other: "Other documents",
     },

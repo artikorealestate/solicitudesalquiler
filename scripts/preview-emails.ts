@@ -11,7 +11,7 @@ import {
   buildDocumentRequestEmail,
   buildInternalEmail,
 } from "../src/lib/mail/templates";
-import { resolveDocumentItems } from "../src/lib/applications/document-catalog";
+import { resolvePeopleGroups } from "../src/lib/applications/document-catalog";
 import {
   getFromAddress,
   getInternalRecipients,
@@ -82,8 +82,14 @@ async function main() {
     dictionary: es,
     firstName: applicant.firstName,
     property,
-    items: resolveDocumentItems(
-      ["id", "incomeProof", "employmentContract", "workHistory"],
+    groups: resolvePeopleGroups(
+      [
+        {
+          name: null,
+          role: "TENANT",
+          items: ["id", "employmentContract", "incomeProof", "bankStatements3"],
+        },
+      ],
       es.docs.items,
     ),
     message: "Con la vida laboral nos vale la que descargues hoy mismo.",

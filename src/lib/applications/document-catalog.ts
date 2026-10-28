@@ -17,15 +17,46 @@
 import { isSeasonalStay } from "./stay";
 
 export type ApplicantProfile =
-  "SEASONAL" | "SALARIED" | "SELF_EMPLOYED" | "PENSIONER" | "COMPANY" | "OTHER";
+  | "SEASONAL"
+  | "SALARIED"
+  | "SELF_EMPLOYED"
+  | "BUSINESS_OWNER"
+  | "PENSIONER"
+  | "FOREIGN_INCOME"
+  | "NO_INCOME"
+  | "COMPANY"
+  | "OTHER";
 
+/// El orden es el del desplegable del panel.
 export const profileLabels: Record<ApplicantProfile, string> = {
-  SEASONAL: "Estancia de temporada",
   SALARIED: "Asalariado",
-  SELF_EMPLOYED: "Autonomo",
-  PENSIONER: "Jubilado o pensionista",
-  COMPANY: "Empresa",
-  OTHER: "Otra situacion",
+  SELF_EMPLOYED: "Autónomo",
+  BUSINESS_OWNER: "Empresario o socio",
+  PENSIONER: "Pensionista",
+  FOREIGN_INCOME: "Ingresos del extranjero",
+  NO_INCOME: "Sin ingresos propios",
+  SEASONAL: "Estancia de temporada",
+  COMPANY: "Empresa (alquila una sociedad)",
+  OTHER: "Otra situación",
+};
+
+/// Aviso que el panel muestra al elegir el perfil, cuando hace falta algo
+/// mas que marcar casillas.
+export const profileHints: Partial<Record<ApplicantProfile, string>> = {
+  NO_INCOME:
+    "A esta persona solo se le pide la identidad. Añade como otra persona a quien vaya a pagar o avalar, con su propio perfil.",
+  FOREIGN_INCOME:
+    "Comprueba que el dinero llega o está disponible en España: es lo que mira la aseguradora.",
+  SEASONAL:
+    "Estancia de temporada: se cobra por adelantado y no lleva estudio de solvencia.",
+};
+
+/// Papel de cada persona en el contrato.
+export type PersonRole = "TENANT" | "GUARANTOR";
+
+export const roleLabels: Record<PersonRole, string> = {
+  TENANT: "Titular",
+  GUARANTOR: "Avalista",
 };
 
 /// Claves del catalogo. El orden es el de presentacion.
@@ -33,13 +64,17 @@ export const documentKeys = [
   "id",
   "nie",
   "residencePermit",
-  "incomeProof",
   "employmentContract",
+  "incomeProof",
   "workHistory",
   "taxReturn",
   "selfEmployedProof",
   "quarterlyTax",
+  "ownerPayProof",
   "pensionProof",
+  "fundsInSpain",
+  "bankStatements3",
+  "bankStatements6",
   "companyDocs",
   "representativeId",
   "companyAccounts",
@@ -55,25 +90,49 @@ export const spanishOfficialName: Partial<Record<DocumentKey, string>> = {
   nie: "NIE",
   incomeProof: "nóminas",
   workHistory: "informe de vida laboral",
-  taxReturn: "declaración de la renta (IRPF)",
+  taxReturn: "modelo 100 del IRPF",
   selfEmployedProof: "alta de autónomo",
   quarterlyTax: "modelos 130 y 303",
-  companyAccounts: "Impuesto sobre Sociedades",
+  companyAccounts: "cuentas anuales e Impuesto sobre Sociedades",
 };
 
-/// Lo que se marca por defecto en cada perfil.
+/// Lo que se marca por defecto en cada perfil, para CADA persona que firme
+/// o avale.
 ///
-/// Los extractos bancarios NO estan en el catalogo a proposito: son el
-/// documento mas invasivo y con justificantes de ingresos, contrato e
-/// historial laboral el analisis ya se sostiene.
+/// Es lo que piden las aseguradoras de impago para estudiar un inquilino. Los
+/// extractos bancarios entran porque sin ellos la poliza no se emite: son lo
+/// que demuestra que los ingresos se cobran de verdad.
 export const defaultItemsByProfile: Record<ApplicantProfile, DocumentKey[]> = {
+  SALARIED: ["id", "employmentContract", "incomeProof", "bankStatements3"],
+  SELF_EMPLOYED: [
+    "id",
+    "taxReturn",
+    "quarterlyTax",
+    "selfEmployedProof",
+    "bankStatements6",
+  ],
+  BUSINESS_OWNER: [
+    "id",
+    "taxReturn",
+    "companyAccounts",
+    "ownerPayProof",
+    "bankStatements6",
+  ],
+  PENSIONER: ["id", "pensionProof", "bankStatements3"],
+  FOREIGN_INCOME: [
+    "id",
+    "employmentContract",
+    "incomeProof",
+    "bankStatements3",
+    "fundsInSpain",
+  ],
+  // Quien no cobra solo se identifica: los papeles de ingresos son los de
+  // quien pague o avale, que va como otra persona con su propio perfil.
+  NO_INCOME: ["id"],
   // Una estancia corta se cobra por adelantado: con saber quien viene basta.
   SEASONAL: ["id"],
-  SALARIED: ["id", "incomeProof", "employmentContract", "workHistory"],
-  SELF_EMPLOYED: ["id", "selfEmployedProof", "taxReturn", "quarterlyTax"],
-  PENSIONER: ["id", "pensionProof"],
   COMPANY: ["companyDocs", "representativeId", "companyAccounts"],
-  OTHER: ["id", "incomeProof"],
+  OTHER: ["id", "incomeProof", "bankStatements3"],
 };
 
 /// Todo lo que tiene sentido ofrecer para cada perfil.
@@ -84,47 +143,115 @@ export const defaultItemsByProfile: Record<ApplicantProfile, DocumentKey[]> = {
 const forEveryone: DocumentKey[] = [
   "nie",
   "residencePermit",
-  "guarantorDocuments",
+  "workHistory",
   "other",
 ];
 
 export const availableItemsByProfile: Record<ApplicantProfile, DocumentKey[]> =
   {
-    SEASONAL: ["id", "nie", "residencePermit", "incomeProof", "other"],
     SALARIED: [
       "id",
-      "incomeProof",
       "employmentContract",
-      "workHistory",
+      "incomeProof",
+      "bankStatements3",
+      "bankStatements6",
       "taxReturn",
       ...forEveryone,
     ],
     SELF_EMPLOYED: [
       "id",
-      "selfEmployedProof",
       "taxReturn",
       "quarterlyTax",
+      "selfEmployedProof",
+      "bankStatements6",
+      "bankStatements3",
       "incomeProof",
       ...forEveryone,
     ],
-    PENSIONER: ["id", "pensionProof", "taxReturn", ...forEveryone],
+    BUSINESS_OWNER: [
+      "id",
+      "taxReturn",
+      "companyAccounts",
+      "ownerPayProof",
+      "bankStatements6",
+      "quarterlyTax",
+      ...forEveryone,
+    ],
+    PENSIONER: [
+      "id",
+      "pensionProof",
+      "bankStatements3",
+      "taxReturn",
+      ...forEveryone,
+    ],
+    FOREIGN_INCOME: [
+      "id",
+      "employmentContract",
+      "incomeProof",
+      "bankStatements3",
+      "bankStatements6",
+      "fundsInSpain",
+      "taxReturn",
+      ...forEveryone,
+    ],
+    NO_INCOME: ["id", "nie", "residencePermit", "other"],
+    SEASONAL: ["id", "nie", "residencePermit", "incomeProof", "other"],
     COMPANY: [
       "companyDocs",
       "representativeId",
       "companyAccounts",
       "quarterlyTax",
-      "guarantorDocuments",
+      "bankStatements6",
       "other",
     ],
     OTHER: [
       "id",
-      "incomeProof",
       "employmentContract",
-      "workHistory",
+      "incomeProof",
+      "bankStatements3",
+      "bankStatements6",
       "taxReturn",
       ...forEveryone,
     ],
   };
+
+/// Una persona de la peticion: cada titular y cada avalista aporta lo suyo.
+export type RequestPerson = {
+  name: string;
+  role: PersonRole;
+  profile: ApplicantProfile;
+  items: DocumentKey[];
+};
+
+export const MAX_PEOPLE_PER_REQUEST = 6;
+
+/// Lee las personas guardadas en una peticion.
+///
+/// Las peticiones anteriores a esto no tienen personas: se tratan como una
+/// sola, sin nombre, con la lista de siempre.
+export function requestPeople(request: {
+  people: unknown;
+  profile: string;
+  requestedItems: string[];
+}): Array<Omit<RequestPerson, "name"> & { name: string | null }> {
+  if (Array.isArray(request.people) && request.people.length > 0) {
+    return (request.people as RequestPerson[]).map((person) => ({
+      name: person.name,
+      role: person.role === "GUARANTOR" ? "GUARANTOR" : "TENANT",
+      profile: person.profile,
+      items: person.items.filter(isDocumentKey),
+    }));
+  }
+
+  return [
+    {
+      name: null,
+      role: "TENANT",
+      profile: request.profile as ApplicantProfile,
+      items: request.requestedItems.filter(isDocumentKey),
+    },
+  ];
+}
 
 /// Adivina el perfil a partir de lo que el interesado contesto, para llegar
 /// con la casilla ya marcada.
@@ -144,6 +271,9 @@ export function guessProfile(
     case "temporary":
     case "civilServant":
       return "SALARIED";
+    case "student":
+    case "unemployed":
+      return "NO_INCOME";
     default:
       return "OTHER";
   }
@@ -161,6 +291,25 @@ export type ResolvedDocumentItem = {
   /// laboral)". Quien vive aqui necesita pedirlo con ese nombre exacto.
   spanishName?: string;
 };
+
+/// Lo que hay que pedirle a una persona, ya en su idioma.
+export type ResolvedPersonGroup = {
+  /// Null en las peticiones antiguas, que eran de una sola persona.
+  name: string | null;
+  guarantor: boolean;
+  items: ResolvedDocumentItem[];
+};
+
+export function resolvePeopleGroups(
+  people: Array<{ name: string | null; role: PersonRole; items: string[] }>,
+  labels: Record<string, string>,
+): ResolvedPersonGroup[] {
+  return people.map((person) => ({
+    name: person.name,
+    guarantor: person.role === "GUARANTOR",
+    items: resolveDocumentItems(person.items, labels),
+  }));
+}
 
 /// Traduce las claves guardadas a textos del idioma del candidato.
 export function resolveDocumentItems(

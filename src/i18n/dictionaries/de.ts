@@ -189,10 +189,10 @@ export const de: Dictionary = {
     remove: "Entfernen",
     suggestionsRent: "Übliche Unterlagen für eine Anmietung:",
     suggestionsRentList: [
-      "Letzte Gehaltsabrechnungen oder Einkommensnachweise",
-      "Arbeitsvertrag",
-      "Personalausweis, NIE oder Reisepass",
-      "Letzte Steuererklärung (bei Selbstständigkeit)",
+      "Ausweis, NIE oder Reisepass jeder Person, die den Vertrag unterschreibt",
+      "Angestellte: Arbeitsvertrag, letzte drei Gehaltsabrechnungen und Kontoauszüge von drei Monaten",
+      "Selbstständige: letzte Steuererklärung, Quartalserklärungen und Kontoauszüge von sechs Monaten",
+      "Rentner: Rentenbescheinigung und Kontoauszüge von drei Monaten",
     ],
     suggestionsSeasonList: [
       "Ausweisdokument (Reisepass, Personalausweis oder gleichwertig)",
@@ -308,6 +308,10 @@ export const de: Dictionary = {
     intro:
       "Ihre Anfrage zu {property} geht weiter. Uns fehlt nur noch die Prüfung einiger Unterlagen.",
     weNeed: "Was wir benötigen",
+    personHeading: "Unterlagen von {name}",
+    guarantorTag: "Bürge",
+    everyoneNote:
+      "Jede Person, die den Mietvertrag unterschreibt, und gegebenenfalls der Bürge muss eigene Unterlagen einreichen. Laden Sie jedes Dokument bei der richtigen Person hoch.",
     abroadNote:
       "Wenn Sie außerhalb Spaniens arbeiten oder gelebt haben, senden Sie uns das entsprechende Dokument aus Ihrem Land. Eine andere Sprache ist kein Problem — falls wir eine Übersetzung brauchen, melden wir uns.",
     spanishNameLabel: "in Spanien:",
@@ -349,19 +353,28 @@ export const de: Dictionary = {
       id: "Ausweisdokument (Personalausweis, Reisepass oder gleichwertig)",
       nie: "Spanische Ausländer-Identifikationsnummer (NIE)",
       residencePermit: "Aufenthalts- oder Arbeitserlaubnis",
-      incomeProof: "Einkommensnachweise der letzten drei Monate",
+      incomeProof:
+        "Die letzten drei Gehaltsabrechnungen oder Zahlungsnachweise",
       employmentContract:
-        "Arbeitsvertrag oder Bescheinigung Ihres Arbeitgebers",
+        "Aktueller Arbeitsvertrag, Arbeitgeberbescheinigung oder Schreiben des Zahlenden",
       workHistory:
         "Beschäftigungsverlauf oder Nachweis der Betriebszugehörigkeit",
-      taxReturn: "Letzte Steuererklärung",
-      selfEmployedProof: "Nachweis Ihrer selbstständigen Tätigkeit",
-      quarterlyTax: "Letzte Umsatz- bzw. Vorauszahlungserklärungen",
-      pensionProof: "Rentenbescheid oder Rentennachweis",
+      taxReturn: "Letzte vollständige Einkommensteuererklärung",
+      selfEmployedProof:
+        "Nachweis, dass die Tätigkeit weiterhin ausgeübt wird (Anmeldung, aktuelle Rechnungen…)",
+      quarterlyTax:
+        "In diesem Jahr eingereichte vierteljährliche Steuererklärungen",
+      pensionProof: "Aktuelle Rentenbescheinigung",
       companyDocs: "Gründungsurkunde und Vertretungsvollmachten",
       representativeId: "Ausweisdokument der unterzeichnenden Person",
-      companyAccounts:
-        "Letzter Jahresabschluss oder Körperschaftsteuererklärung",
+      companyAccounts: "Letzter Jahresabschluss der Gesellschaft",
+      bankStatements3:
+        "Vollständige Kontoauszüge der letzten drei Monate, auf denen die Einkünfte zu sehen sind",
+      bankStatements6: "Vollständige Kontoauszüge der letzten sechs Monate",
+      ownerPayProof:
+        "Nachweis über die Bezüge aus der Gesellschaft (Gehaltsabrechnungen, Steuerbescheinigung…)",
+      fundsInSpain:
+        "Nachweis, dass das Geld in Spanien verfügbar ist (zum Beispiel Auszug eines spanischen Kontos)",
       guarantorDocuments: "Unterlagen des Bürgen",
       other: "Weitere Unterlagen",
     },

@@ -187,10 +187,10 @@ export const nl: Dictionary = {
     remove: "Verwijderen",
     suggestionsRent: "Documenten die meestal gevraagd worden bij huur:",
     suggestionsRentList: [
-      "Recente loonstroken of inkomensbewijzen",
-      "Arbeidsovereenkomst",
-      "Identiteitskaart, NIE of paspoort",
-      "Laatste belastingaangifte (bij zelfstandigen)",
+      "ID-kaart, NIE of paspoort van iedere persoon die het contract ondertekent",
+      "Werknemers: arbeidscontract, laatste drie loonstroken en drie maanden bankafschriften",
+      "Zelfstandigen: laatste belastingaangifte, kwartaalaangiften en zes maanden bankafschriften",
+      "Gepensioneerden: pensioenoverzicht en drie maanden bankafschriften",
     ],
     suggestionsSeasonList: [
       "Identiteitsbewijs (paspoort, ID-kaart of gelijkwaardig)",
@@ -305,6 +305,10 @@ export const nl: Dictionary = {
     intro:
       "Uw aanvraag voor {property} gaat verder. We hoeven alleen nog een paar documenten te bekijken.",
     weNeed: "Wat we nodig hebben",
+    personHeading: "Documenten van {name}",
+    guarantorTag: "borg",
+    everyoneNote:
+      "Iedere persoon die het contract ondertekent, en de borg als die er is, moet eigen documenten aanleveren. Upload elk document bij de juiste persoon.",
     abroadNote:
       "Als u buiten Spanje werkt of hebt gewoond, stuur ons dan het gelijkwaardige document uit uw land. Een andere taal is geen probleem — als we een vertaling nodig hebben, laten we het weten.",
     spanishNameLabel: "in Spanje:",
@@ -345,16 +349,26 @@ export const nl: Dictionary = {
       id: "Identiteitsbewijs (identiteitskaart, paspoort of gelijkwaardig)",
       nie: "Spaans identificatienummer voor buitenlanders (NIE)",
       residencePermit: "Verblijfs- of werkvergunning",
-      incomeProof: "Bewijs van uw inkomen van de laatste drie maanden",
-      employmentContract: "Arbeidsovereenkomst of verklaring van uw werkgever",
+      incomeProof:
+        "De laatste drie loonstroken of bewijzen van ontvangen inkomsten",
+      employmentContract:
+        "Lopend arbeidscontract, werkgeversverklaring of brief van degene die betaalt",
       workHistory: "Arbeidsverleden of bewijs van dienstjaren",
-      taxReturn: "Laatste belastingaangifte",
-      selfEmployedProof: "Bewijs van uw werkzaamheden als zelfstandige",
-      quarterlyTax: "Laatste kwartaalaangiften",
-      pensionProof: "Pensioenverklaring of -bewijs",
+      taxReturn: "Laatste volledige belastingaangifte",
+      selfEmployedProof:
+        "Bewijs dat de activiteit nog loopt (inschrijving, recente facturen…)",
+      quarterlyTax: "Dit jaar ingediende kwartaalaangiften",
+      pensionProof: "Actueel pensioenoverzicht",
       companyDocs: "Oprichtingsakte en tekenbevoegdheid",
       representativeId: "Identiteitsbewijs van de ondertekenaar",
-      companyAccounts: "Laatste jaarrekening of vennootschapsbelasting",
+      companyAccounts: "Laatste jaarrekening van de vennootschap",
+      bankStatements3:
+        "Volledige bankafschriften van de laatste drie maanden, waarop de inkomsten te zien zijn",
+      bankStatements6: "Volledige bankafschriften van de laatste zes maanden",
+      ownerPayProof:
+        "Bewijs van wat uit de vennootschap wordt ontvangen (loonstroken, jaaropgave…)",
+      fundsInSpain:
+        "Bewijs dat het geld in Spanje beschikbaar is (bijvoorbeeld een afschrift van een Spaanse rekening)",
       guarantorDocuments: "Documenten van de borg",
       other: "Overige documenten",
     },

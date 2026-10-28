@@ -26,7 +26,10 @@ import {
   retentionSelect,
 } from "@/lib/privacy/application-retention";
 import { assessSolvency } from "@/lib/applications/types";
-import { guessProfile } from "@/lib/applications/document-catalog";
+import {
+  guessProfile,
+  requestPeople,
+} from "@/lib/applications/document-catalog";
 import {
   applicationStatuses,
   localeLabels,
@@ -418,8 +421,17 @@ export default async function ApplicationDetailPage({
 
           <DocumentRequestPanel
             applicationId={application.id}
+            applicantName={`${application.firstName} ${application.lastName}`}
             suggestedProfile={guessProfile(answers)}
-            active={application.documentRequests[0] ?? null}
+            householdSize={answers.householdSize || null}
+            active={
+              application.documentRequests[0]
+                ? {
+                    ...application.documentRequests[0],
+                    people: requestPeople(application.documentRequests[0]),
+                  }
+                : null
+            }
             appUrl={process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"}
           />
 

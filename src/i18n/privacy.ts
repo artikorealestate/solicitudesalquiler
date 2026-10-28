@@ -45,7 +45,7 @@ const es: PrivacyPolicy = {
       items: [
         "Datos de identificación y contacto: nombre, apellidos, correo electrónico, teléfono, nacionalidad y número de documento de identidad.",
         "Datos sobre tu solicitud: el inmueble, las fechas, cuántas personas vivirían en él, vuestra relación, ocupación, situación laboral, ingresos declarados, mascotas y el motivo de la estancia. En compras, tu perfil de comprador y la financiación.",
-        "La documentación que decidas aportar (identidad, ingresos, contrato de trabajo, etc.) y los comentarios que escribas.",
+        "La documentación que decidas aportar (identidad, nóminas, contrato de trabajo, declaraciones de impuestos, extractos bancarios, etc.) y los comentarios que escribas. Si vais a firmar varias personas o hay avalista, también la de cada una de ellas: si nos envías documentos de otra persona, enséñale antes esta información.",
         "Una huella cifrada de la dirección de internet desde la que envías el formulario, nunca la dirección en sí, para frenar envíos automáticos.",
       ],
       paragraphs: [
@@ -149,7 +149,7 @@ const en: PrivacyPolicy = {
       items: [
         "Identification and contact details: first name, surname, email address, phone number, nationality and identity document number.",
         "Details of your application: the property, the dates, how many people would live there, your relationship, occupation, employment situation, declared income, pets and the purpose of your stay. For purchases, your buyer profile and financing.",
-        "Any documents you choose to provide (identity, income, employment contract, etc.) and any comments you write.",
+        "Any documents you choose to provide (identity, payslips, employment contract, tax returns, bank statements, etc.) and any comments you write. If several people will sign or there is a guarantor, also those of each of them: if you send us another person's documents, show them this information first.",
         "An encrypted fingerprint of the internet address you submit the form from — never the address itself — to stop automated submissions.",
       ],
       paragraphs: [
@@ -253,7 +253,7 @@ const de: PrivacyPolicy = {
       items: [
         "Identifikations- und Kontaktdaten: Vorname, Nachname, E-Mail-Adresse, Telefonnummer, Staatsangehörigkeit und Ausweisnummer.",
         "Angaben zu Ihrer Anfrage: die Immobilie, die Daten, wie viele Personen dort wohnen würden, Ihre Beziehung zueinander, Beruf, Beschäftigungssituation, angegebenes Einkommen, Haustiere und der Zweck des Aufenthalts. Beim Kauf Ihr Käuferprofil und die Finanzierung.",
-        "Die Unterlagen, die Sie freiwillig einreichen (Ausweis, Einkommen, Arbeitsvertrag usw.), und Ihre Kommentare.",
+        "Die Unterlagen, die Sie freiwillig einreichen (Ausweis, Gehaltsabrechnungen, Arbeitsvertrag, Steuererklärungen, Kontoauszüge usw.), und Ihre Kommentare. Unterschreiben mehrere Personen oder gibt es einen Bürgen, auch die Unterlagen jeder dieser Personen: Wenn Sie uns Dokumente einer anderen Person senden, zeigen Sie ihr vorher diese Information.",
         "Ein verschlüsselter Fingerabdruck der Internetadresse, von der aus Sie das Formular senden – nie die Adresse selbst –, um automatisierte Einsendungen zu verhindern.",
       ],
       paragraphs: [
@@ -357,7 +357,7 @@ const fr: PrivacyPolicy = {
       items: [
         "Données d'identification et de contact : prénom, nom, adresse e-mail, téléphone, nationalité et numéro de pièce d'identité.",
         "Données relatives à votre demande : le bien, les dates, le nombre de personnes qui y vivraient, votre lien, votre profession, votre situation professionnelle, vos revenus déclarés, vos animaux et le motif du séjour. Pour un achat, votre profil d'acheteur et le financement.",
-        "Les documents que vous choisissez de fournir (identité, revenus, contrat de travail, etc.) et vos commentaires.",
+        "Les documents que vous choisissez de fournir (identité, fiches de paie, contrat de travail, déclarations d'impôts, relevés bancaires, etc.) et vos commentaires. Si plusieurs personnes signent ou s'il y a un garant, également ceux de chacune d'elles : si vous nous envoyez les documents d'une autre personne, montrez-lui d'abord ces informations.",
         "Une empreinte chiffrée de l'adresse internet depuis laquelle vous envoyez le formulaire — jamais l'adresse elle-même — pour freiner les envois automatisés.",
       ],
       paragraphs: [
@@ -461,7 +461,7 @@ const it: PrivacyPolicy = {
       items: [
         "Dati identificativi e di contatto: nome, cognome, e-mail, telefono, nazionalità e numero del documento d'identità.",
         "Dati sulla tua richiesta: l'immobile, le date, quante persone ci vivrebbero, il vostro rapporto, la professione, la situazione lavorativa, il reddito dichiarato, gli animali domestici e il motivo del soggiorno. Per gli acquisti, il tuo profilo di acquirente e il finanziamento.",
-        "I documenti che decidi di fornire (identità, reddito, contratto di lavoro, ecc.) e i commenti che scrivi.",
+        "I documenti che decidi di fornire (identità, buste paga, contratto di lavoro, dichiarazioni dei redditi, estratti conto, ecc.) e i commenti che scrivi. Se firmano più persone o c'è un garante, anche quelli di ciascuna di esse: se ci invii documenti di un'altra persona, mostrale prima queste informazioni.",
         "Un'impronta cifrata dell'indirizzo internet da cui invii il modulo — mai l'indirizzo stesso — per frenare gli invii automatici.",
       ],
       paragraphs: [
@@ -565,7 +565,7 @@ const pt: PrivacyPolicy = {
       items: [
         "Dados de identificação e contacto: nome, apelidos, e-mail, telefone, nacionalidade e número do documento de identificação.",
         "Dados sobre o seu pedido: o imóvel, as datas, quantas pessoas viveriam nele, a vossa relação, profissão, situação laboral, rendimentos declarados, animais de estimação e o motivo da estadia. Nas compras, o seu perfil de comprador e o financiamento.",
-        "Os documentos que decida enviar (identificação, rendimentos, contrato de trabalho, etc.) e os comentários que escrever.",
+        "Os documentos que decida enviar (identificação, recibos de vencimento, contrato de trabalho, declarações de impostos, extratos bancários, etc.) e os comentários que escrever. Se vão assinar várias pessoas ou houver fiador, também os de cada uma delas: se nos enviar documentos de outra pessoa, mostre-lhe antes esta informação.",
         "Uma impressão cifrada do endereço de internet a partir do qual envia o formulário — nunca o endereço em si — para travar envios automáticos.",
       ],
       paragraphs: [
@@ -672,7 +672,7 @@ const nl: PrivacyPolicy = {
       items: [
         "Identificatie- en contactgegevens: voornaam, achternaam, e-mailadres, telefoonnummer, nationaliteit en nummer van uw identiteitsbewijs.",
         "Gegevens over uw aanvraag: de woning, de data, hoeveel personen er zouden wonen, uw onderlinge relatie, beroep, arbeidssituatie, opgegeven inkomen, huisdieren en het doel van het verblijf. Bij koop: uw kopersprofiel en de financiering.",
-        "De documenten die u vrijwillig aanlevert (identiteit, inkomen, arbeidscontract, enz.) en uw opmerkingen.",
+        "De documenten die u vrijwillig aanlevert (identiteit, loonstroken, arbeidscontract, belastingaangiften, bankafschriften, enz.) en uw opmerkingen. Als meerdere personen tekenen of er een borg is, ook die van ieder van hen: als u ons documenten van een ander stuurt, laat die persoon dan eerst deze informatie zien.",
         "Een versleutelde vingerafdruk van het internetadres waarvandaan u het formulier verstuurt — nooit het adres zelf — om geautomatiseerde inzendingen tegen te gaan.",
       ],
       paragraphs: [
@@ -776,7 +776,7 @@ const ru: PrivacyPolicy = {
       items: [
         "Идентификационные и контактные данные: имя, фамилия, адрес электронной почты, телефон, гражданство и номер документа, удостоверяющего личность.",
         "Сведения о заявке: объект, даты, сколько человек будет проживать, ваши отношения, род занятий, трудовое положение, заявленный доход, домашние животные и цель проживания. При покупке — ваш профиль покупателя и финансирование.",
-        "Документы, которые вы решите предоставить (удостоверение личности, доходы, трудовой договор и т. д.), и ваши комментарии.",
+        "Документы, которые вы решите предоставить (удостоверение личности, расчётные листки, трудовой договор, налоговые декларации, банковские выписки и т. д.), и ваши комментарии. Если договор подписывают несколько человек или есть поручитель — также документы каждого из них: если вы присылаете нам документы другого человека, сначала покажите ему эту информацию.",
         "Зашифрованный отпечаток интернет-адреса, с которого отправлена форма, — никогда не сам адрес — чтобы препятствовать автоматическим отправкам.",
       ],
       paragraphs: [
@@ -880,7 +880,7 @@ const uk: PrivacyPolicy = {
       items: [
         "Ідентифікаційні та контактні дані: ім'я, прізвище, адреса електронної пошти, телефон, громадянство та номер документа, що посвідчує особу.",
         "Відомості про заявку: об'єкт, дати, скільки осіб проживатиме, ваші стосунки, рід занять, трудове становище, заявлений дохід, домашні тварини та мета проживання. У разі купівлі — ваш профіль покупця та фінансування.",
-        "Документи, які ви вирішите надати (посвідчення особи, доходи, трудовий договір тощо), і ваші коментарі.",
+        "Документи, які ви вирішите надати (посвідчення особи, розрахункові листи, трудовий договір, податкові декларації, банківські виписки тощо), і ваші коментарі. Якщо договір підписують кілька людей або є поручитель — також документи кожного з них: якщо ви надсилаєте нам документи іншої людини, спершу покажіть їй цю інформацію.",
         "Зашифрований відбиток інтернет-адреси, з якої надіслано форму, — ніколи не саму адресу — щоб запобігати автоматичним надсиланням.",
       ],
       paragraphs: [

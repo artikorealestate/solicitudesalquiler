@@ -5,10 +5,16 @@ import { revalidatePath } from "next/cache";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { z } from "zod";
 import {
+  MAX_PEOPLE_PER_REQUEST,
   availableItemsByProfile,
-  resolveDocumentItems,
+  isDocumentKey,
+  profileLabels,
+  resolvePeopleGroups,
   type ApplicantProfile,
+  type DocumentKey,
+  type RequestPerson,
 } from "@/lib/applications/document-catalog";
 import {
   LOGO_ATTACHMENT,
@@ -23,6 +29,20 @@ import { defaultLocale, isLocale } from "@/i18n/config";
 /// la carpeta de un cliente indefinidamente.
 const EXPIRY_DAYS = 30;
 
+const peopleSchema = z
+  .array(
+    z.object({
+      name: z.string().trim().min(1).max(80),
+      role: z.enum(["TENANT", "GUARANTOR"]),
+      profile: z.enum(
+        Object.keys(profileLabels) as [ApplicantProfile, ...ApplicantProfile[]],
+      ),
+      items: z.array(z.string().max(40)).max(30),
+    }),
+  )
+  .min(1)
+  .max(MAX_PEOPLE_PER_REQUEST);
+
 async function requireAdminEmail(): Promise<string> {
   const session = await getServerSession(authOptions);
   if (!session?.user?.email) throw new Error("No autorizado");
@@ -35,22 +55,32 @@ export async function createDocumentRequest(
 ) {
   const adminEmail = await requireAdminEmail();
 
-  const profile = String(formData.get("profile") ?? "") as ApplicantProfile;
-  if (!(profile in availableItemsByProfile)) {
-    throw new Error("Perfil desconocido");
-  }
+  const parsed = peopleSchema.safeParse(
+    JSON.parse(String(formData.get("people") ?? "[]")),
+  );
+  if (!parsed.success) throw new Error("Personas no validas");
 
-  // Solo se aceptan claves del catalogo del perfil elegido: el formulario
-  // viene del navegador y no es de fiar.
-  const allowed = new Set<string>(availableItemsByProfile[profile]);
-  const requestedItems = formData
-    .getAll("items")
-    .map(String)
-    .filter((key) => allowed.has(key));
+  // Solo se aceptan claves del catalogo del perfil de cada persona: el
+  // formulario viene del navegador y no es de fiar.
+  const people: RequestPerson[] = parsed.data
+    .map((person) => {
+      const allowed = new Set<string>(availableItemsByProfile[person.profile]);
+      return {
+        ...person,
+        name: person.name.trim(),
+        items: person.items.filter(
+          (key): key is DocumentKey => allowed.has(key) && isDocumentKey(key),
+        ),
+      };
+    })
+    .filter((person) => person.items.length > 0);
 
-  if (requestedItems.length === 0) {
+  if (people.length === 0) {
     throw new Error("Hay que pedir al menos un documento");
   }
+
+  const profile = people[0].profile;
+  const requestedItems = [...new Set(people.flatMap((person) => person.items))];
 
   const message = String(formData.get("message") ?? "").trim() || null;
 
@@ -82,6 +112,7 @@ export async function createDocumentRequest(
       applicationId,
       profile,
       requestedItems,
+      people,
       message,
       token: randomBytes(32).toString("base64url"),
       createdByEmail: adminEmail,
@@ -105,7 +136,7 @@ export async function createDocumentRequest(
       dictionary,
       firstName: application.firstName,
       property: application.property,
-      items: resolveDocumentItems(requestedItems, dictionary.docs.items),
+      groups: resolvePeopleGroups(people, dictionary.docs.items),
       message,
       link: `${appUrl}/documentos/${request.token}`,
       expiresAt,

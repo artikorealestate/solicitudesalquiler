@@ -12,7 +12,7 @@ import {
   buildInternalEmail,
 } from "../src/lib/mail/templates";
 import { ARTIKO_LOGO_BASE64 } from "../src/lib/mail/logo";
-import { resolveDocumentItems } from "../src/lib/applications/document-catalog";
+import { resolvePeopleGroups } from "../src/lib/applications/document-catalog";
 
 const property = {
   reference: "195",
@@ -76,11 +76,27 @@ const correos = [
       dictionary: es,
       firstName: applicant.firstName,
       property,
-      items: resolveDocumentItems(
-        ["id", "incomeProof", "employmentContract", "workHistory"],
+      groups: resolvePeopleGroups(
+        [
+          {
+            name: `${applicant.firstName} ${applicant.lastName}`,
+            role: "TENANT",
+            items: [
+              "id",
+              "employmentContract",
+              "incomeProof",
+              "bankStatements3",
+            ],
+          },
+          {
+            name: "Marta Ruiz",
+            role: "GUARANTOR",
+            items: ["id", "pensionProof", "bankStatements3"],
+          },
+        ],
         es.docs.items,
       ),
-      message: "Con la vida laboral nos vale la que descargues hoy mismo.",
+      message: null,
       link: "https://artiko.vercel.app/documentos/muestra",
       expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
       locale: "es",

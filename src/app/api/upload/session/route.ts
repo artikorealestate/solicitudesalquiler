@@ -13,11 +13,12 @@ import { createResumableUpload } from "@/lib/google/drive";
 
 const MAX_BYTES = 10 * 1024 * 1024;
 
-/// Topes por solicitud. Holgados para un expediente real —nominas, contrato,
-/// vida laboral, DNI de dos titulares— pero suficientes para que nadie use la
-/// carpeta de un cliente como disco duro gratuito.
-const MAX_DOCUMENTS_PER_APPLICATION = 25;
-const MAX_TOTAL_BYTES_PER_APPLICATION = 120 * 1024 * 1024;
+/// Topes por solicitud. Holgados para un expediente real —tres titulares y un
+/// avalista, cada uno con su DNI, nominas, contrato y seis meses de
+/// extractos— pero suficientes para que nadie use la carpeta de un cliente
+/// como disco duro gratuito.
+const MAX_DOCUMENTS_PER_APPLICATION = 80;
+const MAX_TOTAL_BYTES_PER_APPLICATION = 400 * 1024 * 1024;
 
 const ALLOWED_TYPES = [
   "application/pdf",

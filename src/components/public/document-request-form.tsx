@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { uploadDocuments } from "@/lib/applications/upload-client";
-import type { ResolvedDocumentItem } from "@/lib/applications/document-catalog";
+import type { ResolvedPersonGroup } from "@/lib/applications/document-catalog";
 import type { Dictionary } from "@/i18n";
 import { interpolate } from "@/i18n";
 
@@ -20,23 +20,81 @@ function formatSize(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
+/// Archivo pendiente de subir, con la persona a la que pertenece.
+type PendingFile = { file: File; group: number };
+
+/// Con varias personas, cada archivo llega a Drive con el nombre de su dueño
+/// delante ("Ana García - nomina.pdf"). Sin eso, en una carpeta con las
+/// nóminas de tres personas no hay forma de saber de quién es cada una.
+function withOwner(file: File, owner: string | null): File {
+  if (!owner) return file;
+  const name = `${owner.slice(0, 60)} - ${file.name}`.slice(0, 200);
+  return new File([file], name, { type: file.type });
+}
+
+function FilePicker({
+  label,
+  onFiles,
+  dictionary,
+}: {
+  label: string;
+  onFiles: (files: FileList | null) => void;
+  dictionary: Dictionary;
+}) {
+  const t = dictionary.docs;
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  return (
+    <div
+      onDragOver={(event) => event.preventDefault()}
+      onDrop={(event) => {
+        event.preventDefault();
+        onFiles(event.dataTransfer.files);
+      }}
+    >
+      <button
+        type="button"
+        onClick={() => inputRef.current?.click()}
+        className="w-full rounded-card border-2 border-dashed border-line bg-white px-4 py-6 text-center transition-colors hover:border-gold"
+      >
+        <span className="block font-bold text-ink-strong">{label}</span>
+        <span className="mt-1 block text-sm text-ink-muted">{t.dropHint}</span>
+        <span className="mt-2 block text-xs text-ink-faint">{t.accepted}</span>
+      </button>
+
+      <input
+        ref={inputRef}
+        type="file"
+        multiple
+        accept={ACCEPTED.join(",")}
+        onChange={(event) => {
+          onFiles(event.target.files);
+          event.target.value = "";
+        }}
+        className="sr-only"
+      />
+    </div>
+  );
+}
+
 export function DocumentRequestForm({
   applicationId,
   uploadTicket,
-  items,
+  groups,
   alreadyUploaded,
   dictionary,
 }: {
   applicationId: string;
   uploadTicket: string;
-  items: ResolvedDocumentItem[];
+  /// Una entrada por persona. Sin peticion, una sola vacia: se puede subir
+  /// igualmente, sin lista de lo que falta.
+  groups: ResolvedPersonGroup[];
   alreadyUploaded: string[];
   dictionary: Dictionary;
 }) {
   const t = dictionary.docs;
 
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [files, setFiles] = useState<File[]>([]);
+  const [files, setFiles] = useState<PendingFile[]>([]);
   const [rejected, setRejected] = useState<string[]>([]);
   const [percent, setPercent] = useState<number | null>(null);
   const [done, setDone] = useState<{ uploaded: number; failed: number } | null>(
@@ -44,11 +102,21 @@ export function DocumentRequestForm({
   );
   const [expired, setExpired] = useState(false);
 
-  function addFiles(incoming: FileList | null) {
+  const sections =
+    groups.length > 0 ? groups : [{ name: null, guarantor: false, items: [] }];
+  const severalPeople = sections.length > 1 && sections.every((g) => g.name);
+
+  function titleOf(group: ResolvedPersonGroup): string | null {
+    if (!group.name) return null;
+    const title = interpolate(t.personHeading, { name: group.name });
+    return group.guarantor ? `${title} (${t.guarantorTag})` : title;
+  }
+
+  function addFiles(incoming: FileList | null, group: number) {
     if (!incoming) return;
 
     const problems: string[] = [];
-    const accepted: File[] = [];
+    const accepted: PendingFile[] = [];
 
     for (const file of Array.from(incoming)) {
       if (file.size > MAX_FILE_BYTES) {
@@ -60,7 +128,7 @@ export function DocumentRequestForm({
           interpolate(dictionary.documents.wrongType, { name: file.name }),
         );
       } else {
-        accepted.push(file);
+        accepted.push({ file, group });
       }
     }
 
@@ -75,7 +143,9 @@ export function DocumentRequestForm({
     setExpired(false);
 
     const outcome = await uploadDocuments(
-      files,
+      files.map(({ file, group }) =>
+        withOwner(file, severalPeople ? sections[group].name : null),
+      ),
       applicationId,
       uploadTicket,
       (progress) => setPercent(progress.percent),
@@ -122,18 +192,60 @@ export function DocumentRequestForm({
     );
   }
 
-  const hayResumen = items.length > 0 || alreadyUploaded.length > 0;
+  const anyItems = sections.some((group) => group.items.length > 0);
 
   return (
     <div className="space-y-6">
-      {hayResumen ? (
+      {anyItems ? (
         <section className="surface p-5 sm:p-6">
-          {items.length > 0 ? (
-            <>
-              <h2 className="font-serif text-xl text-ink-strong">{t.weNeed}</h2>
+          <h2 className="font-serif text-xl text-ink-strong">{t.weNeed}</h2>
 
-              <ul className="mt-4 space-y-2.5">
-                {items.map((item) => (
+          {severalPeople ? (
+            <p className="mt-2 text-sm leading-relaxed text-ink">
+              {t.everyoneNote}
+            </p>
+          ) : null}
+
+          {/* Buena parte de los interesados de Artiko viene de fuera de
+              Espana y no tiene los documentos con estos nombres. Decirselo
+              aqui evita que abandonen pensando que no pueden aportar lo que
+              se les pide. */}
+          <p className="mt-4 rounded-md bg-gold-wash px-4 py-3 text-sm leading-relaxed text-ink">
+            {t.abroadNote}
+          </p>
+        </section>
+      ) : null}
+
+      {alreadyUploaded.length > 0 ? (
+        <section className="rounded-md bg-cream p-4">
+          <p className="text-xs uppercase tracking-wide text-ink-muted">
+            {t.alreadySent}
+          </p>
+          <ul className="mt-1.5 space-y-0.5">
+            {alreadyUploaded.map((name) => (
+              <li key={name} className="text-sm text-ink-strong">
+                {name}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
+      {sections.map((group, index) => {
+        const title = titleOf(group);
+        const mine = files
+          .map((pending, position) => ({ ...pending, position }))
+          .filter((pending) => pending.group === index);
+
+        return (
+          <section key={index} className="surface p-5 sm:p-6">
+            {title ? (
+              <h3 className="font-serif text-lg text-ink-strong">{title}</h3>
+            ) : null}
+
+            {group.items.length > 0 ? (
+              <ul className={`space-y-2.5 ${title ? "mt-3" : ""}`}>
+                {group.items.map((item) => (
                   <li key={item.key} className="flex gap-3">
                     <span aria-hidden="true" className="mt-0.5 text-gold-dark">
                       ·
@@ -150,75 +262,49 @@ export function DocumentRequestForm({
                   </li>
                 ))}
               </ul>
+            ) : null}
 
-              {/* Buena parte de los interesados de Artiko viene de fuera de
-                Espana y no tiene los documentos con estos nombres. Decirselo
-                aqui evita que abandonen pensando que no pueden aportar lo que
-                se les pide. */}
-              <p className="mt-5 rounded-md bg-gold-wash px-4 py-3 text-sm leading-relaxed text-ink">
-                {t.abroadNote}
-              </p>
-            </>
-          ) : null}
+            <div className={title || group.items.length > 0 ? "mt-4" : ""}>
+              <FilePicker
+                label={t.addFiles}
+                onFiles={(incoming) => addFiles(incoming, index)}
+                dictionary={dictionary}
+              />
+            </div>
 
-          {alreadyUploaded.length > 0 ? (
-            <div
-              className={`rounded-md bg-cream p-4 ${items.length > 0 ? "mt-4" : ""}`}
-            >
-              <p className="text-xs uppercase tracking-wide text-ink-muted">
-                {t.alreadySent}
-              </p>
-              <ul className="mt-1.5 space-y-0.5">
-                {alreadyUploaded.map((name) => (
-                  <li key={name} className="text-sm text-ink-strong">
-                    {name}
+            {mine.length > 0 ? (
+              <ul className="mt-4 space-y-2">
+                {mine.map(({ file, position }) => (
+                  <li
+                    key={`${file.name}-${position}`}
+                    className="flex items-center gap-3 rounded-md border border-line px-4 py-2.5"
+                  >
+                    <span className="min-w-0 flex-1 truncate text-sm text-ink">
+                      {file.name}
+                    </span>
+                    <span className="shrink-0 text-xs text-ink-muted">
+                      {formatSize(file.size)}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setFiles(files.filter((_, i) => i !== position))
+                      }
+                      className="shrink-0 text-xs text-ink-muted underline-offset-2 hover:text-danger hover:underline"
+                    >
+                      {t.remove}
+                    </button>
                   </li>
                 ))}
               </ul>
-            </div>
-          ) : null}
-        </section>
-      ) : null}
+            ) : null}
+          </section>
+        );
+      })}
 
       <section className="surface p-5 sm:p-6">
-        <div
-          onDragOver={(event) => event.preventDefault()}
-          onDrop={(event) => {
-            event.preventDefault();
-            addFiles(event.dataTransfer.files);
-          }}
-        >
-          <button
-            type="button"
-            onClick={() => inputRef.current?.click()}
-            className="w-full rounded-card border-2 border-dashed border-line bg-white px-4 py-8 text-center transition-colors hover:border-gold"
-          >
-            <span className="block font-bold text-ink-strong">
-              {t.addFiles}
-            </span>
-            <span className="mt-1 block text-sm text-ink-muted">
-              {t.dropHint}
-            </span>
-            <span className="mt-2 block text-xs text-ink-faint">
-              {t.accepted}
-            </span>
-          </button>
-
-          <input
-            ref={inputRef}
-            type="file"
-            multiple
-            accept={ACCEPTED.join(",")}
-            onChange={(event) => {
-              addFiles(event.target.files);
-              event.target.value = "";
-            }}
-            className="sr-only"
-          />
-        </div>
-
         {rejected.length > 0 ? (
-          <ul className="mt-4 space-y-1.5" role="alert">
+          <ul className="mb-4 space-y-1.5" role="alert">
             {rejected.map((message) => (
               <li key={message} className="field-error">
                 <span aria-hidden="true">⚠</span>
@@ -228,33 +314,8 @@ export function DocumentRequestForm({
           </ul>
         ) : null}
 
-        {files.length > 0 ? (
-          <ul className="mt-4 space-y-2">
-            {files.map((file, index) => (
-              <li
-                key={`${file.name}-${index}`}
-                className="flex items-center gap-3 rounded-md border border-line px-4 py-2.5"
-              >
-                <span className="min-w-0 flex-1 truncate text-sm text-ink">
-                  {file.name}
-                </span>
-                <span className="shrink-0 text-xs text-ink-muted">
-                  {formatSize(file.size)}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setFiles(files.filter((_, i) => i !== index))}
-                  className="shrink-0 text-xs text-ink-muted underline-offset-2 hover:text-danger hover:underline"
-                >
-                  {t.remove}
-                </button>
-              </li>
-            ))}
-          </ul>
-        ) : null}
-
         {percent !== null ? (
-          <div className="mt-5">
+          <div className="mb-5">
             <div className="flex items-baseline justify-between">
               <p className="text-sm text-ink">{t.sending}</p>
               <p className="font-serif text-lg text-gold-dark">{percent}%</p>
@@ -275,7 +336,7 @@ export function DocumentRequestForm({
         ) : null}
 
         {expired ? (
-          <p className="field-error mt-4" role="alert">
+          <p className="field-error mb-4" role="alert">
             <span aria-hidden="true">⚠</span>
             <span>{t.sessionExpired}</span>
           </p>
@@ -285,7 +346,7 @@ export function DocumentRequestForm({
           type="button"
           onClick={send}
           disabled={files.length === 0 || percent !== null}
-          className="btn-gold mt-6 w-full"
+          className="btn-gold w-full"
         >
           {percent !== null ? t.sending : t.send}
         </button>

@@ -186,10 +186,10 @@ export const it: Dictionary = {
     remove: "Rimuovi",
     suggestionsRent: "Documentazione solitamente richiesta per l'affitto:",
     suggestionsRentList: [
-      "Ultime buste paga o giustificativi di reddito",
-      "Contratto di lavoro",
-      "Carta d'identità, NIE o passaporto",
-      "Ultima dichiarazione dei redditi (se lavoratore autonomo)",
+      "Documento d'identità, NIE o passaporto di ogni persona che firmerà il contratto",
+      "Dipendenti: contratto di lavoro, ultime tre buste paga e tre mesi di estratti conto",
+      "Autonomi: ultima dichiarazione dei redditi, dichiarazioni trimestrali e sei mesi di estratti conto",
+      "Pensionati: certificato di pensione e tre mesi di estratti conto",
     ],
     suggestionsSeasonList: [
       "Documento d'identità (passaporto, carta d'identità o equivalente)",
@@ -304,6 +304,10 @@ export const it: Dictionary = {
     intro:
       "La tua richiesta per {property} va avanti. Ci manca solo esaminare alcuni documenti.",
     weNeed: "Cosa ci serve",
+    personHeading: "Documenti di {name}",
+    guarantorTag: "garante",
+    everyoneNote:
+      "Ogni persona che firmerà il contratto, e il garante se c'è, deve presentare i propri documenti. Carica ogni documento nella sezione della persona giusta.",
     abroadNote:
       "Se lavori o hai vissuto fuori dalla Spagna, inviaci il documento equivalente del tuo paese. Non è un problema se è in un'altra lingua: se ci serve una traduzione, te la chiederemo.",
     spanishNameLabel: "in Spagna:",
@@ -344,16 +348,26 @@ export const it: Dictionary = {
       id: "Documento d'identità (carta d'identità, passaporto o equivalente)",
       nie: "Numero di identità per stranieri in Spagna (NIE)",
       residencePermit: "Permesso di soggiorno o di lavoro",
-      incomeProof: "Giustificativi dei tuoi redditi degli ultimi tre mesi",
-      employmentContract: "Contratto di lavoro o lettera del datore di lavoro",
+      incomeProof:
+        "Le ultime tre buste paga o ricevute dei pagamenti percepiti",
+      employmentContract:
+        "Contratto di lavoro in corso, certificato del datore di lavoro o lettera di chi paga",
       workHistory: "Storico lavorativo o certificato di anzianità",
-      taxReturn: "Ultima dichiarazione dei redditi",
-      selfEmployedProof: "Giustificativo della tua attività autonoma",
-      quarterlyTax: "Ultime dichiarazioni fiscali trimestrali",
-      pensionProof: "Certificato o giustificativo della pensione",
+      taxReturn: "Ultima dichiarazione dei redditi completa",
+      selfEmployedProof:
+        "Prova che l'attività è ancora in corso (iscrizione, fatture recenti…)",
+      quarterlyTax: "Dichiarazioni fiscali trimestrali presentate quest'anno",
+      pensionProof: "Certificato di pensione aggiornato",
       companyDocs: "Atto costitutivo e poteri di rappresentanza",
       representativeId: "Documento d'identità di chi firmerà",
-      companyAccounts: "Ultimo bilancio o imposta sulle società",
+      companyAccounts: "Ultimo bilancio della società",
+      bankStatements3:
+        "Estratti conto completi degli ultimi tre mesi, in cui si vedano le entrate",
+      bankStatements6: "Estratti conto completi degli ultimi sei mesi",
+      ownerPayProof:
+        "Prova di quanto si percepisce dalla società (buste paga, certificazione delle ritenute…)",
+      fundsInSpain:
+        "Prova che il denaro è disponibile in Spagna (ad esempio, l'estratto di un conto spagnolo)",
       guarantorDocuments: "Documentazione del garante",
       other: "Altra documentazione",
     },

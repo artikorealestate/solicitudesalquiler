@@ -2,7 +2,10 @@ import { ArtikoLogo } from "@/components/brand/logo";
 import { DocumentRequestForm } from "@/components/public/document-request-form";
 import { SiteFooter } from "@/components/public/site-footer";
 import { prisma } from "@/lib/db";
-import { resolveDocumentItems } from "@/lib/applications/document-catalog";
+import {
+  requestPeople,
+  resolvePeopleGroups,
+} from "@/lib/applications/document-catalog";
 import { issueUploadTicket } from "@/lib/applications/upload-ticket";
 import { tryEnsureApplicationFolder } from "@/lib/applications/drive-folder";
 import { getDictionary, interpolate, type Dictionary } from "@/i18n";
@@ -73,7 +76,7 @@ export default async function SelfServicePage({
         where: { status: "PENDING" },
         orderBy: { createdAt: "desc" },
         take: 1,
-        select: { requestedItems: true },
+        select: { requestedItems: true, profile: true, people: true },
       },
     },
   });
@@ -149,9 +152,9 @@ export default async function SelfServicePage({
         <DocumentRequestForm
           applicationId={application.id}
           uploadTicket={issueUploadTicket(application.id)}
-          items={
+          groups={
             pendiente
-              ? resolveDocumentItems(pendiente.requestedItems, t.items)
+              ? resolvePeopleGroups(requestPeople(pendiente), t.items)
               : []
           }
           alreadyUploaded={application.documents.map((doc) => doc.fileName)}

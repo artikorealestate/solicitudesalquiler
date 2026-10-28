@@ -221,7 +221,13 @@ enum ApplicantProfile {
   SEASONAL
   SALARIED
   SELF_EMPLOYED
+  /// Empresario o socio que cobra de su propia sociedad.
+  BUSINESS_OWNER
   PENSIONER
+  /// Cobra de un pagador de fuera de Espana.
+  FOREIGN_INCOME
+  /// Estudiante, sin empleo...: paga o avala otra persona.
+  NO_INCOME
   COMPANY
   OTHER
 }
@@ -237,11 +243,18 @@ model DocumentRequest {
   applicationId String
   application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
 
+  /// Perfil de la primera persona. El de cada una va en `people`.
   profile ApplicantProfile
 
   /// Claves del catalogo de documentos (ver lib/applications/document-catalog).
   /// Se guardan las claves y no los textos para poder traducirlos despues.
+  /// Es la union de lo pedido a todas las personas.
   requestedItems String[]
+
+  /// Cada persona que firma o avala, con su perfil y sus documentos:
+  /// [{ name, role: TENANT | GUARANTOR, profile, items }]. Vacio en las
+  /// peticiones anteriores, que eran de una sola persona.
+  people Json?
 
   /// Nota opcional que Artiko anade al correo.
   message String?

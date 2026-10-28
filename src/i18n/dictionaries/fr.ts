@@ -188,10 +188,10 @@ export const fr: Dictionary = {
     remove: "Retirer",
     suggestionsRent: "Documents habituellement demandés pour une location :",
     suggestionsRentList: [
-      "Derniers bulletins de salaire ou justificatifs de revenus",
-      "Contrat de travail",
-      "Carte d'identité, NIE ou passeport",
-      "Dernière déclaration de revenus (si indépendant)",
+      "Pièce d'identité, NIE ou passeport de chaque personne qui signera le bail",
+      "Salariés : contrat de travail, trois dernières fiches de paie et trois mois de relevés bancaires",
+      "Indépendants : dernière déclaration de revenus, déclarations trimestrielles et six mois de relevés bancaires",
+      "Retraités : attestation de pension et trois mois de relevés bancaires",
     ],
     suggestionsSeasonList: [
       "Pièce d'identité (passeport, carte d'identité ou équivalent)",
@@ -306,6 +306,10 @@ export const fr: Dictionary = {
     intro:
       "Votre demande concernant {property} avance. Il ne nous manque plus qu'à examiner quelques documents.",
     weNeed: "Ce dont nous avons besoin",
+    personHeading: "Documents de {name}",
+    guarantorTag: "garant",
+    everyoneNote:
+      "Chaque personne qui signera le bail, ainsi que le garant le cas échéant, doit fournir ses propres documents. Déposez chaque document dans la rubrique de la personne concernée.",
     abroadNote:
       "Si vous travaillez ou avez vécu hors d'Espagne, envoyez-nous le document équivalent de votre pays. Ce n'est pas grave s'il est dans une autre langue : si nous avons besoin d'une traduction, nous vous le dirons.",
     spanishNameLabel: "en Espagne :",
@@ -346,17 +350,26 @@ export const fr: Dictionary = {
       id: "Pièce d'identité (carte d'identité, passeport ou équivalent)",
       nie: "Numéro d'identité d'étranger en Espagne (NIE)",
       residencePermit: "Titre de séjour ou permis de travail",
-      incomeProof: "Justificatifs de vos revenus des trois derniers mois",
+      incomeProof:
+        "Les trois dernières fiches de paie ou justificatifs de revenus perçus",
       employmentContract:
-        "Contrat de travail ou attestation de votre employeur",
+        "Contrat de travail en cours, attestation de l'employeur ou lettre du payeur",
       workHistory: "Historique professionnel ou attestation d'ancienneté",
-      taxReturn: "Dernière déclaration de revenus",
-      selfEmployedProof: "Justificatif de votre activité indépendante",
-      quarterlyTax: "Dernières déclarations fiscales trimestrielles",
-      pensionProof: "Attestation ou justificatif de pension",
+      taxReturn: "Dernière déclaration de revenus complète",
+      selfEmployedProof:
+        "Preuve que l'activité est toujours en cours (immatriculation, factures récentes…)",
+      quarterlyTax: "Déclarations fiscales trimestrielles déposées cette année",
+      pensionProof: "Attestation de pension à jour",
       companyDocs: "Statuts de la société et pouvoirs en vigueur",
       representativeId: "Pièce d'identité du signataire",
-      companyAccounts: "Derniers comptes annuels ou impôt sur les sociétés",
+      companyAccounts: "Derniers comptes annuels de la société",
+      bankStatements3:
+        "Relevés bancaires complets des trois derniers mois, où apparaissent les revenus perçus",
+      bankStatements6: "Relevés bancaires complets des six derniers mois",
+      ownerPayProof:
+        "Preuve de ce qui est perçu de la société (fiches de paie, attestation de retenues…)",
+      fundsInSpain:
+        "Preuve que l'argent est disponible en Espagne (par exemple, le relevé d'un compte espagnol)",
       guarantorDocuments: "Documents du garant",
       other: "Autres documents",
     },

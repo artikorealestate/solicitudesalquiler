@@ -202,10 +202,10 @@ export const es = {
     remove: "Quitar",
     suggestionsRent: "Documentación habitual para alquiler:",
     suggestionsRentList: [
-      "Últimas nóminas o justificantes de ingresos",
-      "Contrato de trabajo",
-      "DNI, NIE o pasaporte",
-      "Última declaración de la renta (si eres autónomo)",
+      "DNI, NIE o pasaporte de cada persona que firme el contrato",
+      "Asalariados: contrato de trabajo, tres últimas nóminas y extractos bancarios de tres meses",
+      "Autónomos: última declaración de la renta, trimestrales y extractos de seis meses",
+      "Pensionistas: certificado de la pensión y extractos de tres meses",
     ],
     suggestionsSeasonList: [
       "Documento de identidad (DNI, pasaporte o equivalente)",
@@ -336,6 +336,10 @@ export const es = {
     intro:
       "Tu solicitud para {property} sigue adelante. Solo nos falta revisar unos documentos.",
     weNeed: "Lo que necesitamos",
+    personHeading: "Documentos de {name}",
+    guarantorTag: "avalista",
+    everyoneNote:
+      "Cada persona que vaya a firmar el contrato, y el avalista si lo hay, tiene que aportar su propia documentación. Sube cada documento en el apartado de su persona.",
 
     /// El mensaje que resuelve el caso de quien no vive o no ha trabajado en España.
     abroadNote:
@@ -385,16 +389,27 @@ export const es = {
       id: "Documento de identidad (DNI, pasaporte o equivalente)",
       nie: "Número de identidad de extranjero",
       residencePermit: "Permiso de residencia o de trabajo",
-      incomeProof: "Justificantes de tus ingresos de los últimos tres meses",
-      employmentContract: "Contrato de trabajo o carta de tu empresa",
+      incomeProof: "Las tres últimas nóminas o justificantes de cobro",
+      employmentContract:
+        "Contrato de trabajo vigente, certificado de empresa o carta de quien paga",
       workHistory: "Historial laboral o certificado de antigüedad",
-      taxReturn: "Última declaración de impuestos",
-      selfEmployedProof: "Justificante de tu actividad por cuenta propia",
-      quarterlyTax: "Últimas declaraciones trimestrales de impuestos",
-      pensionProof: "Justificante o certificado de tu pensión",
+      taxReturn: "Última declaración de la renta completa",
+      selfEmployedProof:
+        "Prueba de que la actividad sigue en marcha (alta, facturas recientes…)",
+      quarterlyTax:
+        "Declaraciones trimestrales de impuestos presentadas este año",
+      pensionProof: "Certificado actualizado de la pensión",
       companyDocs: "Escritura de constitución y poderes de la sociedad",
       representativeId: "Documento de identidad de quien firmará",
-      companyAccounts: "Últimas cuentas anuales o impuesto de sociedades",
+      companyAccounts: "Últimas cuentas anuales de la sociedad",
+      bankStatements3:
+        "Extractos bancarios completos de los tres últimos meses, donde se vean los cobros",
+      bankStatements6:
+        "Extractos bancarios completos de los seis últimos meses",
+      ownerPayProof:
+        "Prueba de lo que se cobra de la sociedad (nóminas, certificado de retenciones…)",
+      fundsInSpain:
+        "Prueba de que el dinero está disponible en España (por ejemplo, el extracto de una cuenta española)",
       guarantorDocuments: "Documentación del avalista",
       other: "Otra documentación",
     },

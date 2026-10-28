@@ -298,7 +298,13 @@ export function buildDocumentRequestEmail(input: {
   dictionary: Dictionary;
   firstName: string;
   property: { reference: string; title: string };
-  items: Array<{ label: string; spanishName?: string }>;
+  /// Una entrada por persona. Las peticiones antiguas traen una sola, sin
+  /// nombre, y se pintan como siempre.
+  groups: Array<{
+    name: string | null;
+    guarantor: boolean;
+    items: Array<{ label: string; spanishName?: string }>;
+  }>;
   message: string | null;
   link: string;
   expiresAt: Date;
@@ -312,13 +318,32 @@ export function buildDocumentRequestEmail(input: {
       ? `${item.label} (${t.spanishNameLabel} ${item.spanishName})`
       : item.label;
 
-  const itemRows = input.items
-    .map(
-      (item) =>
-        `<tr><td style="padding:7px 0;border-bottom:1px solid ${LINE};color:${INK};">
-           ${escapeHtml(itemName(item))}
-         </td></tr>`,
-    )
+  const groupTitle = (group: (typeof input.groups)[number]) =>
+    group.name
+      ? interpolate(t.personHeading, { name: group.name }) +
+        (group.guarantor ? ` (${t.guarantorTag})` : "")
+      : null;
+
+  const severalPeople = input.groups.some((group) => group.name);
+
+  const itemRows = input.groups
+    .map((group) => {
+      const title = groupTitle(group);
+      const heading = title
+        ? `<tr><td style="padding:14px 0 4px;color:${INK};font-weight:700;">
+             ${escapeHtml(title)}
+           </td></tr>`
+        : "";
+      const rows = group.items
+        .map(
+          (item) =>
+            `<tr><td style="padding:7px 0;border-bottom:1px solid ${LINE};color:${INK};">
+               ${escapeHtml(itemName(item))}
+             </td></tr>`,
+        )
+        .join("");
+      return heading + rows;
+    })
     .join("");
 
   const content = `
@@ -334,6 +359,12 @@ export function buildDocumentRequestEmail(input: {
         : ""
     }
     <p style="margin:0 0 8px;"><b>${escapeHtml(t.weNeed)}</b></p>
+    ${
+      severalPeople
+        ? `<p style="margin:0 0 8px;font-size:13px;line-height:1.6;">
+             ${escapeHtml(t.everyoneNote)}</p>`
+        : ""
+    }
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
            style="font:400 14px/1.5 Arial,sans-serif;margin:0 0 16px;">
       ${itemRows}
@@ -362,7 +393,14 @@ export function buildDocumentRequestEmail(input: {
     t.emailIntro,
     "",
     `${t.weNeed}:`,
-    ...input.items.map((item) => `  - ${itemName(item)}`),
+    severalPeople ? t.everyoneNote : "",
+    ...input.groups.flatMap((group) => {
+      const title = groupTitle(group);
+      return [
+        ...(title ? [`${title}:`] : []),
+        ...group.items.map((item) => `  - ${itemName(item)}`),
+      ];
+    }),
     "",
     t.abroadNote,
     "",

@@ -187,10 +187,10 @@ export const pt: Dictionary = {
     remove: "Remover",
     suggestionsRent: "Documentação habitual para arrendamento:",
     suggestionsRentList: [
-      "Últimos recibos de vencimento ou comprovativos de rendimento",
-      "Contrato de trabalho",
-      "Cartão de cidadão, NIE ou passaporte",
-      "Última declaração de IRS (se trabalhador independente)",
+      "Documento de identidade, NIE ou passaporte de cada pessoa que assina o contrato",
+      "Trabalhadores por conta de outrem: contrato de trabalho, três últimos recibos de vencimento e três meses de extratos bancários",
+      "Trabalhadores independentes: última declaração de rendimentos, declarações trimestrais e seis meses de extratos bancários",
+      "Pensionistas: certificado de pensão e três meses de extratos bancários",
     ],
     suggestionsSeasonList: [
       "Documento de identidade (passaporte, cartão de cidadão ou equivalente)",
@@ -305,6 +305,10 @@ export const pt: Dictionary = {
     intro:
       "O seu pedido para {property} está a avançar. Só nos falta rever alguns documentos.",
     weNeed: "O que precisamos",
+    personHeading: "Documentos de {name}",
+    guarantorTag: "fiador",
+    everyoneNote:
+      "Cada pessoa que vai assinar o contrato, e o fiador se houver, tem de apresentar a sua própria documentação. Carregue cada documento na secção da pessoa certa.",
     abroadNote:
       "Se trabalha ou já viveu fora de Espanha, envie-nos o documento equivalente do seu país. Não faz mal que esteja noutro idioma: se precisarmos de tradução, pedimos-lha.",
     spanishNameLabel: "em Espanha:",
@@ -346,17 +350,26 @@ export const pt: Dictionary = {
       id: "Documento de identidade (cartão de cidadão, passaporte ou equivalente)",
       nie: "Número de identidade de estrangeiro em Espanha (NIE)",
       residencePermit: "Autorização de residência ou de trabalho",
-      incomeProof: "Comprovativos dos seus rendimentos dos últimos três meses",
+      incomeProof:
+        "Os três últimos recibos de vencimento ou comprovativos de rendimentos recebidos",
       employmentContract:
-        "Contrato de trabalho ou declaração da entidade patronal",
+        "Contrato de trabalho em vigor, declaração da entidade patronal ou carta de quem paga",
       workHistory: "Histórico profissional ou certificado de antiguidade",
-      taxReturn: "Última declaração de impostos",
-      selfEmployedProof: "Comprovativo da sua atividade por conta própria",
-      quarterlyTax: "Últimas declarações fiscais trimestrais",
-      pensionProof: "Certificado ou comprovativo de pensão",
+      taxReturn: "Última declaração de rendimentos completa",
+      selfEmployedProof:
+        "Prova de que a atividade continua em curso (registo, faturas recentes…)",
+      quarterlyTax: "Declarações fiscais trimestrais entregues este ano",
+      pensionProof: "Certificado de pensão atualizado",
       companyDocs: "Escritura de constituição e poderes de representação",
       representativeId: "Documento de identidade de quem irá assinar",
-      companyAccounts: "Últimas contas anuais ou imposto sobre sociedades",
+      companyAccounts: "Últimas contas anuais da sociedade",
+      bankStatements3:
+        "Extratos bancários completos dos três últimos meses, onde se vejam os rendimentos recebidos",
+      bankStatements6: "Extratos bancários completos dos seis últimos meses",
+      ownerPayProof:
+        "Prova do que se recebe da sociedade (recibos de vencimento, declaração de retenções…)",
+      fundsInSpain:
+        "Prova de que o dinheiro está disponível em Espanha (por exemplo, o extrato de uma conta espanhola)",
       guarantorDocuments: "Documentação do fiador",
       other: "Outra documentação",
     },
