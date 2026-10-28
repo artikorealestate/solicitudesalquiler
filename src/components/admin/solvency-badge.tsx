@@ -1,11 +1,19 @@
-import type { SolvencyAssessment } from "@/lib/applications/types";
+import {
+  SOLVENCY_THRESHOLD,
+  SOLVENCY_TIGHT_LIMIT,
+  asPercent,
+  type SolvencyAssessment,
+} from "@/lib/applications/types";
+
+const CRITERIO = asPercent(SOLVENCY_THRESHOLD);
+const LIMITE = asPercent(SOLVENCY_TIGHT_LIMIT);
 
 /// Muestra el ratio de solvencia de un vistazo.
 ///
 /// Tres tramos en lugar de un si/no, porque la realidad tiene un medio: entre
-/// el 30% y el 45% es donde un aval, unos ahorros o un segundo titular
-/// pueden inclinar la decision. Marcarlo en rojo haria descartar candidatos
-/// que merecen una llamada.
+/// el criterio y el limite es donde un aval, unos ahorros o un segundo
+/// titular pueden inclinar la decision. Marcarlo en rojo haria descartar
+/// candidatos que merecen una llamada.
 const bandStyles: Record<SolvencyAssessment["band"], string> = {
   holgado: "bg-success/12 text-success",
   ajustado: "bg-gold-wash text-gold-dark",
@@ -19,11 +27,9 @@ const bandLabels: Record<SolvencyAssessment["band"], string> = {
 };
 
 const bandHints: Record<SolvencyAssessment["band"], string> = {
-  holgado: "El alquiler no supera el 30% de los ingresos declarados.",
-  ajustado:
-    "Entre el 30% y el 45%. Merece una llamada: con aval, ahorros o un segundo titular puede encajar.",
-  insuficiente:
-    "Supera el 45% de los ingresos declarados. Convendria aval o revisar el encaje.",
+  holgado: `El alquiler no supera el ${CRITERIO}% de los ingresos declarados.`,
+  ajustado: `Entre el ${CRITERIO}% y el ${LIMITE}%. Merece una llamada: con aval, ahorros o un segundo titular puede encajar.`,
+  insuficiente: `Supera el ${LIMITE}% de los ingresos declarados. Convendria aval o revisar el encaje.`,
 };
 
 export function SolvencyBadge({
@@ -76,7 +82,7 @@ export function SolvencyBadge({
 
       {assessment.band !== "holgado" ? (
         <p className="mt-1.5 text-xs opacity-90">
-          Para cumplir el 30% harian falta{" "}
+          Para cumplir el {CRITERIO}% harian falta{" "}
           {assessment.recommendedIncome.toLocaleString("es-ES")} € netos.
         </p>
       ) : null}

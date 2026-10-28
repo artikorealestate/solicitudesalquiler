@@ -122,14 +122,6 @@ export const pt: Dictionary = {
       "Os rendimentos podem ser comprovados com recibos de vencimento ou documentos equivalentes?",
     monthlyIncome: "Qual é o rendimento líquido mensal do agregado? (€)",
 
-    solvencyHelp:
-      "O critério habitual é que a renda não ultrapasse cerca de 30% dos rendimentos líquidos comprováveis do agregado.",
-    solvencyForProperty:
-      "Para este imóvel, de {rent} € por mês, isso corresponderia a cerca de {recommended} € líquidos mensais no total.",
-    solvencyMet: "Com o que indicou, cumprem o critério habitual.",
-    solvencyNotMet:
-      "Fica abaixo do critério habitual. Pode continuar na mesma: iremos avaliá-lo em conjunto com a restante informação.",
-
     pets: "Têm animais de estimação?",
     petsDetail: "Quais?",
     searchDuration: "Há quanto tempo procuram casa para arrendar?",

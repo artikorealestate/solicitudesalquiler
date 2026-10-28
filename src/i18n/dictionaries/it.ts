@@ -122,15 +122,6 @@ export const it: Dictionary = {
       "I redditi sono dimostrabili con buste paga o documenti equivalenti?",
     monthlyIncome: "Qual è il reddito netto mensile del nucleo? (€)",
 
-    solvencyHelp:
-      "Il criterio abituale è che l'affitto non superi circa il 30% del reddito netto dimostrabile del nucleo.",
-    solvencyForProperty:
-      "Per questo immobile, da {rent} € al mese, servirebbero circa {recommended} € netti mensili in totale.",
-    solvencyMet:
-      "In base a quanto hai indicato, rientrate nel criterio abituale.",
-    solvencyNotMet:
-      "Resta sotto il criterio abituale. Puoi comunque continuare: lo valuteremo insieme al resto delle informazioni.",
-
     pets: "Avete animali domestici?",
     petsDetail: "Quali?",
     searchDuration: "Da quanto tempo cercate una casa in affitto?",

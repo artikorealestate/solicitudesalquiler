@@ -122,15 +122,6 @@ export const nl: Dictionary = {
       "Kunt u uw inkomen aantonen met loonstroken of vergelijkbare documenten?",
     monthlyIncome: "Wat is het netto maandinkomen van het huishouden? (€)",
 
-    solvencyHelp:
-      "De gebruikelijke richtlijn is dat de huur niet hoger is dan ongeveer 30% van het aantoonbare netto-inkomen van het huishouden.",
-    solvencyForProperty:
-      "Voor deze woning van {rent} € per maand komt dat neer op ongeveer {recommended} € netto per maand samen.",
-    solvencyMet:
-      "Op basis van wat u heeft ingevuld voldoet u aan de gebruikelijke richtlijn.",
-    solvencyNotMet:
-      "Dit blijft onder de gebruikelijke richtlijn. U kunt toch doorgaan: we bekijken het samen met alle overige informatie.",
-
     pets: "Heeft u huisdieren?",
     petsDetail: "Welke?",
     searchDuration: "Hoelang zoekt u al een huurwoning?",

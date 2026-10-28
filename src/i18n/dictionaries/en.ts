@@ -123,15 +123,6 @@ export const en: Dictionary = {
       "Can your income be evidenced with payslips or equivalent documents?",
     monthlyIncome: "What is the household's net monthly income? (€)",
 
-    solvencyHelp:
-      "The usual affordability guideline is that rent should not exceed roughly 30% of the household's evidenced net income.",
-    solvencyForProperty:
-      "For this property, at €{rent} per month, that would mean around €{recommended} net per month between you.",
-    solvencyMet:
-      "Based on what you have entered, you meet the usual guideline.",
-    solvencyNotMet:
-      "This falls below the usual guideline. You can still continue: we will consider it alongside everything else.",
-
     pets: "Do you have pets?",
     petsDetail: "Which ones?",
     searchDuration: "How long have you been looking for a rental?",

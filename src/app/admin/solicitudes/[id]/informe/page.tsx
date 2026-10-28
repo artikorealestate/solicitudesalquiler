@@ -3,7 +3,11 @@ import { notFound } from "next/navigation";
 import { ArtikoLogo } from "@/components/brand/logo";
 import { PrintButton } from "@/components/admin/print-button";
 import { prisma } from "@/lib/db";
-import { assessSolvency } from "@/lib/applications/types";
+import {
+  SOLVENCY_THRESHOLD,
+  asPercent,
+  assessSolvency,
+} from "@/lib/applications/types";
 import { describeStay, isSeasonalStay } from "@/lib/applications/stay";
 import {
   operationLabels,
@@ -74,7 +78,7 @@ export default async function OwnerReportPage({
   const estancia = describeStay(answers);
 
   // A una estancia de temporada no se le hace el estudio: ni se le pidieron
-  // los ingresos, ni el criterio del 30% le corresponde.
+  // los ingresos, ni el criterio de solvencia le corresponde.
   const temporada = application.operation === "RENT" && isSeasonalStay(answers);
 
   const solvency =
@@ -216,8 +220,9 @@ export default async function OwnerReportPage({
                 </p>
               </div>
               <p className="mt-3 border-t border-line-soft pt-3 text-xs leading-relaxed text-ink-muted">
-                El criterio que aplicamos es que el alquiler no supere el 30% de
-                los ingresos netos demostrables del grupo.
+                El criterio que aplicamos es que el alquiler no supere el{" "}
+                {asPercent(SOLVENCY_THRESHOLD)}% de los ingresos netos
+                demostrables del grupo.
               </p>
             </div>
           </section>

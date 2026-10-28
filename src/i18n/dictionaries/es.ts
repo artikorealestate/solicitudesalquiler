@@ -137,15 +137,6 @@ export const es = {
       "¿Los ingresos son demostrables con nóminas o documentación equivalente?",
     monthlyIncome: "¿Cuál es el ingreso neto mensual del grupo? (€)",
 
-    solvencyHelp:
-      "El criterio habitual de solvencia es que el alquiler no supere aproximadamente el 30% de los ingresos netos demostrables del grupo.",
-    solvencyForProperty:
-      "Para este inmueble, de {rent} € al mes, eso supondría unos {recommended} € netos mensuales entre todos.",
-    solvencyMet:
-      "Con lo que has indicado, cumplís el criterio habitual de solvencia.",
-    solvencyNotMet:
-      "Queda por debajo del criterio habitual. Puedes continuar igualmente: lo valoraremos con el resto de la información.",
-
     pets: "¿Tenéis mascotas?",
     petsDetail: "¿Cuáles?",
     searchDuration: "¿Cuánto tiempo lleváis buscando vivienda de alquiler?",

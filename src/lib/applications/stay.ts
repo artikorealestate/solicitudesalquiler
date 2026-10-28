@@ -152,7 +152,7 @@ const DIAS_DE_TEMPORADA = 335;
 
 /// Si la estancia es de temporada.
 ///
-/// Importa porque el estudio de solvencia al 30% no se le aplica a quien
+/// Importa porque el estudio de solvencia no se le aplica a quien
 /// viene dos meses de verano: se le pediria nomina, contrato y vida laboral
 /// para una estancia que suele pagarse por adelantado, y lo unico que se
 /// consigue es que abandone el formulario.

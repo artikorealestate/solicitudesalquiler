@@ -123,15 +123,6 @@ export const fr: Dictionary = {
       "Vos revenus peuvent-ils être justifiés par des bulletins de salaire ou documents équivalents ?",
     monthlyIncome: "Quel est le revenu net mensuel du foyer ? (€)",
 
-    solvencyHelp:
-      "Le critère habituel est que le loyer ne dépasse pas environ 30 % des revenus nets justifiables du foyer.",
-    solvencyForProperty:
-      "Pour ce bien, à {rent} € par mois, cela représenterait environ {recommended} € nets mensuels à vous tous.",
-    solvencyMet:
-      "D'après ce que vous avez indiqué, vous remplissez le critère habituel.",
-    solvencyNotMet:
-      "Cela reste en dessous du critère habituel. Vous pouvez tout de même continuer : nous l'examinerons avec le reste des informations.",
-
     pets: "Avez-vous des animaux de compagnie ?",
     petsDetail: "Lesquels ?",
     searchDuration: "Depuis combien de temps cherchez-vous une location ?",

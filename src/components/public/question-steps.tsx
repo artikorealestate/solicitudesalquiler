@@ -2,17 +2,13 @@
 
 import type { Dictionary } from "@/i18n";
 import { isSeasonalStay } from "@/lib/applications/stay";
-import { interpolate } from "@/i18n";
 import {
   SelectField,
   TextAreaField,
   TextField,
   YesNoField,
 } from "@/components/public/fields";
-import {
-  recommendedIncomeFor,
-  type PublicProperty,
-} from "@/lib/applications/types";
+import type { PublicProperty } from "@/lib/applications/types";
 
 type QuestionProps = {
   dictionary: Dictionary;
@@ -26,11 +22,8 @@ export function RentQuestions({
   answers,
   setAnswer,
   errors,
-  property,
 }: QuestionProps & { property: PublicProperty | undefined }) {
   const t = dictionary.rentQuestions;
-  const rentPrice = property?.rentPrice ?? null;
-  const income = Number(answers.monthlyIncome?.replace(/[.\s]/g, "") ?? "");
 
   // A quien viene de temporada no se le hace el estudio de solvencia, asi que
   // tampoco se le piden los ingresos: se le pregunta el motivo, que es lo que
@@ -135,39 +128,23 @@ export function RentQuestions({
             error={errors.provableIncome}
           />
 
-          <div>
-            <TextField
-              label={t.monthlyIncome}
-              value={answers.monthlyIncome ?? ""}
-              onChange={(value) => setAnswer("monthlyIncome", value)}
-              inputMode="numeric"
-              error={errors.monthlyIncome}
-              hint={
-                rentPrice
-                  ? interpolate(t.solvencyForProperty, {
-                      rent: rentPrice.toLocaleString("es-ES"),
-                      recommended:
-                        recommendedIncomeFor(rentPrice).toLocaleString("es-ES"),
-                    })
-                  : t.solvencyHelp
-              }
-              required
-            />
-
-            {/*
-              Aqui habia un veredicto en vivo ("cumplis" / "no llegais"). Se ha
-              quitado a proposito:
-
-              - A quien no llega, le dice que no antes de que Artiko haya visto
-                nada. Muchos abandonan ahi, y algunos habrian encajado igualmente
-                con aval, ahorros o un segundo titular.
-              - El criterio no es una linea nitida: la referencia del sector esta
-                entre el 30% y el 45% segun quien la aplique.
-
-              Se conserva el dato objetivo (el importe de referencia) en la ayuda
-              del campo, que es lo util: orienta sin juzgar.
-            */}
-          </div>
+          {/*
+            Sin ayuda debajo del campo, a proposito. Aqui hubo primero un
+            veredicto en vivo ("cumplis" / "no llegais") y despues el criterio
+            de solvencia con el importe de referencia para el inmueble. Las dos
+            cosas se quitaron: el porcentaje que aplica Artiko es un criterio
+            interno (decision de octubre de 2026), y ensenarlo invita a ajustar
+            la cifra declarada para pasar el corte. La valoracion se ve solo en
+            el panel.
+          */}
+          <TextField
+            label={t.monthlyIncome}
+            value={answers.monthlyIncome ?? ""}
+            onChange={(value) => setAnswer("monthlyIncome", value)}
+            inputMode="numeric"
+            error={errors.monthlyIncome}
+            required
+          />
         </>
       )}
 

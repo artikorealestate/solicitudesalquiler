@@ -15,7 +15,11 @@ import {
 import { SolvencyBadge } from "@/components/admin/solvency-badge";
 import { describeStay, stayKind, stayKindLabel } from "@/lib/applications/stay";
 import { BuyerBadge } from "@/components/admin/buyer-badge";
-import { assessSolvency } from "@/lib/applications/types";
+import {
+  SOLVENCY_THRESHOLD,
+  asPercent,
+  assessSolvency,
+} from "@/lib/applications/types";
 import { assessBuyerReadiness } from "@/lib/applications/buyer-readiness";
 import { applicationRetention } from "@/lib/privacy/application-retention";
 import { daysUntilDeletion, isInWarningWindow } from "@/lib/privacy/retention";
@@ -271,7 +275,7 @@ export default async function ApplicationsPage({
                         {kind && kind !== "LARGA" ? (
                           <span
                             className="inline-block whitespace-nowrap rounded bg-gold-wash px-2 py-0.5 text-xs font-bold text-gold-dark"
-                            title="Estancia de temporada: no se le aplica el criterio del 30%."
+                            title={`Estancia de temporada: no se le aplica el criterio del ${asPercent(SOLVENCY_THRESHOLD)}%.`}
                           >
                             {stayKindLabel(kind)}
                           </span>

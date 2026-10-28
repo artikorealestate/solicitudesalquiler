@@ -33,23 +33,29 @@ describe("valoracion de solvencia para el panel", () => {
 
     expect(result.ratioPercent).toBe(31);
     expect(result.monthlyIncome).toBe(5200);
-    expect(result.recommendedIncome).toBe(5330);
+    expect(result.recommendedIncome).toBe(4000);
   });
 
-  it("marca como holgado lo que cumple el 30%", () => {
-    expect(assessSolvency(1500, "5000")!.band).toBe("holgado");
+  it("marca como holgado lo que cumple el 40%", () => {
+    expect(assessSolvency(2000, "5000")!.band).toBe("holgado");
     expect(assessSolvency(1000, "5000")!.band).toBe("holgado");
   });
 
-  it("marca como ajustado el tramo entre el 30% y el 45%", () => {
-    // Aqui es donde un aval o unos ahorros pueden cambiar la decision, asi
-    // que no puede salir como un rechazo.
-    expect(assessSolvency(1600, "5000")!.band).toBe("ajustado");
-    expect(assessSolvency(2250, "5000")!.band).toBe("ajustado");
+  // Con el criterio anterior (30%) esto salia "ajustado": es el cambio que
+  // pidio Artiko en octubre de 2026.
+  it("da por buena una solicitud al 35%, que antes salia ajustada", () => {
+    expect(assessSolvency(1750, "5000")!.band).toBe("holgado");
   });
 
-  it("marca como insuficiente lo que pasa del 45%", () => {
-    expect(assessSolvency(2300, "5000")!.band).toBe("insuficiente");
+  it("marca como ajustado el tramo entre el 40% y el 50%", () => {
+    // Aqui es donde un aval o unos ahorros pueden cambiar la decision, asi
+    // que no puede salir como un rechazo.
+    expect(assessSolvency(2100, "5000")!.band).toBe("ajustado");
+    expect(assessSolvency(2500, "5000")!.band).toBe("ajustado");
+  });
+
+  it("marca como insuficiente lo que pasa del 50%", () => {
+    expect(assessSolvency(2600, "5000")!.band).toBe("insuficiente");
   });
 
   it("no inventa nada si falta el precio o los ingresos", () => {
@@ -63,33 +69,35 @@ describe("valoracion de solvencia para el panel", () => {
 /// El criterio de solvencia se le muestra al interesado como orientacion, asi
 /// que conviene que los numeros sean exactos: un calculo mal hecho aqui
 /// desanima a candidatos validos o anima a los que no llegan.
-describe("criterio de solvencia del 30%", () => {
+describe("criterio de solvencia del 40%", () => {
   describe("recommendedIncomeFor", () => {
     it("calcula los ingresos recomendados para un alquiler", () => {
-      // 1.600 / 0,30 = 5.333,33 -> redondeado a decenas
-      expect(recommendedIncomeFor(1600)).toBe(5330);
+      // 1.600 / 0,40 = 4.000
+      expect(recommendedIncomeFor(1600)).toBe(4000);
     });
 
     it("funciona con alquileres bajos", () => {
-      expect(recommendedIncomeFor(900)).toBe(3000);
+      // 900 / 0,40 = 2.250
+      expect(recommendedIncomeFor(900)).toBe(2250);
     });
 
     it("funciona con alquileres altos", () => {
-      expect(recommendedIncomeFor(4500)).toBe(15000);
+      // 4.500 / 0,40 = 11.250
+      expect(recommendedIncomeFor(4500)).toBe(11250);
     });
   });
 
   describe("meetsSolvency", () => {
-    it("acepta cuando el alquiler es justo el 30% de los ingresos", () => {
-      expect(meetsSolvency(1500, 5000)).toBe(true);
+    it("acepta cuando el alquiler es justo el 40% de los ingresos", () => {
+      expect(meetsSolvency(2000, 5000)).toBe(true);
     });
 
     it("acepta cuando sobra margen", () => {
       expect(meetsSolvency(1600, 6000)).toBe(true);
     });
 
-    it("rechaza cuando el alquiler pasa del 30%", () => {
-      expect(meetsSolvency(1600, 4000)).toBe(false);
+    it("rechaza cuando el alquiler pasa del 40%", () => {
+      expect(meetsSolvency(1600, 3900)).toBe(false);
     });
 
     it("no da por bueno un ingreso de cero", () => {

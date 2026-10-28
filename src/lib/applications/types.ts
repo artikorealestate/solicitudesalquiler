@@ -83,11 +83,23 @@ export const SALE_ANSWER_KEYS = [
 ] as const;
 
 /// Umbral de solvencia que aplica Artiko: el alquiler no deberia superar el
-/// 30% de los ingresos netos demostrables del grupo.
+/// 40% de los ingresos netos demostrables del grupo.
 ///
-/// La referencia del sector se mueve entre el 30% y el 45%; Artiko usa el
-/// extremo prudente a proposito. Cambiarlo aqui lo cambia en todas partes.
-export const SOLVENCY_THRESHOLD = 0.3;
+/// Fue el 30% hasta octubre de 2026; Artiko lo subio al 40%. Cambiarlo aqui
+/// lo cambia en el calculo y en los textos del panel y del informe.
+///
+/// Es un criterio INTERNO: el formulario publico no lo menciona ni lo lleva
+/// en sus textos. No anadirlo a los diccionarios, que viajan enteros al
+/// navegador del interesado aunque no se pinten.
+export const SOLVENCY_THRESHOLD = 0.4;
+
+/// Hasta donde llega el tramo "ajustado": por encima del criterio, pero en
+/// la zona en la que un aval, unos ahorros o un segundo titular pueden
+/// inclinar la decision. Mas alla, "insuficiente".
+export const SOLVENCY_TIGHT_LIMIT = 0.5;
+
+/// Un umbral como porcentaje entero, para los textos: 0.4 -> 40.
+export const asPercent = (ratio: number) => Math.round(ratio * 100);
 
 /// Ingresos que harian falta para cumplir el criterio con ese alquiler.
 export function recommendedIncomeFor(rentPrice: number): number {
@@ -107,9 +119,10 @@ export type SolvencyAssessment = {
   monthlyIncome: number;
   rentPrice: number;
   recommendedIncome: number;
-  /// "holgado" hasta el 30%, "ajustado" hasta el 45%, "insuficiente" por
-  /// encima. El tramo intermedio existe porque ahi es donde un aval o unos
-  /// ahorros pueden inclinar la decision: no es un no, es un "miralo".
+  /// "holgado" hasta el criterio (40%), "ajustado" hasta el limite (50%),
+  /// "insuficiente" por encima. El tramo intermedio existe porque ahi es
+  /// donde un aval o unos ahorros pueden inclinar la decision: no es un no,
+  /// es un "miralo".
   band: "holgado" | "ajustado" | "insuficiente";
 };
 
@@ -144,7 +157,7 @@ export function assessSolvency(
     band:
       ratio <= SOLVENCY_THRESHOLD
         ? "holgado"
-        : ratio <= 0.45
+        : ratio <= SOLVENCY_TIGHT_LIMIT
           ? "ajustado"
           : "insuficiente",
   };

@@ -1,8 +1,10 @@
+import { SOLVENCY_THRESHOLD, asPercent } from "@/lib/applications/types";
+
 /// Sustituye al bloque de solvencia cuando la estancia es de temporada.
 ///
 /// El hueco vacio invita a pensar que falta un dato. Este aviso dice que no
-/// falta nada: es que a una estancia corta no se le aplica el criterio del
-/// 30%, y por eso no se le pidieron los ingresos.
+/// falta nada: es que a una estancia corta no se le aplica el criterio de
+/// solvencia, y por eso no se le pidieron los ingresos.
 const purposeLabels: Record<string, string> = {
   work: "Trabajo o traslado laboral",
   studies: "Estudios",
@@ -36,8 +38,9 @@ export function SeasonalNote({
 
       <p className="mt-3 border-t border-gold/25 pt-2 text-xs leading-relaxed text-ink-muted">
         No se le ha hecho el estudio de solvencia ni se le han pedido los
-        ingresos: el criterio del 30% se aplica al alquiler de vivienda, no a
-        una estancia corta que suele cobrarse por adelantado.
+        ingresos: el criterio del {asPercent(SOLVENCY_THRESHOLD)}% se aplica al
+        alquiler de vivienda, no a una estancia corta que suele cobrarse por
+        adelantado.
       </p>
     </div>
   );

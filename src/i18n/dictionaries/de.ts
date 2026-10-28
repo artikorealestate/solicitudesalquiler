@@ -124,14 +124,6 @@ export const de: Dictionary = {
     monthlyIncome:
       "Wie hoch ist das monatliche Nettoeinkommen des Haushalts? (€)",
 
-    solvencyHelp:
-      "Üblicherweise gilt, dass die Miete etwa 30 % des nachweisbaren Nettoeinkommens des Haushalts nicht übersteigen sollte.",
-    solvencyForProperty:
-      "Bei dieser Immobilie mit {rent} € monatlich wären das etwa {recommended} € netto im Monat für alle zusammen.",
-    solvencyMet: "Nach Ihren Angaben erfüllen Sie die übliche Empfehlung.",
-    solvencyNotMet:
-      "Das liegt unter der üblichen Empfehlung. Sie können trotzdem fortfahren: Wir betrachten es zusammen mit allen anderen Angaben.",
-
     pets: "Haben Sie Haustiere?",
     petsDetail: "Welche?",
     searchDuration: "Wie lange suchen Sie schon eine Mietwohnung?",
