@@ -93,11 +93,6 @@ export const SALE_ANSWER_KEYS = [
 /// navegador del interesado aunque no se pinten.
 export const SOLVENCY_THRESHOLD = 0.4;
 
-/// Hasta donde llega el tramo "ajustado": por encima del criterio, pero en
-/// la zona en la que un aval, unos ahorros o un segundo titular pueden
-/// inclinar la decision. Mas alla, "insuficiente".
-export const SOLVENCY_TIGHT_LIMIT = 0.5;
-
 /// Un umbral como porcentaje entero, para los textos: 0.4 -> 40.
 export const asPercent = (ratio: number) => Math.round(ratio * 100);
 
@@ -119,11 +114,10 @@ export type SolvencyAssessment = {
   monthlyIncome: number;
   rentPrice: number;
   recommendedIncome: number;
-  /// "holgado" hasta el criterio (40%), "ajustado" hasta el limite (50%),
-  /// "insuficiente" por encima. El tramo intermedio existe porque ahi es
-  /// donde un aval o unos ahorros pueden inclinar la decision: no es un no,
-  /// es un "miralo".
-  band: "holgado" | "ajustado" | "insuficiente";
+  /// Una sola linea, el criterio de Artiko (40%): o cumple o no cumple. Hubo
+  /// un tramo intermedio "ajustado"; Artiko lo quito en octubre de 2026 para
+  /// que todos sus analisis se midan contra el mismo numero.
+  band: "cumple" | "no_cumple";
 };
 
 /// Lee los ingresos tal y como los escribio el interesado.
@@ -154,11 +148,6 @@ export function assessSolvency(
     monthlyIncome,
     rentPrice,
     recommendedIncome: recommendedIncomeFor(rentPrice),
-    band:
-      ratio <= SOLVENCY_THRESHOLD
-        ? "holgado"
-        : ratio <= SOLVENCY_TIGHT_LIMIT
-          ? "ajustado"
-          : "insuficiente",
+    band: ratio <= SOLVENCY_THRESHOLD ? "cumple" : "no_cumple",
   };
 }

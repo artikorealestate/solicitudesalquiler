@@ -1,35 +1,26 @@
 import {
   SOLVENCY_THRESHOLD,
-  SOLVENCY_TIGHT_LIMIT,
   asPercent,
   type SolvencyAssessment,
 } from "@/lib/applications/types";
 
 const CRITERIO = asPercent(SOLVENCY_THRESHOLD);
-const LIMITE = asPercent(SOLVENCY_TIGHT_LIMIT);
 
-/// Muestra el ratio de solvencia de un vistazo.
-///
-/// Tres tramos en lugar de un si/no, porque la realidad tiene un medio: entre
-/// el criterio y el limite es donde un aval, unos ahorros o un segundo
-/// titular pueden inclinar la decision. Marcarlo en rojo haria descartar
-/// candidatos que merecen una llamada.
+/// Muestra el ratio de solvencia de un vistazo, contra el criterio de Artiko
+/// (40%): cumple o no cumple, sin tramos intermedios.
 const bandStyles: Record<SolvencyAssessment["band"], string> = {
-  holgado: "bg-success/12 text-success",
-  ajustado: "bg-gold-wash text-gold-dark",
-  insuficiente: "bg-danger/10 text-danger",
+  cumple: "bg-success/12 text-success",
+  no_cumple: "bg-danger/10 text-danger",
 };
 
 const bandLabels: Record<SolvencyAssessment["band"], string> = {
-  holgado: "Cumple el criterio",
-  ajustado: "Ajustado",
-  insuficiente: "Por debajo del criterio",
+  cumple: "Cumple el criterio",
+  no_cumple: "No cumple el criterio",
 };
 
 const bandHints: Record<SolvencyAssessment["band"], string> = {
-  holgado: `El alquiler no supera el ${CRITERIO}% de los ingresos declarados.`,
-  ajustado: `Entre el ${CRITERIO}% y el ${LIMITE}%. Merece una llamada: con aval, ahorros o un segundo titular puede encajar.`,
-  insuficiente: `Supera el ${LIMITE}% de los ingresos declarados. Convendria aval o revisar el encaje.`,
+  cumple: `El alquiler no supera el ${CRITERIO}% de los ingresos declarados.`,
+  no_cumple: `El alquiler supera el ${CRITERIO}% de los ingresos declarados.`,
 };
 
 export function SolvencyBadge({
@@ -80,7 +71,7 @@ export function SolvencyBadge({
         {bandHints[assessment.band]}
       </p>
 
-      {assessment.band !== "holgado" ? (
+      {assessment.band === "no_cumple" ? (
         <p className="mt-1.5 text-xs opacity-90">
           Para cumplir el {CRITERIO}% harian falta{" "}
           {assessment.recommendedIncome.toLocaleString("es-ES")} € netos.

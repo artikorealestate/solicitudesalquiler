@@ -36,26 +36,22 @@ describe("valoracion de solvencia para el panel", () => {
     expect(result.recommendedIncome).toBe(4000);
   });
 
-  it("marca como holgado lo que cumple el 40%", () => {
-    expect(assessSolvency(2000, "5000")!.band).toBe("holgado");
-    expect(assessSolvency(1000, "5000")!.band).toBe("holgado");
+  it("cumple hasta el 40% incluido", () => {
+    expect(assessSolvency(2000, "5000")!.band).toBe("cumple");
+    expect(assessSolvency(1000, "5000")!.band).toBe("cumple");
   });
 
-  // Con el criterio anterior (30%) esto salia "ajustado": es el cambio que
-  // pidio Artiko en octubre de 2026.
-  it("da por buena una solicitud al 35%, que antes salia ajustada", () => {
-    expect(assessSolvency(1750, "5000")!.band).toBe("holgado");
+  // Con el criterio anterior (30%) esto no cumplia.
+  it("da por buena una solicitud al 35%", () => {
+    expect(assessSolvency(1750, "5000")!.band).toBe("cumple");
   });
 
-  it("marca como ajustado el tramo entre el 40% y el 50%", () => {
-    // Aqui es donde un aval o unos ahorros pueden cambiar la decision, asi
-    // que no puede salir como un rechazo.
-    expect(assessSolvency(2100, "5000")!.band).toBe("ajustado");
-    expect(assessSolvency(2500, "5000")!.band).toBe("ajustado");
-  });
-
-  it("marca como insuficiente lo que pasa del 50%", () => {
-    expect(assessSolvency(2600, "5000")!.band).toBe("insuficiente");
+  // Una sola linea, sin tramo intermedio: por poco que pase del 40%, no
+  // cumple. Es lo que pidio Artiko.
+  it("no cumple en cuanto pasa del 40%", () => {
+    expect(assessSolvency(2010, "5000")!.band).toBe("no_cumple");
+    expect(assessSolvency(2500, "5000")!.band).toBe("no_cumple");
+    expect(assessSolvency(4000, "5000")!.band).toBe("no_cumple");
   });
 
   it("no inventa nada si falta el precio o los ingresos", () => {

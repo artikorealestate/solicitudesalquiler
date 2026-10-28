@@ -205,18 +205,12 @@ export default async function OwnerReportPage({
                 </div>
                 <p
                   className={`shrink-0 rounded px-3 py-1 text-sm font-bold ${
-                    solvency.band === "holgado"
+                    solvency.band === "cumple"
                       ? "bg-success/12 text-success"
-                      : solvency.band === "ajustado"
-                        ? "bg-gold-wash text-gold-dark"
-                        : "bg-danger/10 text-danger"
+                      : "bg-danger/10 text-danger"
                   }`}
                 >
-                  {solvency.band === "holgado"
-                    ? "Cumple"
-                    : solvency.band === "ajustado"
-                      ? "Ajustado"
-                      : "Por debajo"}
+                  {solvency.band === "cumple" ? "Cumple" : "No cumple"}
                 </p>
               </div>
               <p className="mt-3 border-t border-line-soft pt-3 text-xs leading-relaxed text-ink-muted">
